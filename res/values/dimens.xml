@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Import dictionary -->
+    <dimen name="import_text_margin_top">8.0dip</dimen>
+    <dimen name="import_text_margin_side">5.0dip</dimen>
+    <dimen name="import_btn_margin_top">10.0dip</dimen>
+    <dimen name="import_btn_margin_side">5.0dip</dimen>
+</resources>

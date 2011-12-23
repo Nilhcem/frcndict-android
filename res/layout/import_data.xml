@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/import_text_margin_top"
+            android:layout_marginLeft="@dimen/import_text_margin_side"
+            android:layout_marginRight="@dimen/import_text_margin_side"
+            android:background="@drawable/import_text_bg"
+            android:gravity="center"
+            android:text="@string/import_welcome_msg" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/import_btn_margin_top"
+            android:layout_marginLeft="@dimen/import_btn_margin_side"
+            android:layout_marginRight="@dimen/import_btn_margin_side"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/importDwnldBtn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="@string/import_download_btn" />
+
+            <Button
+                android:id="@+id/importExitBtn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text="@string/import_exit_btn" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

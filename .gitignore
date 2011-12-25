@@ -1,0 +1,4 @@
+*.u8
+bin/
+dist/
+output/

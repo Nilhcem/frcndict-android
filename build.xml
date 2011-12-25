@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="CFDICT-parser" basedir="." default="run">
+	<property file="build.properties"/>
+
+	<path id="lib.path.id">
+		<fileset dir="${lib.dir}" />
+		<path location="${conf.dir}" />
+	</path>
+
+	<target name="clean" description="Remove all builded classes and jar file">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="bin" />
+		<delete dir="output" />
+	</target>
+
+	<target name="build" description="Build project">
+		<mkdir dir="${build.dir}" />
+		<javac srcdir="src" source="1.7" target="1.7" destdir="${build.dir}" includeantruntime="false" classpathref="lib.path.id" />
+	</target>
+
+	<target name="package" depends="build" description="Create jar file with dependencies">
+		<jar destfile="${dist.dir}/${ant.project.name}.jar" basedir="${build.dir}">
+			<fileset dir="${conf.dir}" />
+			<zipgroupfileset dir="${lib.dir}" includes="*.jar" />
+			<manifest>
+				<attribute name="Main-Class" value="com.nilhcem.cfdictparser.App" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends="package" description="Run JAR file">
+		<java jar="${dist.dir}/${ant.project.name}.jar" fork="true">
+			<arg value="cfdict.u8" />
+		</java>
+	</target>
+</project>

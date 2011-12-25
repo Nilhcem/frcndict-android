@@ -13,7 +13,7 @@ import java.util.Properties;
 public final class Configuration {
 	private static final Configuration INSTANCE = new Configuration();
 	private static final String CONFIG_FILE = "/configuration.properties";
-	private static final Properties CONFIG = new Properties();
+	private final Properties config = new Properties();
 
 	/**
 	 * Returns the unique instance of the class.
@@ -30,7 +30,7 @@ public final class Configuration {
 	private Configuration() {
 		InputStream in = getClass().getResourceAsStream(CONFIG_FILE);
 		try {
-			CONFIG.load(in);
+			config.load(in);
 			in.close();
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
@@ -45,8 +45,8 @@ public final class Configuration {
 	 * @return the value of the key, or an empty string if the key was not found.
 	 */
 	public String get(String key) {
-		if (CONFIG != null && CONFIG.containsKey(key)) {
-			return CONFIG.getProperty(key);
+		if (config != null && config.containsKey(key)) {
+			return config.getProperty(key);
 		}
 		return "";
 	}

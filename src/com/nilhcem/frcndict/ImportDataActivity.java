@@ -1,6 +1,7 @@
 package com.nilhcem.frcndict;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -15,7 +16,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nilhcem.frcndict.utils.FileReader;
 import com.nilhcem.frcndict.utils.HttpDownloader;
+import com.nilhcem.frcndict.utils.Md5;
 import com.nilhcem.frcndict.utils.Unzip;
 
 public final class ImportDataActivity extends Activity {
@@ -67,7 +70,9 @@ public final class ImportDataActivity extends Activity {
 
 	private class DownloadFileAsync extends AsyncTask<String, Integer, String> implements Observer {
 		private static final String DICT_URL = "http://192.168.1.2/cfdict/dictionary.zip";
-		private static final String TEMP_FILE = "download.tmp";
+		private static final String MD5_URL = "http://192.168.1.2/cfdict/md5sum";
+		private static final String TEMP_ZIP_FILE = "download.tmp";
+		private static final String TEMP_MD5_FILE = "md5sum";
 		private File rootDir;
 		private File zipFile;
 
@@ -76,7 +81,7 @@ public final class ImportDataActivity extends Activity {
 
 			ApplicationController app = (ApplicationController) getApplication();
 			rootDir = app.getRootDir();
-			zipFile = new File(rootDir, TEMP_FILE);
+			zipFile = new File(rootDir, TEMP_ZIP_FILE);
 		}
 
 		@Override
@@ -84,7 +89,25 @@ public final class ImportDataActivity extends Activity {
 			HttpDownloader downloader = new HttpDownloader(DICT_URL, zipFile);
 			downloader.addObserver(this);
 			downloader.start();
+			checkMd5();
 			return null;
+		}
+
+		private void checkMd5() {
+			try {
+				String md5 = Md5.getMd5Sum(zipFile);
+				File md5File = new File(rootDir, TEMP_MD5_FILE);
+				HttpDownloader downloader = new HttpDownloader(MD5_URL, md5File);
+				downloader.start();
+
+				String remoteMd5 = FileReader.readFile(md5File);
+				if (!md5.equalsIgnoreCase(remoteMd5)) {
+					// TODO
+				}
+				md5File.delete();
+			} catch (IOException e) {
+				// TODO
+			}
 		}
 
 		@Override

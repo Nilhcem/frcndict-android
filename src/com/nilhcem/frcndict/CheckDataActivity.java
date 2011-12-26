@@ -1,11 +1,10 @@
 package com.nilhcem.frcndict;
 
-import com.nilhcem.frcndict.database.DatabaseHelper;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
+import com.nilhcem.frcndict.database.DatabaseHelper;
 
 /**
  * Checks if database exists.
@@ -35,7 +34,6 @@ public final class CheckDataActivity extends Activity {
 	 * Checks if database exists and contains data.
 	 */
 	private void checkDatabase() {
-		Log.i("CheckDataActivity", "Check database");
 		DatabaseHelper.getInstance();
 
 		if (DatabaseHelper.getInstance().isInitialized()) {

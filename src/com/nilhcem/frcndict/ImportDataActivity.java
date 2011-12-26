@@ -1,25 +1,14 @@
 package com.nilhcem.frcndict;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.nilhcem.frcndict.utils.FileReader;
-import com.nilhcem.frcndict.utils.HttpDownloader;
-import com.nilhcem.frcndict.utils.Md5;
-import com.nilhcem.frcndict.utils.Unzip;
 
 public final class ImportDataActivity extends Activity {
 	private static final String PERCENT_CHAR = "%";
@@ -31,14 +20,48 @@ public final class ImportDataActivity extends Activity {
 	private TextView mDownloadPercent;
 	private ProgressBar mInstallBar;
 	private TextView mInstallPercent;
+	private ApplicationController application;
+
+	private View mImportButtonsLayout;
+	private View mImportProgressLayout;
+
+	private AlertDialog dialog;
+
+	private Status curStatus;
+
+	public static enum Status {
+		STATUS_BEGIN,
+		STATUS_DOWNLOAD_STARTED,
+		STATUS_DOWNLOAD_COMPLETED,
+		STATUS_INSTALL_COMPLETED;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.import_data);
+		application = (ApplicationController) getApplication();
 
 		initButtons();
+		initLayouts();
 		initProgressData();
+		initDialog();
+
+		restore(savedInstanceState);
+
+		//if savedInstanceState != null pour reafficher correctement l'etat de l'application
+		application.importService.setActivity(this);
+	}
+
+	private void restore(Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			curStatus = (Status) savedInstanceState.get("status");
+			mDownloadPercent.setText(savedInstanceState.getCharSequence("dl-percent"));
+			mInstallPercent.setText(savedInstanceState.getCharSequence("in-percent"));
+		} else {
+			curStatus = Status.STATUS_BEGIN;
+		}
+		changeStatus(curStatus);
 	}
 
 	private void initButtons() {
@@ -48,7 +71,8 @@ public final class ImportDataActivity extends Activity {
 		mDownloadButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new DownloadFileAsync().execute("");
+				application.importService.startDownload();
+				changeStatus(Status.STATUS_DOWNLOAD_STARTED);
 			}
 		});
 
@@ -60,6 +84,11 @@ public final class ImportDataActivity extends Activity {
 		});
 	}
 
+	private void initLayouts() {
+		mImportButtonsLayout = findViewById(R.id.importButtonsLayout);
+		mImportProgressLayout = findViewById(R.id.importProgressLayout);
+	}
+
 	private void initProgressData() {
 		mDownloadBar = (ProgressBar) findViewById(R.id.importDownloadingBar);
 		mInstallBar = (ProgressBar) findViewById(R.id.importInstallingBar);
@@ -68,146 +97,62 @@ public final class ImportDataActivity extends Activity {
 		mInstallPercent = (TextView) findViewById(R.id.importInstallingPercent);
 	}
 
-	private class DownloadFileAsync extends AsyncTask<String, Integer, String> implements Observer {
-		private static final String DICT_URL = "http://192.168.1.2/cfdict/dictionary.zip";
-		private static final String MD5_URL = "http://192.168.1.2/cfdict/md5sum";
-		private static final String TEMP_ZIP_FILE = "download.tmp";
-		private static final String TEMP_MD5_FILE = "md5sum";
-		private File rootDir;
-		private File zipFile;
-
-		public DownloadFileAsync() {
-			super();
-
-			ApplicationController app = (ApplicationController) getApplication();
-			rootDir = app.getRootDir();
-			zipFile = new File(rootDir, TEMP_ZIP_FILE);
-		}
-
-		@Override
-		protected String doInBackground(String... params) {
-			HttpDownloader downloader = new HttpDownloader(DICT_URL, zipFile);
-			downloader.addObserver(this);
-			downloader.start();
-			checkMd5();
-			return null;
-		}
-
-		private void checkMd5() {
-			try {
-				String md5 = Md5.getMd5Sum(zipFile);
-				File md5File = new File(rootDir, TEMP_MD5_FILE);
-				HttpDownloader downloader = new HttpDownloader(MD5_URL, md5File);
-				downloader.start();
-
-				String remoteMd5 = FileReader.readFile(md5File);
-				if (!md5.equalsIgnoreCase(remoteMd5)) {
-					// TODO
+	private void initDialog() {
+		dialog = new AlertDialog.Builder(this)
+			.setTitle(R.string.import_dialog_title)
+			.setMessage(R.string.import_dialog_msg)
+			.setIcon(android.R.drawable.checkbox_on_background)
+			.setPositiveButton(R.string.import_dialog_btn, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Intent intent = new Intent(ImportDataActivity.this, CheckDataActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					startActivity(intent);
 				}
-				md5File.delete();
-			} catch (IOException e) {
-				// TODO
-			}
-		}
+			})
+			.create();
+	}
 
-		@Override
-		protected void onCancelled() {
-			super.onCancelled();
-			// TODO
-		}
+	public void updateProgressData(boolean downloadBar, Integer progress) {
+		final String progressStr = Integer.toString(progress) + PERCENT_CHAR;
 
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			findViewById(R.id.importButtonsLayout).setVisibility(View.GONE);
-			findViewById(R.id.importProgressLayout).setVisibility(View.VISIBLE);
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
-			mDownloadPercent.setText(ImportDataActivity.this.getString(R.string.import_done));
-			new UnzipAsync().execute(zipFile, rootDir);
-		}
-
-		@Override
-		public void update(Observable observable, Object data) {
-			if (observable instanceof HttpDownloader) {
-				publishProgress((Integer) data); // will call onProgressUpdate
-			}
-		}
-
-		@Override
-		protected void onProgressUpdate(Integer... values) {
-			super.onProgressUpdate(values);
-			mDownloadBar.setProgress(values[0]);
-			mDownloadPercent.setText(Integer.toString(values[0]) + PERCENT_CHAR);
+		if (downloadBar) {
+			mDownloadBar.setProgress(progress);
+			mDownloadPercent.setText(progressStr);
+		} else {
+			mInstallBar.setProgress(progress);
+			mInstallPercent.setText(progressStr);
 		}
 	}
 
-	private class UnzipAsync extends AsyncTask<File, Integer, String> implements Observer {
-		private File zipFile = null;
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("status", curStatus);
+		outState.putCharSequence("dl-percent", mDownloadPercent.getText());
+		outState.putCharSequence("in-percent", mInstallPercent.getText());
+		dialog.dismiss();
+	}
 
-		@Override
-		protected String doInBackground(File... params) {
-			zipFile = params[0];
-			Unzip unzip = new Unzip(zipFile, params[1]);
-			unzip.addObserver(this);
-			unzip.start();
-			return null;
-		}
+	public void changeStatus(Status newStatus) {
+		if (newStatus.equals(Status.STATUS_BEGIN)) {
+			mImportButtonsLayout.setVisibility(View.VISIBLE);
+			mImportProgressLayout.setVisibility(View.GONE);
+		} else {
+			mImportButtonsLayout.setVisibility(View.GONE);
+			mImportProgressLayout.setVisibility(View.VISIBLE);
 
-		@Override
-		protected void onCancelled() {
-			super.onCancelled();
-			// TODO
-		}
+			if (!newStatus.equals(Status.STATUS_DOWNLOAD_STARTED)) {
+				mDownloadPercent.setText(getString(R.string.import_done));
 
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			mInstallPercent.setText("0%");
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
-			if (zipFile != null && zipFile.exists()) {
-				zipFile.delete();
-			}
-			mInstallPercent.setText(ImportDataActivity.this.getString(R.string.import_done));
-			// launch pop up
-
-			// Create completed dialog
-			AlertDialog dialog = new AlertDialog.Builder(ImportDataActivity.this)
-				.setTitle(R.string.import_dialog_title)
-				.setMessage(R.string.import_dialog_msg)
-				.setIcon(android.R.drawable.checkbox_on_background)
-				.setPositiveButton(R.string.import_dialog_btn, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Intent intent = new Intent(ImportDataActivity.this, CheckDataActivity.class);
-						intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-						startActivity(intent);
-					}
-				})
-				.create();
-
-			dialog.show();
-		}
-
-		@Override
-		public void update(Observable observable, Object data) {
-			if (observable instanceof Unzip) {
-				publishProgress((Integer) data); // will call onProgressUpdate
+				if (newStatus.equals(Status.STATUS_DOWNLOAD_COMPLETED)) {
+					updateProgressData(false, 0);
+				} else if (newStatus.equals((Status.STATUS_INSTALL_COMPLETED))) {
+					mInstallPercent.setText(getString(R.string.import_done));
+					dialog.show();
+				}
 			}
 		}
-
-		@Override
-		protected void onProgressUpdate(Integer... values) {
-			super.onProgressUpdate(values);
-			mInstallBar.setProgress(values[0]);
-			mInstallPercent.setText(Integer.toString(values[0]) + PERCENT_CHAR);
-		}
+		curStatus = newStatus;
 	}
 }

@@ -87,7 +87,6 @@ public final class OutputMaker {
 		try {
 			BufferedWriter out = new BufferedWriter(new FileWriter(filePath));
 			out.write(content);
-			out.newLine();
 			out.close();
 		} catch (IOException e) {
 			e.getMessage();

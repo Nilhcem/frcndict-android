@@ -1,6 +1,7 @@
 package com.nilhcem.cfdictparser.core;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,7 +41,10 @@ public final class Zipper {
 			for (String fileToCompress : filesToCompress) {
 				FileInputStream fis = new FileInputStream(fileToCompress);
 				BufferedInputStream in = new BufferedInputStream(fis, buffer.length);
-				out.putNextEntry(new ZipEntry(fileToCompress));
+
+				ZipEntry entry = new ZipEntry(fileToCompress);
+				entry.setSize(new File(fileToCompress).length());
+				out.putNextEntry(entry);
 
 				// Transfer bytes from the file to the ZIP file
 				int size = 0;

@@ -11,20 +11,20 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/import_text_margin_top"
             android:layout_marginLeft="@dimen/import_text_margin_side"
             android:layout_marginRight="@dimen/import_text_margin_side"
+            android:layout_marginTop="@dimen/import_text_margin_top"
             android:background="@drawable/import_text_bg"
             android:gravity="center"
             android:text="@string/import_welcome_msg" />
 
         <LinearLayout
+            android:id="@+id/importButtonsLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/import_btn_margin_top"
-            android:layout_marginLeft="@dimen/import_btn_margin_side"
-            android:layout_marginRight="@dimen/import_btn_margin_side"
-            android:gravity="center" >
+            android:layout_marginLeft="@dimen/import_bottom_layout_margin_side"
+            android:layout_marginRight="@dimen/import_bottom_layout_margin_side"
+            android:layout_marginTop="@dimen/import_bottom_layout_margin_top" >
 
             <Button
                 android:id="@+id/importDwnldBtn"
@@ -39,9 +39,88 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:text="@string/import_exit_btn" />
-
         </LinearLayout>
 
-    </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/importProgressLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="@dimen/import_bottom_layout_margin_side"
+            android:layout_marginRight="@dimen/import_bottom_layout_margin_side"
+            android:layout_marginTop="@dimen/import_bottom_layout_margin_top" >
 
+            <TextView
+                android:id="@+id/importDownloadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/import_download_text" />
+
+            <TextView
+                android:id="@+id/importDownloadingPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/importDownloadingText"
+                android:gravity="right"
+                android:text="" />
+
+            <ProgressBar
+                android:id="@+id/importDownloadingBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/importDownloadingText"
+                android:indeterminate="false"
+                android:max="100" />
+
+            <TextView
+                android:id="@+id/importInstallingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/importDownloadingBar"
+                android:paddingTop="@dimen/import_bottom_layout_margin_top"
+                android:text="@string/import_install_text" />
+
+            <TextView
+                android:id="@+id/importInstallingPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/importInstallingText"
+                android:gravity="right"
+                android:paddingTop="@dimen/import_bottom_layout_margin_top"
+                android:text="" />
+
+            <ProgressBar
+                android:id="@+id/importInstallingBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/importInstallingText"
+                android:indeterminate="false"
+                android:max="100" />
+
+            <!-- Add cancel option later
+            <LinearLayout
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@id/importInstallingBar"
+	            android:layout_marginTop="@dimen/import_bottom_layout_margin_top" >
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    />
+
+		        <Button
+		            android:id="@+id/button1"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1.0"
+		            android:text="Cancel" />
+	        </LinearLayout>
+	         -->
+        </RelativeLayout>
+    </LinearLayout>
 </ScrollView>

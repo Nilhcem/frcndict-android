@@ -1,5 +1,7 @@
 package com.nilhcem.frcndict;
 
+import com.nilhcem.frcndict.database.DatabaseHelper;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

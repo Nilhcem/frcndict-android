@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">French-Chinese Dictionary</string>
-
-    <!-- Import dictionary -->
-    <string name="import_welcome_msg">Welcome!\n\nThe dictionary needs to be downloaded first.\nPlease make sure your device is connected to the Internet.\nAbout 5 MB will be downloaded.\n\nDo you want to start the download now?</string>
+    <string name="import_welcome_msg">"Welcome!\n\nThe dictionary needs to be downloaded first.\nPlease make sure your device is connected to the Internet.\nAbout 7 MB will be downloaded.\n\nDo you want to start the download now?"</string>
     <string name="import_download_btn">Download</string>
     <string name="import_exit_btn">Exit</string>
-
+    <string name="import_done">Done</string>
+    <string name="import_download_text">Downloading dictionary…</string>
+    <string name="import_install_text">Installing dictionary…</string>
+    <string name="import_dialog_title">Completed</string>
+    <string name="import_dialog_msg">Thank you for your patience.\nYou can now start using the application!</string>
+    <string name="import_dialog_btn">OK</string>
 </resources>

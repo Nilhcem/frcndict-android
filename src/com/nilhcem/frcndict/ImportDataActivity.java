@@ -25,7 +25,9 @@ public final class ImportDataActivity extends Activity {
 	private View mImportButtonsLayout;
 	private View mImportProgressLayout;
 
-	private AlertDialog dialog;
+	private AlertDialog completedDialog;
+	private AlertDialog errorDialog;
+	private int curErrorId = 0;
 
 	private Status curStatus;
 
@@ -41,15 +43,14 @@ public final class ImportDataActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.import_data);
 		application = (ApplicationController) getApplication();
+		application.importService.resetTasks();
 
 		initButtons();
 		initLayouts();
 		initProgressData();
-		initDialog();
+		initDialogs();
 
 		restore(savedInstanceState);
-
-		//if savedInstanceState != null pour reafficher correctement l'etat de l'application
 		application.importService.setActivity(this);
 	}
 
@@ -58,10 +59,14 @@ public final class ImportDataActivity extends Activity {
 			curStatus = (Status) savedInstanceState.get("status");
 			mDownloadPercent.setText(savedInstanceState.getCharSequence("dl-percent"));
 			mInstallPercent.setText(savedInstanceState.getCharSequence("in-percent"));
+			curErrorId = savedInstanceState.getInt("error");
 		} else {
 			curStatus = Status.STATUS_BEGIN;
 		}
 		changeStatus(curStatus);
+		if (curErrorId != 0) {
+			displayError(curErrorId);
+		}
 	}
 
 	private void initButtons() {
@@ -97,8 +102,8 @@ public final class ImportDataActivity extends Activity {
 		mInstallPercent = (TextView) findViewById(R.id.importInstallingPercent);
 	}
 
-	private void initDialog() {
-		dialog = new AlertDialog.Builder(this)
+	private void initDialogs() {
+		completedDialog = new AlertDialog.Builder(this)
 			.setTitle(R.string.import_dialog_title)
 			.setMessage(R.string.import_dialog_msg)
 			.setIcon(android.R.drawable.checkbox_on_background)
@@ -108,6 +113,28 @@ public final class ImportDataActivity extends Activity {
 					Intent intent = new Intent(ImportDataActivity.this, CheckDataActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 					startActivity(intent);
+				}
+			})
+			.create();
+
+		errorDialog = new AlertDialog.Builder(this)
+			.setTitle(R.string.import_err_dialog_title)
+			.setIcon(android.R.drawable.ic_delete)
+			.setPositiveButton(R.string.import_err_retry, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// Reload activity
+					Intent intent = getIntent();
+					intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					finish();
+					overridePendingTransition(0, 0);
+				    startActivity(intent);
+				}
+			})
+			.setNegativeButton(R.string.import_err_cancel, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					ImportDataActivity.this.finish();
 				}
 			})
 			.create();
@@ -128,10 +155,12 @@ public final class ImportDataActivity extends Activity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
+		outState.putInt("error", curErrorId);
 		outState.putSerializable("status", curStatus);
 		outState.putCharSequence("dl-percent", mDownloadPercent.getText());
 		outState.putCharSequence("in-percent", mInstallPercent.getText());
-		dialog.dismiss();
+		completedDialog.dismiss();
+		errorDialog.dismiss();
 	}
 
 	public void changeStatus(Status newStatus) {
@@ -149,10 +178,16 @@ public final class ImportDataActivity extends Activity {
 					updateProgressData(false, 0);
 				} else if (newStatus.equals((Status.STATUS_INSTALL_COMPLETED))) {
 					mInstallPercent.setText(getString(R.string.import_done));
-					dialog.show();
+					completedDialog.show();
 				}
 			}
 		}
 		curStatus = newStatus;
+	}
+
+	public void displayError(int strId) {
+		errorDialog.setMessage(getString(strId));
+		errorDialog.show();
+		curErrorId = strId;
 	}
 }

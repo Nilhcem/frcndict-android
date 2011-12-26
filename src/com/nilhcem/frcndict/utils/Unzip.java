@@ -29,66 +29,58 @@ public final class Unzip extends Observable {
 		}
 	}
 
-	private long getTotalSize() {
+	private long getTotalSize() throws IOException {
 		long totalSize = 0l;
 
-		try {
-			ZipFile zf = new ZipFile(zipFile);
-			Enumeration<? extends ZipEntry> e = zf.entries();
-			while (e.hasMoreElements()) {
-				ZipEntry ze = (ZipEntry) e.nextElement();
-				if (ze.getSize() > 0) {
-					totalSize += ze.getSize();
-				}
+		ZipFile zf = new ZipFile(zipFile);
+		Enumeration<? extends ZipEntry> e = zf.entries();
+		while (e.hasMoreElements()) {
+			ZipEntry ze = (ZipEntry) e.nextElement();
+			if (ze.getSize() > 0) {
+				totalSize += ze.getSize();
 			}
-		} catch (IOException e) {
-			// TODO
 		}
 
 		return totalSize;
 	}
 
-	public void start() {
+	public void start() throws IOException {
 		long totalSize = 0l;
 
 		if (countObservers() > 0) {
 			totalSize = getTotalSize();
 		}
 
-		try {
-			ZipInputStream zip = new ZipInputStream(new FileInputStream(zipFile));
-			BufferedInputStream in = new BufferedInputStream(zip);
+		ZipInputStream zip = new ZipInputStream(new FileInputStream(zipFile));
+		BufferedInputStream in = new BufferedInputStream(zip);
 
-			long curSize = 0;
-			byte[] buffer = new byte[1024];
+		long curSize = 0;
+		byte[] buffer = new byte[1024];
 
-			ZipEntry entry;
-			while ((entry = zip.getNextEntry()) != null) {
-				if (entry.isDirectory()) {
-					dirChecker(entry.getName());
-				} else {
-					FileOutputStream fos = new FileOutputStream(location.getAbsolutePath() + File.separator + entry.getName());
-					BufferedOutputStream out = new BufferedOutputStream(fos, buffer.length);
+		ZipEntry entry;
+		while ((entry = zip.getNextEntry()) != null) {
+			if (entry.isDirectory()) {
+				dirChecker(entry.getName());
+			} else {
+				FileOutputStream fos = new FileOutputStream(location.getAbsolutePath() + File.separator + entry.getName());
+				BufferedOutputStream out = new BufferedOutputStream(fos, buffer.length);
 
-					int read;
-					while ((read = in.read(buffer, 0, buffer.length)) != -1) {
-						out.write(buffer, 0, read);
-						if (totalSize != 0) {
-							curSize += read;
-							setChanged();
-							notifyObservers((int) ((curSize * 100) / totalSize));
-						}
+				int read;
+				while ((read = in.read(buffer, 0, buffer.length)) != -1) {
+					out.write(buffer, 0, read);
+					if (totalSize != 0) {
+						curSize += read;
+						setChanged();
+						notifyObservers((int) ((curSize * 100) / totalSize));
 					}
-					out.flush();
-					out.close();
-					fos.close();
 				}
-				zip.closeEntry();
+				out.flush();
+				out.close();
+				fos.close();
 			}
-			zip.close();
-			in.close();
-		} catch (IOException e) {
-			// TODO
+			zip.closeEntry();
 		}
+		zip.close();
+		in.close();
 	}
 }

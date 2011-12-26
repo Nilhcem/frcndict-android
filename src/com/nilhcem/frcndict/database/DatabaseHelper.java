@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 public final class DatabaseHelper {
-	private static final String DATABASE_NAME = "dictionary.db";
+	public static final String DATABASE_NAME = "dictionary.db";
 	private static final DatabaseHelper instance = new DatabaseHelper();
 
 	private File dbPath;

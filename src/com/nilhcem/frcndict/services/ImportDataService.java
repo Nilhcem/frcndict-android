@@ -63,6 +63,7 @@ public final class ImportDataService {
 	private void setError(int errorId) {
 		curErrorId = errorId;
 
+		// Display error
 		if (activity.get() != null) {
 			activity.get().displayError(errorId);
 		}

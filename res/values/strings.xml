@@ -16,4 +16,6 @@
 	<string name="import_err_retry">Retry</string>
 	<string name="import_err_cancel">Cancel</string>
 	<string name="import_cancel_btn">Cancel</string>
+	<string name="import_notification_import_title">Importing FR/CN dictionary data</string>
+	<string name="import_notification_import_msg">Click to see progress</string>
 </resources>

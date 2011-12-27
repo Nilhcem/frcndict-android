@@ -2,6 +2,10 @@ package com.nilhcem.frcndict;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +18,7 @@ import com.nilhcem.frcndict.services.ImportDataService;
 
 public final class ImportDataActivity extends Activity {
 	private static final String PERCENT_CHAR = "%";
-	private ImportDataService service;
+	private ImportDataService mService;
 
 	private Button mDownloadButton;
 	private Button mExitButton;
@@ -28,18 +32,22 @@ public final class ImportDataActivity extends Activity {
 	private View mImportButtonsLayout;
 	private View mImportProgressLayout;
 
-	private AlertDialog completedDialog;
-	private AlertDialog errorDialog;
+	private AlertDialog mCompletedDialog;
+	private AlertDialog mErrorDialog;
+
+	private static final int NOTIFICATION_ID = 1;
+	private NotificationManager mNotificationMngr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.import_data);
-		service = ((ApplicationController) getApplication()).importService;
+		mService = ((ApplicationController) getApplication()).importService;
 
 		initDialogs();
 		initButtons();
 		initLayouts();
+		initNotification();
 		initProgressData();
 
 		restore(savedInstanceState);
@@ -48,13 +56,13 @@ public final class ImportDataActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		service.setActivity(null); // doesn't need to update UI since application is paused
+		mService.setActivity(null); // doesn't need to update UI since application is paused
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		service.setActivity(this);
+		mService.setActivity(this);
 		updateDisplay();
 	}
 
@@ -63,7 +71,7 @@ public final class ImportDataActivity extends Activity {
 			mDownloadPercent.setText(savedInstanceState.getCharSequence("dl-percent"));
 			mInstallPercent.setText(savedInstanceState.getCharSequence("in-percent"));
 		}
-		displayError(service.getErrorId());
+		displayError(mService.getErrorId());
 	}
 
 	private void initButtons() {
@@ -71,7 +79,8 @@ public final class ImportDataActivity extends Activity {
 		mDownloadButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				service.startDownload();
+				displayImportNotification();
+				mService.startDownload();
 			}
 		});
 
@@ -87,7 +96,7 @@ public final class ImportDataActivity extends Activity {
 		mCancelButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				service.cancelTasks();
+				mService.cancelTasks();
 				stopActivityAndStartIntent(null);
 			}
 		});
@@ -96,6 +105,10 @@ public final class ImportDataActivity extends Activity {
 	private void initLayouts() {
 		mImportButtonsLayout = findViewById(R.id.importButtonsLayout);
 		mImportProgressLayout = findViewById(R.id.importProgressLayout);
+	}
+
+	private void initNotification() {
+		mNotificationMngr = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
 	}
 
 	private void initProgressData() {
@@ -107,7 +120,7 @@ public final class ImportDataActivity extends Activity {
 	}
 
 	private void initDialogs() {
-		completedDialog = new AlertDialog.Builder(this)
+		mCompletedDialog = new AlertDialog.Builder(this)
 			.setTitle(R.string.import_dialog_title)
 			.setMessage(R.string.import_dialog_msg)
 			.setIcon(android.R.drawable.checkbox_on_background)
@@ -119,7 +132,7 @@ public final class ImportDataActivity extends Activity {
 			})
 			.create();
 
-		errorDialog = new AlertDialog.Builder(this)
+		mErrorDialog = new AlertDialog.Builder(this)
 			.setTitle(R.string.import_err_dialog_title)
 			.setIcon(android.R.drawable.ic_delete)
 			.setPositiveButton(R.string.import_err_retry, new DialogInterface.OnClickListener() {
@@ -154,12 +167,12 @@ public final class ImportDataActivity extends Activity {
 		super.onSaveInstanceState(outState);
 		outState.putCharSequence("dl-percent", mDownloadPercent.getText());
 		outState.putCharSequence("in-percent", mInstallPercent.getText());
-		completedDialog.dismiss();
-		errorDialog.dismiss();
+		mCompletedDialog.dismiss();
+		mErrorDialog.dismiss();
 	}
 
 	public void updateDisplay() {
-		int status = service.getStatus();
+		int status = mService.getStatus();
 
 		if (status == ImportDataService.STATUS_BEGIN) {
 			mImportButtonsLayout.setVisibility(View.VISIBLE);
@@ -169,11 +182,12 @@ public final class ImportDataActivity extends Activity {
 			mImportProgressLayout.setVisibility(View.VISIBLE);
 
 			if (status != ImportDataService.STATUS_DOWNLOAD_STARTED) {
-				mDownloadPercent.setText(getString(R.string.import_done));
+				updateProgressData(true, 100);
 
 				if (status == ImportDataService.STATUS_INSTALL_COMPLETED) {
 					mInstallPercent.setText(getString(R.string.import_done));
-					completedDialog.show();
+					hideNotification();
+					mCompletedDialog.show();
 				}
 			}
 		}
@@ -181,20 +195,49 @@ public final class ImportDataActivity extends Activity {
 
 	public void displayError(int errorId) {
 		if (errorId != 0) {
-			errorDialog.setMessage(getString(errorId));
-			errorDialog.show();
+			mErrorDialog.setMessage(getString(errorId));
+			mErrorDialog.show();
 		}
 	}
 
 	private void stopActivityAndStartIntent(Intent intent) {
+		hideNotification();
 		finish();
+
 		if (intent != null) {
 			intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			overridePendingTransition(0, 0);
 		}
+
 		((ApplicationController) getApplication()).importService = new ImportDataService(); // reset data
 		if (intent != null) {
 			startActivity(intent);
 		}
+	}
+
+	private void displayImportNotification() {
+		String title = getString(R.string.import_notification_import_title);
+		String message = getString(R.string.import_notification_import_msg);
+
+		// Instantiate the notification
+		Notification notification = new Notification(
+				android.R.drawable.stat_notify_sync_noanim,
+				title, 0l);
+		notification.flags |= Notification.FLAG_ONGOING_EVENT;
+		notification.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
+
+		notification.when = System.currentTimeMillis();
+
+		// Define the notification message and pending intent
+		Intent notificationIntent = new Intent(this, ImportDataActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+		notification.setLatestEventInfo(getApplicationContext(), title, message, contentIntent);
+
+		// Display notification
+		mNotificationMngr.notify(NOTIFICATION_ID, notification);
+	}
+
+	private void hideNotification() {
+		mNotificationMngr.cancel(NOTIFICATION_ID);
 	}
 }

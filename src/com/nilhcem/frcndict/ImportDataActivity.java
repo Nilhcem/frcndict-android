@@ -10,81 +10,85 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nilhcem.frcndict.services.ImportDataService;
+
 public final class ImportDataActivity extends Activity {
 	private static final String PERCENT_CHAR = "%";
+	private ImportDataService service;
 
 	private Button mDownloadButton;
 	private Button mExitButton;
+	private Button mCancelButton;
 
 	private ProgressBar mDownloadBar;
 	private TextView mDownloadPercent;
 	private ProgressBar mInstallBar;
 	private TextView mInstallPercent;
-	private ApplicationController application;
 
 	private View mImportButtonsLayout;
 	private View mImportProgressLayout;
 
 	private AlertDialog completedDialog;
 	private AlertDialog errorDialog;
-	private int curErrorId = 0;
-
-	private Status curStatus;
-
-	public static enum Status {
-		STATUS_BEGIN,
-		STATUS_DOWNLOAD_STARTED,
-		STATUS_DOWNLOAD_COMPLETED,
-		STATUS_INSTALL_COMPLETED;
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.import_data);
-		application = (ApplicationController) getApplication();
-		application.importService.resetTasks();
+		service = ((ApplicationController) getApplication()).importService;
 
+		initDialogs();
 		initButtons();
 		initLayouts();
 		initProgressData();
-		initDialogs();
 
 		restore(savedInstanceState);
-		application.importService.setActivity(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		service.setActivity(null); // doesn't need to update UI since application is paused
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		service.setActivity(this);
+		updateDisplay();
 	}
 
 	private void restore(Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
-			curStatus = (Status) savedInstanceState.get("status");
 			mDownloadPercent.setText(savedInstanceState.getCharSequence("dl-percent"));
 			mInstallPercent.setText(savedInstanceState.getCharSequence("in-percent"));
-			curErrorId = savedInstanceState.getInt("error");
-		} else {
-			curStatus = Status.STATUS_BEGIN;
 		}
-		changeStatus(curStatus);
-		if (curErrorId != 0) {
-			displayError(curErrorId);
-		}
+		displayError(service.getErrorId());
 	}
 
 	private void initButtons() {
 		mDownloadButton = (Button) findViewById(R.id.importDwnldBtn);
-		mExitButton = (Button) findViewById(R.id.importExitBtn);
-
 		mDownloadButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				application.importService.startDownload();
-				changeStatus(Status.STATUS_DOWNLOAD_STARTED);
+				service.startDownload();
 			}
 		});
 
+		mExitButton = (Button) findViewById(R.id.importExitBtn);
 		mExitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				ImportDataActivity.this.finish();
+			}
+		});
+
+		mCancelButton = (Button) findViewById(R.id.importCancelBtn);
+		mCancelButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				service.cancelTasks();
+				stopActivityAndStartIntent(null);
 			}
 		});
 	}
@@ -110,9 +114,7 @@ public final class ImportDataActivity extends Activity {
 			.setPositiveButton(R.string.import_dialog_btn, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(ImportDataActivity.this, CheckDataActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-					startActivity(intent);
+					stopActivityAndStartIntent(new Intent(ImportDataActivity.this, CheckDataActivity.class));
 				}
 			})
 			.create();
@@ -123,18 +125,13 @@ public final class ImportDataActivity extends Activity {
 			.setPositiveButton(R.string.import_err_retry, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					// Reload activity
-					Intent intent = getIntent();
-					intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-					finish();
-					overridePendingTransition(0, 0);
-				    startActivity(intent);
+					stopActivityAndStartIntent(getIntent()); //reload activity
 				}
 			})
 			.setNegativeButton(R.string.import_err_cancel, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					ImportDataActivity.this.finish();
+					stopActivityAndStartIntent(null); // exit
 				}
 			})
 			.create();
@@ -155,39 +152,49 @@ public final class ImportDataActivity extends Activity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt("error", curErrorId);
-		outState.putSerializable("status", curStatus);
 		outState.putCharSequence("dl-percent", mDownloadPercent.getText());
 		outState.putCharSequence("in-percent", mInstallPercent.getText());
 		completedDialog.dismiss();
 		errorDialog.dismiss();
 	}
 
-	public void changeStatus(Status newStatus) {
-		if (newStatus.equals(Status.STATUS_BEGIN)) {
+	public void updateDisplay() {
+		int status = service.getStatus();
+
+		if (status == ImportDataService.STATUS_BEGIN) {
 			mImportButtonsLayout.setVisibility(View.VISIBLE);
 			mImportProgressLayout.setVisibility(View.GONE);
 		} else {
 			mImportButtonsLayout.setVisibility(View.GONE);
 			mImportProgressLayout.setVisibility(View.VISIBLE);
 
-			if (!newStatus.equals(Status.STATUS_DOWNLOAD_STARTED)) {
+			if (status != ImportDataService.STATUS_DOWNLOAD_STARTED) {
 				mDownloadPercent.setText(getString(R.string.import_done));
 
-				if (newStatus.equals(Status.STATUS_DOWNLOAD_COMPLETED)) {
-					updateProgressData(false, 0);
-				} else if (newStatus.equals((Status.STATUS_INSTALL_COMPLETED))) {
+				if (status == ImportDataService.STATUS_INSTALL_COMPLETED) {
 					mInstallPercent.setText(getString(R.string.import_done));
 					completedDialog.show();
 				}
 			}
 		}
-		curStatus = newStatus;
 	}
 
-	public void displayError(int strId) {
-		errorDialog.setMessage(getString(strId));
-		errorDialog.show();
-		curErrorId = strId;
+	public void displayError(int errorId) {
+		if (errorId != 0) {
+			errorDialog.setMessage(getString(errorId));
+			errorDialog.show();
+		}
+	}
+
+	private void stopActivityAndStartIntent(Intent intent) {
+		finish();
+		if (intent != null) {
+			intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			overridePendingTransition(0, 0);
+		}
+		((ApplicationController) getApplication()).importService = new ImportDataService(); // reset data
+		if (intent != null) {
+			startActivity(intent);
+		}
 	}
 }

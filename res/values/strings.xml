@@ -11,8 +11,9 @@
     <string name="import_dialog_msg">Thank you for your patience.\nYou can now start using the application!</string>
     <string name="import_dialog_btn">OK</string>
 	<string name="import_err_dialog_title">Error</string>
-	<string name="import_err_cannot_download">Cannot download the dictionary.\nPlease make sure your device is connected on Internet and try again.</string>
+	<string name="import_err_cannot_download">Cannot download the dictionary.\nPlease make sure your device is connected to the Internet and try again.</string>
 	<string name="import_err_wrong_dictionary_file">The dictionary was not properly downloaded.\nPlease try again.</string>
 	<string name="import_err_retry">Retry</string>
 	<string name="import_err_cancel">Cancel</string>
+	<string name="import_cancel_btn">Cancel</string>
 </resources>

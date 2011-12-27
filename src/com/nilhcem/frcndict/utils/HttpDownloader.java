@@ -7,13 +7,13 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Observable;
 
-public final class HttpDownloader extends Observable {
+public final class HttpDownloader extends AbstractCancellableObservable {
 	private File output;
 	private URL url;
 
 	public HttpDownloader(String urlStr, File outputFile) throws MalformedURLException {
+		super();
 		this.output = outputFile;
 		this.url = new URL(urlStr);
 	}
@@ -31,7 +31,7 @@ public final class HttpDownloader extends Observable {
 		int curSize = 0;
 
 		int read;
-		while ((read = is.read(buffer, 0, buffer.length)) != -1) {
+		while ((!cancel && (read = is.read(buffer, 0, buffer.length)) != -1)) {
 			fos.write(buffer, 0, read);
 
 			// Notify percentage to observers

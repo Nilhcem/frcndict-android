@@ -98,29 +98,15 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/importInstallingText"
                 android:indeterminate="false"
-                android:max="100" />
+                android:max="100"
+                android:paddingBottom="@dimen/import_bottom_layout_margin_top" />
 
-            <!-- Add cancel option later
-            <LinearLayout
+	        <Button
+	            android:id="@+id/importCancelBtn"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:layout_below="@id/importInstallingBar"
-	            android:layout_marginTop="@dimen/import_bottom_layout_margin_top" >
-
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    />
-
-		        <Button
-		            android:id="@+id/button1"
-		            android:layout_width="fill_parent"
-		            android:layout_height="wrap_content"
-		            android:layout_weight="1.0"
-		            android:text="Cancel" />
-	        </LinearLayout>
-	         -->
+                android:layout_below="@id/importInstallingBar"
+	            android:text="@string/import_cancel_btn" />
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

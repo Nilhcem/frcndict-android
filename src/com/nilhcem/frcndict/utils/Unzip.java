@@ -7,16 +7,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Observable;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
-public final class Unzip extends Observable {
+public final class Unzip extends AbstractCancellableObservable {
 	private File location;
 	private File zipFile;
 
 	public Unzip(File zipFile, File location) {
+		super();
 		this.zipFile = zipFile;
 		this.location = location;
 		dirChecker("");
@@ -34,7 +34,7 @@ public final class Unzip extends Observable {
 
 		ZipFile zf = new ZipFile(zipFile);
 		Enumeration<? extends ZipEntry> e = zf.entries();
-		while (e.hasMoreElements()) {
+		while (!cancel && e.hasMoreElements()) {
 			ZipEntry ze = (ZipEntry) e.nextElement();
 			if (ze.getSize() > 0) {
 				totalSize += ze.getSize();
@@ -51,14 +51,14 @@ public final class Unzip extends Observable {
 			totalSize = getTotalSize();
 		}
 
-		ZipInputStream zip = new ZipInputStream(new FileInputStream(zipFile));
-		BufferedInputStream in = new BufferedInputStream(zip);
-
 		long curSize = 0;
 		byte[] buffer = new byte[1024];
 
+		ZipInputStream zip = new ZipInputStream(new FileInputStream(zipFile));
+		BufferedInputStream in = new BufferedInputStream(zip, buffer.length);
+
 		ZipEntry entry;
-		while ((entry = zip.getNextEntry()) != null) {
+		while ((!cancel && (entry = zip.getNextEntry()) != null)) {
 			if (entry.isDirectory()) {
 				dirChecker(entry.getName());
 			} else {

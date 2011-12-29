@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -27,6 +28,7 @@ public final class ImportDataActivity extends Activity {
 	private View mImportButtonsLayout;
 	private View mImportProgressLayout;
 
+	private AlertDialog mStorageDialog;
 	private AlertDialog mCompletedDialog;
 	private AlertDialog mErrorDialog;
 
@@ -61,16 +63,53 @@ public final class ImportDataActivity extends Activity {
 		super.onSaveInstanceState(outState);
 		outState.putCharSequence("dl-percent", mDownloadPercent.getText());
 		outState.putCharSequence("in-percent", mInstallPercent.getText());
+
+		if (mStorageDialog.isShowing()) {
+			outState.putBoolean("select-storage", true);
+			mStorageDialog.dismiss();
+		}
 		mCompletedDialog.dismiss();
 		mErrorDialog.dismiss();
 	}
 
+	private void restore(Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			mDownloadPercent.setText(savedInstanceState.getCharSequence("dl-percent"));
+			mInstallPercent.setText(savedInstanceState.getCharSequence("in-percent"));
+			if (savedInstanceState.getBoolean("select-storage", false)) {
+				mStorageDialog.show();
+			}
+		}
+
+		if (ImportDataService.getInstance() != null) {
+			displayError(ImportDataService.getInstance().getErrorId());
+		}
+	}
+
 	private void initDialogs() {
+		mStorageDialog = new AlertDialog.Builder(this)
+			.setTitle(R.string.import_storage_dialog_title)
+			.setMessage(R.string.import_storage_dialog_msg)
+			.setIcon(android.R.drawable.ic_menu_help)
+			.setPositiveButton(R.string.import_storage_dialog_sdcard, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					startDownload(true);
+				}
+			})
+			.setNeutralButton(R.string.import_storage_dialog_device, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					startDownload(false);
+				}
+			})
+			.create();
+
 		mCompletedDialog = new AlertDialog.Builder(this)
 			.setTitle(R.string.import_dialog_title)
 			.setMessage(R.string.import_dialog_msg)
 			.setIcon(android.R.drawable.checkbox_on_background)
-			.setPositiveButton(R.string.import_dialog_btn, new DialogInterface.OnClickListener() {
+			.setNegativeButton(R.string.import_dialog_btn, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					stopActivityAndStartIntent(new Intent(ImportDataActivity.this, CheckDataActivity.class));
@@ -101,7 +140,12 @@ public final class ImportDataActivity extends Activity {
 		mDownloadButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startService(new Intent(ImportDataActivity.this, ImportDataService.class));
+			    String state = Environment.getExternalStorageState();
+			    if (Environment.MEDIA_MOUNTED.equals(state)) {
+					mStorageDialog.show();
+			    } else {
+					startDownload(false);
+			    }
 			}
 		});
 
@@ -133,17 +177,6 @@ public final class ImportDataActivity extends Activity {
 
 		mDownloadPercent = (TextView) findViewById(R.id.importDownloadingPercent);
 		mInstallPercent = (TextView) findViewById(R.id.importInstallingPercent);
-	}
-
-	private void restore(Bundle savedInstanceState) {
-		if (savedInstanceState != null) {
-			mDownloadPercent.setText(savedInstanceState.getCharSequence("dl-percent"));
-			mInstallPercent.setText(savedInstanceState.getCharSequence("in-percent"));
-		}
-
-		if (ImportDataService.getInstance() != null) {
-			displayError(ImportDataService.getInstance().getErrorId());
-		}
 	}
 
 	private void stopActivityAndStartIntent(Intent intent) {
@@ -205,5 +238,11 @@ public final class ImportDataActivity extends Activity {
 			mErrorDialog.setMessage(getString(errorId));
 			mErrorDialog.show();
 		}
+	}
+
+	private void startDownload(boolean installOnSDcard) {
+		Intent intent = new Intent(ImportDataActivity.this, ImportDataService.class);
+		intent.putExtra("install-on-sdcard", installOnSDcard);
+		startService(intent);
 	}
 }

@@ -19,8 +19,8 @@ public final class DatabaseHelper {
 		return instance;
     }
 
-	public void setDatabaseFolder(File rootDir) {
-		dbPath = new File(rootDir, DATABASE_NAME);
+	public void setDatabasePath(File dbPath) {
+		this.dbPath = dbPath;
 	}
 
 //	public void open() {
@@ -31,21 +31,22 @@ public final class DatabaseHelper {
 		database.close();
     }
 
-    //TODO: Rewrite. Once database is successfully extracted, should save prefs value (ie the path). Check this value on startup. Could be a checkDataService...
-	// return true if database exists
+	// returns true if database exists
 	public boolean isInitialized() {
 		boolean initialized = false;
 
-//		if (dbPath.exists()) {
-//			database = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
-//			try {
-//				database.query(Tables.ENTRIES_TABLE_NAME, new String[] {
-//						Tables.ENTRIES_KEY_ROWID }, null, null, null, null, null);
-//				initialized = true;
-//			} catch (SQLiteException exc) {
-//				//initialized = false;
-//			}
-//		}
+		if (dbPath.exists()) {
+			database = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
+			try {
+				database.query(Tables.ENTRIES_TABLE_NAME, new String[] {
+						Tables.ENTRIES_KEY_ROWID }, null, null, null, null, null);
+				initialized = true;
+			} catch (SQLiteException exc) {
+				//initialized = false;
+			} finally {
+				close();
+			}
+		}
 		return initialized;
 	}
 }

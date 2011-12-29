@@ -12,7 +12,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -45,6 +47,9 @@ public final class ImportDataService extends Service {
 	private static final int NOTIF_IMPORT_SUCCESS_ID = 2;
 	private static final int NOTIF_IMPORT_FAILED_ID = 3;
 
+	private static final String TEMP_ZIP_FILE = "download.tmp";
+	private static final String TEMP_MD5_FILE = "md5sum";
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -57,9 +62,12 @@ public final class ImportDataService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		File rootDir = getAppRootDir(intent.getBooleanExtra("install-on-sdcard", false));
+		File zipFile = new File(rootDir, TEMP_ZIP_FILE);
+		File md5File = new File(rootDir, TEMP_MD5_FILE);
 		changeStatus(STATUS_DOWNLOAD_STARTED);
 		displayImportNotification();
-		downloadTask.execute();
+		downloadTask.execute(rootDir, zipFile, md5File);
 		return super.onStartCommand(intent, flags, startId);
 	}
 
@@ -104,6 +112,24 @@ public final class ImportDataService extends Service {
 
 	public int getErrorId() {
 		return curErrorId;
+	}
+
+	private File getAppRootDir(boolean sdcard) {
+		File rootDir;
+
+		if (sdcard) {
+			// API Level 8: Use getExternalFilesDir(null).getAbsolutePath() instead
+			rootDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+				+ "/Android/data/" + getApplication().getClass().getPackage().getName());
+		} else {
+			rootDir = new File(Environment.getDataDirectory().getAbsolutePath()
+				+ "/data/" + getApplication().getClass().getPackage().getName());
+		}
+
+		if (!rootDir.exists()) {
+			rootDir.mkdirs();
+		}
+		return rootDir;
 	}
 
 	private void setErrorAndStopService(int errorId) {
@@ -171,29 +197,22 @@ public final class ImportDataService extends Service {
 		mNotificationMngr.notify(NOTIF_IMPORT_FAILED_ID, notification);
 	}
 
-	private class DownloadFileAsync extends AsyncTask<Void, Integer, Integer> implements Observer {
+	private class DownloadFileAsync extends AsyncTask<File, Integer, Integer> implements Observer {
 		private static final String TAG = "DownloadFileAsync";
 		private static final String DICT_URL = "http://192.168.1.2/cfdict/dictionary.zip";
 		private static final String MD5_URL = "http://192.168.1.2/cfdict/md5sum";
-		private static final String TEMP_ZIP_FILE = "download.tmp";
-		private static final String TEMP_MD5_FILE = "md5sum";
 		private File rootDir;
 		private File zipFile;
 		private File md5File;
 		private HttpDownloader downloader = null;
 
 		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			ApplicationController app = (ApplicationController) getApplication();
-			rootDir = app.getRootDir();
-			zipFile = new File(rootDir, TEMP_ZIP_FILE);
-			md5File = new File(rootDir, TEMP_MD5_FILE);
-		}
-
-		@Override
-		protected Integer doInBackground(Void... unused) {
+		protected Integer doInBackground(File... params) {
 			Integer errorCode = null;
+			rootDir = params[0];
+			zipFile = params[1];
+			md5File = params[2];
+
 			try {
 				downloader = new HttpDownloader(DICT_URL, zipFile);
 				downloader.addObserver(this);
@@ -318,6 +337,7 @@ public final class ImportDataService extends Service {
 				if (sActivity.get() == null) {
 					displaySuccessNotification();
 				}
+				saveDatabasePath();
 				stopSelf();
 			} else {
 				removeFiles();
@@ -358,6 +378,13 @@ public final class ImportDataService extends Service {
 			if (zippedFile != null && zippedFile.exists()) {
 				zippedFile.delete();
 			}
+		}
+
+		private void saveDatabasePath() {
+			SharedPreferences prefs = getSharedPreferences(ApplicationController.PREFS_NAME, MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString(ApplicationController.PREFS_DB_PATH, zippedFile.getAbsolutePath());
+			editor.commit();
 		}
 	}
 }

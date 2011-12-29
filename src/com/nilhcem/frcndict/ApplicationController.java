@@ -6,12 +6,8 @@ import android.app.Application;
 import android.os.Environment;
 
 import com.nilhcem.frcndict.database.DatabaseHelper;
-import com.nilhcem.frcndict.services.ImportDataService;
 
 public final class ApplicationController extends Application {
-	// services
-	public ImportDataService importService = new ImportDataService();
-
 	private File rootDir;
 
 	@Override

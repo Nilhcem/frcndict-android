@@ -27,5 +27,6 @@
             android:name=".ImportDataActivity"
             android:noHistory="true"
             android:theme="@android:style/Theme.NoTitleBar" />
+        <service android:name=".services.ImportDataService" android:label="@string/import_service_label"/>
     </application>
 </manifest>

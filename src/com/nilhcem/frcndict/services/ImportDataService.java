@@ -6,7 +6,14 @@ import java.lang.ref.WeakReference;
 import java.util.Observable;
 import java.util.Observer;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.IBinder;
 import android.util.Log;
 
 import com.nilhcem.frcndict.ApplicationController;
@@ -18,66 +25,154 @@ import com.nilhcem.frcndict.utils.HttpDownloader;
 import com.nilhcem.frcndict.utils.Md5;
 import com.nilhcem.frcndict.utils.Unzip;
 
-public final class ImportDataService {
-	private WeakReference<ImportDataActivity> activity;
+public final class ImportDataService extends Service {
+	private static ImportDataService sInstance = null; // singleton
+	private static WeakReference<ImportDataActivity> sActivity;
+
 	private DownloadFileAsync downloadTask;
 	private UnzipAsync unzipTask;
+	private NotificationManager mNotificationMngr;
+
 	private int curStatus; // activity status, see STATUS_*
-	private int curErrorId; //error string id or 0 if no error currently
+	private int curErrorId; //error string id or 0 if no error
 
 	public static final int STATUS_BEGIN = 0;
 	public static final int STATUS_DOWNLOAD_STARTED = 1;
 	public static final int STATUS_DOWNLOAD_COMPLETED = 2;
 	public static final int STATUS_INSTALL_COMPLETED = 3;
 
-	public ImportDataService() {
-		activity = null;
-		curStatus = STATUS_BEGIN;
-		curErrorId = 0;
+	private static final int NOTIF_SERVICE_ID = 1;
+	private static final int NOTIF_IMPORT_SUCCESS_ID = 2;
+	private static final int NOTIF_IMPORT_FAILED_ID = 3;
+
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		sInstance = this;
+		mNotificationMngr = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
+		resetStatus();
 		downloadTask = new DownloadFileAsync();
 		unzipTask = new UnzipAsync();
 	}
 
-	public void startDownload() {
-		downloadTask.execute();
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
 		changeStatus(STATUS_DOWNLOAD_STARTED);
+		displayImportNotification();
+		downloadTask.execute();
+		return super.onStartCommand(intent, flags, startId);
 	}
 
-	public void setActivity(ImportDataActivity activity) {
-		this.activity = new WeakReference<ImportDataActivity>(activity);
-	}
-
-	public void cancelTasks() {
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		mNotificationMngr.cancel(NOTIF_SERVICE_ID);
 		downloadTask.cancel(true);
 		unzipTask.cancel(true);
 	}
 
-	public void changeStatus(int newStatus) {
-		curStatus = newStatus;
-
-		if (activity.get() != null) {
-			activity.get().updateDisplay();
-		}
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
 	}
 
-	private void setError(int errorId) {
-		curErrorId = errorId;
+	// Singleton
+	public static ImportDataService getInstance() {
+		return sInstance;
+	}
 
-		// Display error
-		if (activity.get() != null) {
-			activity.get().displayError(errorId);
-		}
+	public static void setActivity(ImportDataActivity activity) {
+		ImportDataService.sActivity = new WeakReference<ImportDataActivity>(activity);
 	}
 
 	public int getStatus() {
 		return curStatus;
 	}
 
+	public void changeStatus(int newStatus) {
+		curStatus = newStatus;
+		if (sActivity.get() != null) {
+			sActivity.get().updateDisplay();
+		}
+	}
+
+	public void resetStatus() {
+		curStatus = ImportDataService.STATUS_BEGIN;
+		curErrorId = 0;
+		mNotificationMngr.cancelAll();
+	}
+
 	public int getErrorId() {
 		return curErrorId;
 	}
 
+	private void setErrorAndStopService(int errorId) {
+		curErrorId = errorId;
+
+		// Display error
+		if (sActivity.get() != null) {
+			sActivity.get().displayError(errorId);
+		} else {
+			displayErrorNotification();
+		}
+		stopSelf();
+	}
+
+	private void displayImportNotification() {
+		String title = getString(R.string.import_notification_import_title);
+		String message = getString(R.string.import_notification_import_msg);
+
+		// Instantiate the notification
+		Notification notification = new Notification(android.R.drawable.stat_notify_sync_noanim, title, 0l);
+		notification.flags |= Notification.FLAG_ONGOING_EVENT;
+		notification.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
+		notification.when = System.currentTimeMillis();
+
+		// Define the notification message and pending intent
+		Intent notificationIntent = new Intent(this, ImportDataActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+		notification.setLatestEventInfo(getApplicationContext(), title, message, contentIntent);
+
+		// Display notification
+		mNotificationMngr.notify(NOTIF_SERVICE_ID, notification);
+	}
+
+	private void displaySuccessNotification() {
+		String title = getString(R.string.import_notification_success_title);
+		String message = getString(R.string.import_notification_success_msg);
+
+		// Instantiate the notification
+		Notification notification = new Notification(android.R.drawable.presence_online, title, 0l);
+		notification.when = System.currentTimeMillis();
+
+		// Define the notification message and pending intent
+		Intent notificationIntent = new Intent(this, ImportDataActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+		notification.setLatestEventInfo(getApplicationContext(), title, message, contentIntent);
+
+		// Display notification
+		mNotificationMngr.notify(NOTIF_IMPORT_SUCCESS_ID, notification);
+	}
+
+	private void displayErrorNotification() {
+		String title = getString(R.string.import_notification_failed_title);
+		String message = getString(R.string.import_notification_failed_msg);
+
+		// Instantiate the notification
+		Notification notification = new Notification(android.R.drawable.ic_delete, title, 0l);
+		notification.when = System.currentTimeMillis();
+
+		// Define the notification message and pending intent
+		Intent notificationIntent = new Intent(this, ImportDataActivity.class);
+		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+		notification.setLatestEventInfo(getApplicationContext(), title, message, contentIntent);
+
+		// Display notification
+		mNotificationMngr.notify(NOTIF_IMPORT_FAILED_ID, notification);
+	}
+
 	private class DownloadFileAsync extends AsyncTask<Void, Integer, Integer> implements Observer {
+		private static final String TAG = "DownloadFileAsync";
 		private static final String DICT_URL = "http://192.168.1.2/cfdict/dictionary.zip";
 		private static final String MD5_URL = "http://192.168.1.2/cfdict/md5sum";
 		private static final String TEMP_ZIP_FILE = "download.tmp";
@@ -90,9 +185,8 @@ public final class ImportDataService {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-
-			if (activity.get() != null) {
-				ApplicationController app = (ApplicationController) activity.get().getApplication();
+			if (sActivity.get() != null) {
+				ApplicationController app = (ApplicationController) sActivity.get().getApplication();
 				rootDir = app.getRootDir();
 				zipFile = new File(rootDir, TEMP_ZIP_FILE);
 				md5File = new File(rootDir, TEMP_MD5_FILE);
@@ -110,7 +204,7 @@ public final class ImportDataService {
 					errorCode = checkMd5();
 				}
 			} catch (Exception e) {
-				Log.e("DownloadFileAsync", "doInBackground() exception", e);
+				Log.e(TAG, "doInBackground() exception", e);
 				errorCode = R.string.import_err_cannot_download;
 			}
 			return errorCode;
@@ -124,19 +218,18 @@ public final class ImportDataService {
 				changeStatus(ImportDataService.STATUS_DOWNLOAD_COMPLETED);
 				unzipTask.execute(zipFile, rootDir);
 			} else {
-				setError(result);
+				removeFiles();
+				setErrorAndStopService(result);
 			}
 		}
 
 		@Override
 		protected void onCancelled() {
 			super.onCancelled();
-
 			if (downloader != null) {
 				downloader.cancel();
 			}
-			zipFile.delete();
-			md5File.delete();
+			removeFiles();
 		}
 
 		@Override
@@ -149,8 +242,8 @@ public final class ImportDataService {
 		@Override
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
-			if (activity.get() != null) {
-				activity.get().updateProgressData(true, values[0]);
+			if (sActivity.get() != null) {
+				sActivity.get().updateProgressData(true, values[0]);
 			}
 		}
 
@@ -164,11 +257,11 @@ public final class ImportDataService {
 
 				String remoteMd5 = FileReader.readFile(md5File);
 				if (!md5.equalsIgnoreCase(remoteMd5)) {
-					Log.e("DownloadFileAsync", "md5 doesn't match");
+					Log.e(TAG, "md5 doesn't match");
 					errorCode = R.string.import_err_wrong_dictionary_file;
 				}
 			} catch (IOException e) {
-				Log.e("DownloadFileAsync", "checkMd5() exception", e);
+				Log.e(TAG, "checkMd5() exception", e);
 				errorCode = R.string.import_err_wrong_dictionary_file;
 			} finally {
 				md5File.delete();
@@ -176,9 +269,19 @@ public final class ImportDataService {
 
 			return errorCode;
 		}
+
+		private void removeFiles() {
+			if (zipFile != null && zipFile.exists()) {
+				zipFile.delete();
+			}
+			if (md5File != null && md5File.exists()) {
+				md5File.delete();
+			}
+		}
 	}
 
 	private class UnzipAsync extends AsyncTask<File, Integer, Integer> implements Observer {
+		private static final String TAG = "UnzipAsync";
 		private File zipFile = null;
 		private File zippedFile = null;
 		private Unzip unzip = null;
@@ -197,7 +300,7 @@ public final class ImportDataService {
 					throw new IOException("File cannot be found");
 				}
 			} catch (IOException e) {
-				Log.e("UnzipAsync", "checkMd5() exception", e);
+				Log.e(TAG, "checkMd5() exception", e);
 				errorCode = R.string.import_err_wrong_dictionary_file;
 			}
 			return errorCode;
@@ -207,30 +310,30 @@ public final class ImportDataService {
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
 
-			if (zipFile != null) {
+			if (zipFile != null && zipFile.exists()) {
 				zipFile.delete();
 			}
 
 			if (result == null) {
+				mNotificationMngr.cancel(NOTIF_SERVICE_ID);
 				changeStatus(ImportDataService.STATUS_INSTALL_COMPLETED);
+				if (sActivity.get() == null) {
+					displaySuccessNotification();
+				}
+				stopSelf();
 			} else {
-				setError(result);
+				removeFiles();
+				setErrorAndStopService(result);
 			}
 		}
 
 		@Override
 		protected void onCancelled() {
 			super.onCancelled();
-
 			if (unzip != null) {
 				unzip.cancel();
 			}
-			if (zipFile != null) {
-				zipFile.delete();
-			}
-			if (zippedFile != null) {
-				zippedFile.delete();
-			}
+			removeFiles();
 		}
 
 		@Override
@@ -245,8 +348,17 @@ public final class ImportDataService {
 		@Override
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
-			if (activity.get() != null) {
-				activity.get().updateProgressData(false, values[0]);
+			if (sActivity.get() != null) {
+				sActivity.get().updateProgressData(false, values[0]);
+			}
+		}
+
+		private void removeFiles() {
+			if (zipFile != null && zipFile.exists()) {
+				zipFile.delete();
+			}
+			if (zippedFile != null && zippedFile.exists()) {
+				zippedFile.delete();
 			}
 		}
 	}

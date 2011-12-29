@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">French-Chinese Dictionary</string>
+
+	<string name="import_service_label">Dictionary import</string>
     <string name="import_welcome_msg">"Welcome!\n\nThe dictionary needs to be downloaded first.\nPlease make sure your device is connected to the Internet.\nAbout 7 MB will be downloaded.\n\nDo you want to start the download now?"</string>
     <string name="import_download_btn">Download</string>
     <string name="import_exit_btn">Exit</string>
@@ -18,4 +20,8 @@
 	<string name="import_cancel_btn">Cancel</string>
 	<string name="import_notification_import_title">Importing FR/CN dictionary data</string>
 	<string name="import_notification_import_msg">Click to see progress</string>
+	<string name="import_notification_success_title">FR/CN dictionary data successfully imported</string>
+	<string name="import_notification_success_msg">Click to start using the application</string>
+	<string name="import_notification_failed_title">Failed to import FR/CN dictionary data</string>
+	<string name="import_notification_failed_msg">Click to see reason and try again</string>
 </resources>

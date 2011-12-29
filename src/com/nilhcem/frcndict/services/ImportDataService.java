@@ -185,12 +185,10 @@ public final class ImportDataService extends Service {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			if (sActivity.get() != null) {
-				ApplicationController app = (ApplicationController) sActivity.get().getApplication();
-				rootDir = app.getRootDir();
-				zipFile = new File(rootDir, TEMP_ZIP_FILE);
-				md5File = new File(rootDir, TEMP_MD5_FILE);
-			}
+			ApplicationController app = (ApplicationController) getApplication();
+			rootDir = app.getRootDir();
+			zipFile = new File(rootDir, TEMP_ZIP_FILE);
+			md5File = new File(rootDir, TEMP_MD5_FILE);
 		}
 
 		@Override

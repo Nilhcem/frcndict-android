@@ -3,6 +3,8 @@ package com.nilhcem.frcndict;
 import java.io.File;
 
 import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.importdb.ImportDataActivity;
+import com.nilhcem.frcndict.search.SearchDictActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -42,12 +44,13 @@ public final class CheckDataActivity extends Activity {
 			initDatabase = !dbHelper.isInitialized();
 		}
 
+		Intent intent;
 		if (initDatabase) {
-			Intent intent = new Intent(this, ImportDataActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(intent);
+			intent = new Intent(this, ImportDataActivity.class);
 		} else {
-			// TODO
+			intent = new Intent(this, SearchDictActivity.class);
 		}
+		intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		startActivity(intent);
 	}
 }

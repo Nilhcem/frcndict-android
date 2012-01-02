@@ -8,6 +8,9 @@ public final class ApplicationController extends Application {
 	public static final String PREFS_NAME = "SharedPrefs";
 	public static final String PREFS_DB_PATH = "dbPath";
 
+	// Other preferences
+	public static final int NB_ENTRIES_PER_LIST = 20;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();

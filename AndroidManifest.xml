@@ -24,9 +24,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ImportDataActivity"
+            android:name=".importdb.ImportDataActivity"
             android:noHistory="true"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <service android:name=".services.ImportDataService" android:label="@string/import_service_label"/>
+        <service android:name=".importdb.ImportDataService" android:label="@string/import_service_label"/>
+        <activity
+            android:name=".search.SearchDictActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
     </application>
 </manifest>

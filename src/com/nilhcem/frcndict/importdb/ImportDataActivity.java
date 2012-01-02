@@ -1,4 +1,4 @@
-package com.nilhcem.frcndict;
+package com.nilhcem.frcndict.importdb;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,7 +11,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.nilhcem.frcndict.services.ImportDataService;
+import com.nilhcem.frcndict.CheckDataActivity;
+import com.nilhcem.frcndict.R;
 
 public final class ImportDataActivity extends Activity {
 	private static final String PERCENT_CHAR = "%";

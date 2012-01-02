@@ -1,4 +1,4 @@
-package com.nilhcem.frcndict.services;
+package com.nilhcem.frcndict.importdb;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.nilhcem.frcndict.ApplicationController;
-import com.nilhcem.frcndict.ImportDataActivity;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.utils.FileReader;

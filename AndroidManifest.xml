@@ -31,5 +31,8 @@
         <activity
             android:name=".search.SearchDictActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
-    </application>
+        <activity
+            android:name=".meaning.WordMeaningActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        </application>
 </manifest>

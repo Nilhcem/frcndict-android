@@ -4,14 +4,18 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.meaning.WordMeaningActivity;
 
 public final class SearchDictActivity extends Activity implements Observer {
 	private DatabaseHelper db = DatabaseHelper.getInstance();
@@ -33,25 +37,15 @@ public final class SearchDictActivity extends Activity implements Observer {
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
 	protected void onStart() {
 		super.onStart();
-		db.open();
+		db.openIfNotAlready();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		db.close();
+//		db.close();
 	}
 
 	@Override
@@ -105,6 +99,17 @@ public final class SearchDictActivity extends Activity implements Observer {
 		mResultList = (ListView) findViewById(R.id.searchList);
 		mResultList.setAdapter(mSearchAdapter);
 		mResultList.setOnScrollListener(mEndlessScrollListener);
+
+		mResultList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				if (view.getId() > 0) { // not loading
+					Intent intent = new Intent(SearchDictActivity.this, WordMeaningActivity.class);
+					intent.putExtra(WordMeaningActivity.ID_INTENT, view.getId());
+					startActivity(intent);
+				}
+			}
+		});
 	}
 
 	private void initInputText() {

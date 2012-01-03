@@ -14,11 +14,13 @@ import com.nilhcem.frcndict.database.Entry;
 
 /* package-private */
 final class SearchAdapter extends ArrayAdapter<Entry> {
+	private boolean searchIsOver; // true if no more result to avoid checking database
 	private Entry loading;
 	private LayoutInflater inflater;
 
 	SearchAdapter(Context context, int textViewResourceId, LayoutInflater inflater) {
 		super(context, textViewResourceId);
+		this.searchIsOver = false;
 		this.inflater = inflater;
 	}
 
@@ -36,12 +38,15 @@ final class SearchAdapter extends ArrayAdapter<Entry> {
 
 		View view = inflater.inflate(resId, parent, false);
 
-		if (entry != loading) {
+		if (entry == loading) {
+			view.setId(0);
+		} else {
 			// Get references
 			TextView chinese = (TextView) view.findViewById(R.id.slChinese);
 			TextView pinyin = (TextView) view.findViewById(R.id.slPinyin);
 			TextView desc = (TextView) view.findViewById(R.id.slDesc);
 
+			view.setId(entry.getId());
 			chinese.setText(entry.getSimplified());
 			pinyin.setText(entry.getPinyin());
 			desc.setText(entry.getDesc());
@@ -57,13 +62,19 @@ final class SearchAdapter extends ArrayAdapter<Entry> {
 		this.remove(loading);
 	}
 
-	public void add(List<Entry> entries, boolean addLoading) {
+	public void add(List<Entry> entries, boolean stillLeft) {
 		for (Entry entry : entries) {
 			add(entry);
 		}
-		if (addLoading) {
+		if (stillLeft) { // add loading if still some entries left
 			addLoading();
+		} else {
+			searchIsOver = true;
 		}
 		notifyDataSetChanged();
+	}
+
+	public boolean searchIsOver() {
+		return searchIsOver;
 	}
 }

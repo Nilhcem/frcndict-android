@@ -1,5 +1,7 @@
 package com.nilhcem.frcndict;
 
+import com.nilhcem.frcndict.database.DatabaseHelper;
+
 import android.app.Application;
 
 // must stay in the root package. see ImportDataService.getAppRootDir()
@@ -14,5 +16,11 @@ public final class ApplicationController extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+	}
+
+	@Override
+	public void onTerminate() {
+		super.onTerminate();
+		DatabaseHelper.getInstance().close();
 	}
 }

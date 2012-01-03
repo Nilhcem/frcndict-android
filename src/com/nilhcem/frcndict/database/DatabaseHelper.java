@@ -26,7 +26,7 @@ public final class DatabaseHelper {
 		this.dbPath = dbPath;
 	}
 
-	public void open() {
+	public void openIfNotAlready() {
 		if (mDb == null || !mDb.isOpen()) {
 			mDb = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
 		}
@@ -63,4 +63,8 @@ public final class DatabaseHelper {
 				String.format("%d,%d", curPage * ApplicationController.NB_ENTRIES_PER_LIST,
 						ApplicationController.NB_ENTRIES_PER_LIST + 1)); // last one is not display but just to know if there are still some elements after
     }
+
+	public Cursor findById(int id) {
+		return mDb.query(Tables.ENTRIES_TABLE_NAME, null, String.format("%s=%d", Tables.ENTRIES_KEY_ROWID, id), null, null, null, null);
+	}
 }

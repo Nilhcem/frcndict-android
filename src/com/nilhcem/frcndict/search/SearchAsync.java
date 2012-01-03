@@ -11,10 +11,11 @@ import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Entry;
 import com.nilhcem.frcndict.database.Tables;
 
-/* package-private */ final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
+/* package-private */
+final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 	private SearchAdapter adapter;
 
-	/* package-private */ SearchAsync(SearchAdapter adapter) {
+	SearchAsync(SearchAdapter adapter) {
 		this.adapter = adapter;
 	}
 

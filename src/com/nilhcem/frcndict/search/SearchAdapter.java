@@ -12,11 +12,12 @@ import android.widget.TextView;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.Entry;
 
-/* package-private */ final class SearchAdapter extends ArrayAdapter<Entry> {
+/* package-private */
+final class SearchAdapter extends ArrayAdapter<Entry> {
 	private Entry loading;
 	private LayoutInflater inflater;
 
-	public SearchAdapter(Context context, int textViewResourceId, LayoutInflater inflater) {
+	SearchAdapter(Context context, int textViewResourceId, LayoutInflater inflater) {
 		super(context, textViewResourceId);
 		this.inflater = inflater;
 	}

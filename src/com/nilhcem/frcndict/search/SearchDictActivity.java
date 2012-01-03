@@ -18,6 +18,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 	private TextView mInputText;
 	private ListView mResultList;
 	private SearchAdapter mSearchAdapter;
+	private EndlessScrollListener mEndlessScrollListener;
 	private SearchAsync mLastTask = null;
 
 	@Override
@@ -27,18 +28,18 @@ public final class SearchDictActivity extends Activity implements Observer {
 
 		initResultList();
 		initInputText();
+
+		restore(savedInstanceState);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-//		db.close();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		db.open();
 	}
 
 	@Override
@@ -54,6 +55,34 @@ public final class SearchDictActivity extends Activity implements Observer {
 	}
 
 	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putCharSequence("search", mInputText.getText());
+		outState.putInt("cur-page", mEndlessScrollListener.getCurrentPage());
+		outState.putBoolean("loading", mEndlessScrollListener.isLoading());
+		outState.putInt("prev-total", mEndlessScrollListener.getPreviousTotal());
+	}
+
+	private void restore(Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			mInputText.setText(savedInstanceState.getCharSequence("search"));
+			mEndlessScrollListener.setCurrentPage(savedInstanceState.getInt("cur-page"));
+			mEndlessScrollListener.setLoading(savedInstanceState.getBoolean("loading"));
+			mEndlessScrollListener.setPreviousTotal(savedInstanceState.getInt("prev-total"));
+		}
+	}
+
+	// TODO: Deprecated
+	// Saves the search adapter to keep results when application state change
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		if (mSearchAdapter != null) {
+			return mSearchAdapter;
+		}
+		return super.onRetainNonConfigurationInstance();
+	}
+
+	@Override
 	public void update(Observable observable, Object data) {
 		if (observable instanceof EndlessScrollListener) {
 			String curPage = (String) data;
@@ -62,13 +91,20 @@ public final class SearchDictActivity extends Activity implements Observer {
 	}
 
 	private void initResultList() {
-		EndlessScrollListener listener = new EndlessScrollListener();
-		listener.addObserver(this);
+		mEndlessScrollListener = new EndlessScrollListener();
+		mEndlessScrollListener.addObserver(this);
 
-		mSearchAdapter = new SearchAdapter(this, R.layout.search_dict_list_item, getLayoutInflater());
+		// TODO deprecated
+		// Get the instance of the object that was stored if one exists
+		if (getLastNonConfigurationInstance() != null) {
+			mSearchAdapter = (SearchAdapter) getLastNonConfigurationInstance();
+		} else {
+			mSearchAdapter = new SearchAdapter(this, R.layout.search_dict_list_item, getLayoutInflater());
+		}
+
 		mResultList = (ListView) findViewById(R.id.searchList);
 		mResultList.setAdapter(mSearchAdapter);
-		mResultList.setOnScrollListener(listener);
+		mResultList.setOnScrollListener(mEndlessScrollListener);
 	}
 
 	private void initInputText() {
@@ -80,6 +116,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
 						(keyCode == KeyEvent.KEYCODE_ENTER)) { // TODO: Remove this condition later
+					mEndlessScrollListener.reset();
 					mSearchAdapter.clear();
 					mSearchAdapter.addLoading();
 					startSearchTask(null);
@@ -90,7 +127,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 		});
 	}
 
-	private void startSearchTask(String curPage) { // curPage is null if first page
+	private void startSearchTask(String curPage) { // curPage should be null if first page
 		if (mLastTask != null) {
 			mLastTask.cancel(true);
 		}

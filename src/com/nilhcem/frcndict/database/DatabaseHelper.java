@@ -56,11 +56,11 @@ public final class DatabaseHelper {
 	}
 
 	// TODO: Just to try
-    public Cursor searchDesc(String search, Integer curPage) {
-    	return mDb.query(Tables.ENTRIES_TABLE_NAME, null, 
-    			String.format("%s LIKE '%s%%'", Tables.ENTRIES_KEY_TRANSLATION, search),
-    			null, null, null, String.format("%s ASC", Tables.ENTRIES_KEY_ROWID),
-    			String.format("%d,%d", curPage * ApplicationController.NB_ENTRIES_PER_LIST,
-    					ApplicationController.NB_ENTRIES_PER_LIST + 1)); // last one is not display but just to know if there are still some elements after
+	public Cursor searchDesc(String search, Integer curPage) {
+		return mDb.query(Tables.ENTRIES_TABLE_NAME, null,
+				String.format("%s LIKE '%s%%'", Tables.ENTRIES_KEY_TRANSLATION, search),
+				null, null, null, String.format("%s ASC", Tables.ENTRIES_KEY_ROWID),
+				String.format("%d,%d", curPage * ApplicationController.NB_ENTRIES_PER_LIST,
+						ApplicationController.NB_ENTRIES_PER_LIST + 1)); // last one is not display but just to know if there are still some elements after
     }
 }

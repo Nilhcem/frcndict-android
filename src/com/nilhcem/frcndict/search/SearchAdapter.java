@@ -54,6 +54,13 @@ final class SearchAdapter extends ArrayAdapter<Entry> {
 		return view;
 	}
 
+	// clear and reinit search
+	@Override
+	public void clear() {
+		super.clear();
+		searchIsOver = false;
+	}
+
 	public void addLoading() {
 		add(loading);
 	}

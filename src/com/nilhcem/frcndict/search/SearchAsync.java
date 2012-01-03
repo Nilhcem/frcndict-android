@@ -10,6 +10,7 @@ import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Entry;
 import com.nilhcem.frcndict.database.Tables;
+import com.nilhcem.frcndict.utils.WordsConverter;
 
 /* package-private */
 final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
@@ -43,7 +44,7 @@ final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 					Entry entry = new Entry();
 					entry.setId(c.getInt(c.getColumnIndex(Tables.ENTRIES_KEY_ROWID)));
 					entry.setSimplified(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED)));
-					entry.setPinyin(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN)));
+					entry.setPinyin(WordsConverter.pinyinNbToTones(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN))));
 					entry.setDesc(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION)));
 					entries.add(entry);
 				} while (c.moveToNext() && !isCancelled());

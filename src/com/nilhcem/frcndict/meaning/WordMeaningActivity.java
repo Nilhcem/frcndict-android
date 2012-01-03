@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Tables;
+import com.nilhcem.frcndict.utils.WordsConverter;
 
 public final class WordMeaningActivity extends Activity {
 	public static String ID_INTENT = "id";
@@ -41,10 +42,12 @@ public final class WordMeaningActivity extends Activity {
 		if (id > 0) {
 			Cursor c = db.findById(id);
 			if (c.getCount() == 1 && c.moveToFirst()) {
+				String pinyin = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN));
+				String desc = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION));
+
 				mSimplified.setText(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED)));
-				mPinyin.setText(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN)));
-				mDescription.setText(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION))
-						.replace("/", System.getProperty("line.separator")));
+				mPinyin.setText(WordsConverter.pinyinNbToTones(pinyin));
+				mDescription.setText(desc.replace("/", System.getProperty("line.separator")));
 			} else {
 				// TODO
 			}

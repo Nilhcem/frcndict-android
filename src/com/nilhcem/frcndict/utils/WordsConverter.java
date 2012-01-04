@@ -1,6 +1,56 @@
 package com.nilhcem.frcndict.utils;
 
+import android.util.Log;
+
 public final class WordsConverter {
+	// surround hanzi with html color tags depending on their tones
+	public static String addColorToHanzi(String hanzi, String pinyin) {
+		// if pinyin is missing, return normal hanzi
+		if (pinyin.length() == 0) {
+			return hanzi;
+		}
+
+		String[] splitPinyin = pinyin.split("\\s");
+		char[] splitHanzi = hanzi.toCharArray();
+
+		int length = splitHanzi.length;
+		if (splitPinyin.length == length) {
+			StringBuilder sb = new StringBuilder();
+
+			// loop for each hanzi
+			for (int curHanzi = 0; curHanzi < length; curHanzi++) {
+				String[] colorsArray = new String[] {
+					null, "red", "#ff8400", "green", "blue", "grey"
+				};
+				int nbTones = colorsArray.length;
+
+				boolean foundColor = false;
+				for (int colorNb = 1; colorNb <= nbTones; colorNb++) {
+					if (splitPinyin[curHanzi].contains(Integer.toString(colorNb))
+							/* TODO: and contains at least one character (to make sure it's not a number */
+							) {
+						sb.append("<font color=\"")
+							.append(colorsArray[colorNb])
+							.append("\">")
+							.append(splitHanzi[curHanzi])
+							.append("</font>");
+						foundColor = true;
+						break;
+					}
+				}
+				if (!foundColor) {
+					sb.append(splitHanzi[curHanzi]);
+				}
+			}
+			return sb.toString();
+		} else {
+			Log.w("WordsConverter", "Size doesn't match: " + hanzi + " - " + pinyin);
+		}
+
+		return hanzi;
+	}
+
+	// Transform a pin1yin1 with tones number to a pīnyīn with tone marks
 	// Ugly, rewrite better if possible
 	public static String pinyinNbToTones(String src) {
 		String dest = src

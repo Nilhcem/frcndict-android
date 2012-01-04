@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Html;
 import android.widget.TextView;
 
 import com.nilhcem.frcndict.R;
@@ -42,10 +43,11 @@ public final class WordMeaningActivity extends Activity {
 		if (id > 0) {
 			Cursor c = db.findById(id);
 			if (c.getCount() == 1 && c.moveToFirst()) {
+				String simplified = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED));
 				String pinyin = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN));
 				String desc = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION));
 
-				mSimplified.setText(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED)));
+				mSimplified.setText(Html.fromHtml(WordsConverter.addColorToHanzi(simplified, pinyin)));
 				mPinyin.setText(WordsConverter.pinyinNbToTones(pinyin));
 				mDescription.setText(desc.replace("/", System.getProperty("line.separator")));
 			} else {

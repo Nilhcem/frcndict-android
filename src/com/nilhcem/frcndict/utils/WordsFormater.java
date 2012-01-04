@@ -2,7 +2,7 @@ package com.nilhcem.frcndict.utils;
 
 import android.util.Log;
 
-public final class WordsConverter {
+public final class WordsFormater {
 	// surround hanzi with html color tags depending on their tones
 	public static String addColorToHanzi(String hanzi, String pinyin) {
 		// if pinyin is missing, return normal hanzi

@@ -21,6 +21,10 @@ public final class FileParser {
 	private File inputFile;
 	private static final Pattern PATTERN = Pattern.compile("^\\s*(.+)\\s+\\[(.*)\\]\\s+/(.+)/\\s*$");
 
+	// For pinyin formatting
+	private Pattern formatPinyinPattern = Pattern.compile("([a-z:]+\\d)([a-z]+)");
+	private Pattern formatPinyinPattern2 = Pattern.compile("([a-zA-Z0-9.,_-]+).*");
+
 	/**
 	 * @param pathname a String containing the UTF-8 text file dictionary path.
 	 * @throws FileNotFoundException if the dictionary was not found.
@@ -82,7 +86,50 @@ public final class FileParser {
 			String pinyin = matcher.group(2);
 			String translation = matcher.group(3);
 
-			db.add(simplified, traditional, pinyin, translation);
+			pinyin = formatPinyin(pinyin, simplified);
+			if (pinyin != null) {
+				db.add(simplified, traditional, pinyin, translation);
+			}
 		}
+	}
+
+	/**
+	 * Format the pinyin entry properly, since all dictionary data are not parsed the same way.
+	 *
+	 * Pretty ugly but seems to work.
+	 * @param pinyin the pinyin to check.
+	 * @param simplified the simplified chinese character, as a reference to check the pinyin.
+	 * @return the newly formatted pinyin, or null if the entry is broken and should not be added.
+	 */
+	private String formatPinyin(String pinyin, String simplified) {
+		if (!pinyin.isEmpty()) {
+			int nbHanzi = simplified.length();
+
+			// Problem if the number of character in the simplified chinese is not equal to the number of separated pinyin
+			if (nbHanzi != pinyin.split(" ").length) {
+				// it may be a pinyin problem (ie "jia1na1 da1" instead of "jia1 na1 da1"). Split pinyin properly
+				Matcher matcher = formatPinyinPattern.matcher(pinyin);
+				pinyin = matcher.replaceAll("$1 $2");
+
+				if (nbHanzi == pinyin.split(" ").length) { // problem should be solved
+					return pinyin;
+				} else { // Still not good, it may be because a hanzi contains A-Za-z characters, also in pinyin
+					Matcher matcher2 = formatPinyinPattern2.matcher(simplified);
+					if (matcher2.matches()) {
+						String matchStr = matcher2.group(1);
+						if (pinyin.contains(matchStr)) {
+							pinyin = pinyin.replaceFirst(matchStr, matchStr + " ");
+							nbHanzi -= (matchStr.length() - 1);
+						}
+					}
+					if (nbHanzi == pinyin.split(" ").length) { // problem should be solved
+						return pinyin;
+					} else {
+						return null; //Problem in the pinyin, do not insert entry in the dictionary
+					}
+				}
+			}
+		}
+		return pinyin;
 	}
 }

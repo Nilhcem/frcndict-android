@@ -30,6 +30,6 @@
 	<string name="import_notification_failed_msg">Click to see reason and try again</string>
 
 	<string name="search_press_back_twice_exit">Press BACK once more to exit</string>
-	<string name="search_hint_text">Enter French, 汉字 or pinyin</string>
+	<string name="search_hint_text">Search French, 汉字, Pinyin</string>
 
 </resources>

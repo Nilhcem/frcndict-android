@@ -6,18 +6,15 @@
     android:orientation="vertical"
     >
 
-    <EditText
+	<com.nilhcem.frcndict.core.ClearableEditText
         android:id="@+id/searchInput"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="@string/search_hint_text"
-        android:nextFocusDown="@+id/searchInput" />
+        android:layout_height="wrap_content" />
 
-       <ListView
-           android:id="@+id/searchList"
-           android:layout_width="fill_parent"
-           android:layout_height="wrap_content" >
+    <ListView
+        android:id="@+id/searchList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
 
     </ListView>
 </LinearLayout>

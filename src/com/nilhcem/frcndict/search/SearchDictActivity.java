@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nilhcem.frcndict.R;
+import com.nilhcem.frcndict.core.ClearableEditText;
+import com.nilhcem.frcndict.core.ClearableEditText.ClearableTextObservable;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.meaning.WordMeaningActivity;
 
@@ -106,6 +108,8 @@ public final class SearchDictActivity extends Activity implements Observer {
 		if (observable instanceof EndlessScrollListener) {
 			String curPage = (String) data;
 			startSearchTask(curPage);
+		} else if (observable instanceof ClearableTextObservable) {
+			clearResults();
 		}
 	}
 
@@ -138,15 +142,18 @@ public final class SearchDictActivity extends Activity implements Observer {
 	}
 
 	private void initInputText() {
-		mInputText = (TextView) findViewById(R.id.searchInput);
+		ClearableEditText clearableText = (ClearableEditText) findViewById(R.id.searchInput);
+		clearableText.addObserver(this);
 
+		mInputText = (TextView) clearableText.getEditText();
+		mInputText.setHint(R.string.search_hint_text);
+		mInputText.setNextFocusDownId(mInputText.getId());
 		mInputText.setOnKeyListener(new View.OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN) {
 					if (keyCode == KeyEvent.KEYCODE_ENTER) { // TODO: Remove this condition later
-						mEndlessScrollListener.reset();
-						mSearchAdapter.clear();
+						clearResults();
 						mSearchAdapter.addLoading();
 						startSearchTask(null);
 						return true;
@@ -157,12 +164,21 @@ public final class SearchDictActivity extends Activity implements Observer {
 		});
 	}
 
-	private void startSearchTask(String curPage) { // curPage should be null if first page
+	private void stopPreviousThread() {
 		if (mLastTask != null) {
 			mLastTask.cancel(true);
+			mLastTask = null;
 		}
-
+	}
+	private void startSearchTask(String curPage) { // curPage should be null if first page
+		stopPreviousThread();
 		mLastTask = new SearchAsync(mSearchAdapter);
 		mLastTask.execute(curPage, mInputText.getText().toString());
+	}
+
+	private void clearResults() {
+		mSearchAdapter.clear();
+		mEndlessScrollListener.reset();
+		stopPreviousThread();
 	}
 }

@@ -14,7 +14,7 @@
     <string name="import_dialog_btn">OK</string>
 	<string name="import_storage_dialog_title">Installing data</string>
 	<string name="import_storage_dialog_msg">Where do you want to install data?</string>
-	<string name="import_storage_dialog_sdcard">SD card (recommanded)</string>
+	<string name="import_storage_dialog_sdcard">SD card (recommended)</string>
 	<string name="import_storage_dialog_device">Device internal memory</string>
 	<string name="import_err_dialog_title">Error</string>
 	<string name="import_err_cannot_download">Cannot download the dictionary.\nPlease make sure your device is connected to the Internet and try again.</string>

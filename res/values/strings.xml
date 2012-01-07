@@ -28,4 +28,6 @@
 	<string name="import_notification_success_msg">Click to start using the application</string>
 	<string name="import_notification_failed_title">Failed to import FR/CN dictionary data</string>
 	<string name="import_notification_failed_msg">Click to see reason and try again</string>
+
+	<string name="search_press_back_twice_exit">Press BACK once more to exit</string>
 </resources>

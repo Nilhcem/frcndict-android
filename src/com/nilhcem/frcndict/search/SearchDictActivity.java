@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.DatabaseHelper;
@@ -24,6 +25,10 @@ public final class SearchDictActivity extends Activity implements Observer {
 	private SearchAdapter mSearchAdapter;
 	private EndlessScrollListener mEndlessScrollListener;
 	private SearchAsync mLastTask = null;
+	private Toast mPressBackTwiceToast = null;
+	private long lastBackPressTime = 0;
+
+	private static final int BACK_TO_EXIT_TIMER = 4000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +48,29 @@ public final class SearchDictActivity extends Activity implements Observer {
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-//		db.close();
+	protected void onResume() {
+		super.onResume();
+		mPressBackTwiceToast = null;
+		lastBackPressTime = 0;
+	}
+
+	@Override
+	protected void onPause() {
+		if (mPressBackTwiceToast != null) {
+			mPressBackTwiceToast.cancel();
+		}
+		super.onPause();
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (lastBackPressTime < System.currentTimeMillis() - SearchDictActivity.BACK_TO_EXIT_TIMER) {
+			mPressBackTwiceToast = Toast.makeText(this, R.string.search_press_back_twice_exit, SearchDictActivity.BACK_TO_EXIT_TIMER);
+			mPressBackTwiceToast.show();
+			lastBackPressTime = System.currentTimeMillis();
+		} else {
+			super.onBackPressed();
+		}
 	}
 
 	@Override
@@ -116,16 +141,16 @@ public final class SearchDictActivity extends Activity implements Observer {
 		mInputText = (TextView) findViewById(R.id.searchInput);
 
 		mInputText.setOnKeyListener(new View.OnKeyListener() {
-
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-						(keyCode == KeyEvent.KEYCODE_ENTER)) { // TODO: Remove this condition later
-					mEndlessScrollListener.reset();
-					mSearchAdapter.clear();
-					mSearchAdapter.addLoading();
-					startSearchTask(null);
-					return true;
+				if (event.getAction() == KeyEvent.ACTION_DOWN) {
+					if (keyCode == KeyEvent.KEYCODE_ENTER) { // TODO: Remove this condition later
+						mEndlessScrollListener.reset();
+						mSearchAdapter.clear();
+						mSearchAdapter.addLoading();
+						startSearchTask(null);
+						return true;
+					}
 				}
 				return false;
 			}

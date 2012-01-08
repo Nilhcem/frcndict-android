@@ -6,6 +6,9 @@
     <dimen name="import_bottom_layout_margin_top">10.0dp</dimen>
     <dimen name="import_bottom_layout_margin_side">5.0dp</dimen>
 
+    <!-- Search entry -->
+    <dimen name="search_no_results">20.0dp</dimen>
+
     <!-- About menu -->
     <dimen name="about_app_name_size">20.0dp</dimen>
     <dimen name="about_version">10.0dp</dimen>

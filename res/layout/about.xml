@@ -61,7 +61,7 @@
 	        android:text="@string/about_cc_url"
 	        android:textSize="@dimen/about_url_size" />
 
-	    <!-- Github link -->
+	    <!-- GitHub link -->
 	    <TextView
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"

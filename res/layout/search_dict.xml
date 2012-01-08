@@ -3,8 +3,7 @@
     android:id="@+id/linearLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical" >
 
 	<com.nilhcem.frcndict.core.ClearableEditText
         android:id="@+id/searchInput"
@@ -14,7 +13,5 @@
     <ListView
         android:id="@+id/searchList"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-    </ListView>
+        android:layout_height="wrap_content" />
 </LinearLayout>

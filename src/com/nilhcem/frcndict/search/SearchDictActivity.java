@@ -129,7 +129,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 	public void update(Observable observable, Object data) {
 		if (observable instanceof EndlessScrollListener) {
 			String curPage = (String) data;
-			startSearchTask(curPage);
+			runSearchThread(curPage);
 		} else if (observable instanceof ClearableTextObservable) {
 			clearResults();
 		}
@@ -177,7 +177,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 					if (keyCode == KeyEvent.KEYCODE_ENTER) { // TODO: Remove this condition later
 						clearResults();
 						mSearchAdapter.addLoading();
-						startSearchTask(null);
+						runSearchThread(null);
 						return true;
 					}
 				}
@@ -192,7 +192,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 			mLastTask = null;
 		}
 	}
-	private void startSearchTask(String curPage) { // curPage should be null if first page
+	private void runSearchThread(String curPage) { // curPage should be null if first page
 		stopPreviousThread();
 		mLastTask = new SearchAsync(mSearchAdapter);
 		mLastTask.execute(curPage, mInputText.getText().toString());

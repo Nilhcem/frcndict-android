@@ -50,7 +50,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		db.openIfNotAlready();
+		db.open();
 	}
 
 	@Override
@@ -75,6 +75,9 @@ public final class SearchDictActivity extends Activity implements Observer {
 			mPressBackTwiceToast.show();
 			lastBackPressTime = System.currentTimeMillis();
 		} else {
+			// It is a real exit, close DB
+			stopPreviousThread();
+			DatabaseHelper.getInstance().close();
 			super.onBackPressed();
 		}
 	}

@@ -26,15 +26,17 @@ public final class DatabaseHelper {
 		this.dbPath = dbPath;
 	}
 
-	public void openIfNotAlready() {
+	public void open() {
 		if (mDb == null || !mDb.isOpen()) {
 			mDb = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
 		}
 	}
 
-    public void close() {
-		mDb.close();
-    }
+	public void close() {
+		if (mDb != null && mDb.isOpen()) {
+			mDb.close();
+		}
+	}
 
 	// returns true if database exists
 	public boolean isInitialized() {

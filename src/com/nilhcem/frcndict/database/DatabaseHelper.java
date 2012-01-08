@@ -67,4 +67,15 @@ public final class DatabaseHelper {
 	public Cursor findById(int id) {
 		return mDb.query(Tables.ENTRIES_TABLE_NAME, null, String.format("%s=%d", Tables.ENTRIES_KEY_ROWID, id), null, null, null, null);
 	}
+
+	public String getDbVersion() {
+		String dbVersion = null;
+		Cursor c = mDb.query(Tables.METADATA_TABLE_NAME, new String[] { Tables.METADATA_KEY_VERSION },
+				null, null, null, null, null);
+
+		if (c.moveToFirst()) {
+			dbVersion = c.getString(c.getColumnIndex(Tables.METADATA_KEY_VERSION));
+		}
+		return dbVersion;
+	}
 }

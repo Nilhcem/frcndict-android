@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+
+	    <!-- App name -->
+	    <TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:text="@string/app_name"
+	        android:textSize="@dimen/about_app_name_size" />
+
+	    <!-- App version -->
+	    <TextView
+	        android:id="@+id/aboutAppVersion"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center"
+	        android:text="@string/about_app_version"
+	        android:textSize="@dimen/about_version"
+	        android:layout_marginBottom="@dimen/about_title_separator" />
+
+	    <!-- Powered by CFDICT -->
+	    <TextView
+	        android:id="@+id/aboutDbVersion"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/about_db_version"
+	        android:textSize="@dimen/about_subtitle_size" />
+	    <TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="@dimen/about_line_separator"
+	        android:text="@string/about_cfdict_url"
+	        android:textSize="@dimen/about_url_size" />
+
+	    <!-- CFDICT logo -->
+	    <ImageView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:layout_marginBottom="@dimen/about_line_separator"
+	        android:src="@drawable/cfdict" />
+
+	    <!-- CFDICT CC license -->
+	    <TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/about_cc_license"
+	        android:textSize="@dimen/about_subtitle_size" />
+	    <TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="@dimen/about_line_separator"
+	        android:text="@string/about_cc_url"
+	        android:textSize="@dimen/about_url_size" />
+
+	    <!-- Github link -->
+	    <TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/about_src"
+	        android:textSize="@dimen/about_subtitle_size" />
+	    <TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="@dimen/about_line_separator"
+	        android:text="@string/about_src_url"
+	        android:textSize="@dimen/about_url_size" />
+
+	    <!-- Contact -->
+	    <TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/about_contact"
+	        android:textSize="@dimen/about_subtitle_size" />
+	    <TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="@dimen/about_line_separator"
+	        android:text="@string/about_contact_mail"
+	        android:textSize="@dimen/about_url_size" />
+
+	</LinearLayout>
+</ScrollView>

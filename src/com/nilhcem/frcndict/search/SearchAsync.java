@@ -13,10 +13,12 @@ import com.nilhcem.frcndict.database.Tables;
 
 /* package-private */
 final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
-	private SearchAdapter adapter;
+	private SearchAdapter refAdapter;
+	private SearchDictService refService;
 
-	SearchAsync(SearchAdapter adapter) {
-		this.adapter = adapter;
+	SearchAsync(SearchAdapter adapter, SearchDictService service) {
+		this.refAdapter = adapter;
+		this.refService = service;
 	}
 
 	@Override
@@ -28,16 +30,14 @@ final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 	protected List<Entry> doInBackground(String... params) {
 		List<Entry> entries = new ArrayList<Entry>();
 
-		if (!adapter.searchIsOver()) {
-			int currentPage;
-			if (params[0] == null) {
-				currentPage = 0;
-			} else {
-				currentPage = Integer.parseInt(params[0]);
-			}
+		if (!refAdapter.searchIsOver()) {
+			// Get parameters
+			int currentPage = (params[0] == null) ? 0 : Integer.parseInt(params[0]);
 			String search = params[1];
-			Cursor c = DatabaseHelper.getInstance().searchDesc(search, currentPage);
 
+			// Do the query depending on the searchType
+			refService.detectAndSetSearchType(search);
+			Cursor c = search(search, refService.getSearchType(), currentPage);
 			if (c.moveToFirst()) {
 				do {
 					Entry entry = new Entry();
@@ -61,12 +61,23 @@ final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 			stillLeft = true;
 			result.remove(ApplicationController.NB_ENTRIES_PER_LIST); // remove last one, just used to know if there are still some elements left
 		}
-		adapter.removeLoading();
-		adapter.add(result, stillLeft);
+		refAdapter.removeLoading();
+		refAdapter.add(result, stillLeft);
 	}
 
 	@Override
 	protected void onCancelled() {
 		super.onCancelled();
+	}
+
+	private Cursor search(String search, int searchType, int currentPage) {
+		DatabaseHelper db = DatabaseHelper.getInstance();
+
+		if (searchType == SearchDictService.SEARCH_HANZI) {
+			return db.searchHanzi(search, currentPage);
+		} else if (searchType == SearchDictService.SEARCH_PINYIN) {
+			return db.searchPinyin(search, currentPage);
+		}
+		return db.searchFrench(search, currentPage); // by default
 	}
 }

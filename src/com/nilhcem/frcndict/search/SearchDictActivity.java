@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nilhcem.frcndict.AboutActivity;
+import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.ClearableEditText;
 import com.nilhcem.frcndict.core.ClearableEditText.ClearableTextObservable;
@@ -25,16 +26,13 @@ import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.meaning.WordMeaningActivity;
 
 public final class SearchDictActivity extends Activity implements Observer {
+	private SearchDictService mService;
 	private DatabaseHelper db = DatabaseHelper.getInstance();
 	private TextView mInputText;
 	private ListView mResultList;
 	private SearchAdapter mSearchAdapter;
 	private EndlessScrollListener mEndlessScrollListener;
-	private SearchAsync mLastTask = null;
 	private Toast mPressBackTwiceToast = null;
-	private long lastBackPressTime = 0;
-
-	private static final int BACK_TO_EXIT_TIMER = 4000;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +40,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 		setContentView(R.layout.search_dict);
 
 		initResultList();
+		initService();
 		initInputText();
 
 		restore(savedInstanceState);
@@ -57,7 +56,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 	protected void onResume() {
 		super.onResume();
 		mPressBackTwiceToast = null;
-		lastBackPressTime = 0;
+		mService.setLastBackPressTime(0l);
 	}
 
 	@Override
@@ -70,14 +69,14 @@ public final class SearchDictActivity extends Activity implements Observer {
 
 	@Override
 	public void onBackPressed() {
-		if (lastBackPressTime < System.currentTimeMillis() - SearchDictActivity.BACK_TO_EXIT_TIMER) {
-			mPressBackTwiceToast = Toast.makeText(this, R.string.search_press_back_twice_exit, SearchDictActivity.BACK_TO_EXIT_TIMER);
+		if (mService.isBackBtnPressedForTheFirstTime()) {
+			mPressBackTwiceToast = Toast.makeText(this, R.string.search_press_back_twice_exit, SearchDictService.BACK_TO_EXIT_TIMER);
 			mPressBackTwiceToast.show();
-			lastBackPressTime = System.currentTimeMillis();
+			mService.setLastBackPressTime(System.currentTimeMillis());
 		} else {
 			// It is a real exit, close DB
-			stopPreviousThread();
-			DatabaseHelper.getInstance().close();
+			mService.stopPreviousThread();
+			db.close();
 			super.onBackPressed();
 		}
 	}
@@ -131,8 +130,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 	@Override
 	public void update(Observable observable, Object data) {
 		if (observable instanceof EndlessScrollListener) {
-			String curPage = (String) data;
-			runSearchThread(curPage);
+			mService.runSearchThread((String) data, mInputText.getText().toString());
 		} else if (observable instanceof ClearableTextObservable) {
 			clearResults();
 		}
@@ -153,7 +151,6 @@ public final class SearchDictActivity extends Activity implements Observer {
 		mResultList = (ListView) findViewById(R.id.searchList);
 		mResultList.setAdapter(mSearchAdapter);
 		mResultList.setOnScrollListener(mEndlessScrollListener);
-
 		mResultList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -164,6 +161,11 @@ public final class SearchDictActivity extends Activity implements Observer {
 				}
 			}
 		});
+	}
+
+	private void initService() {
+		mService = ((ApplicationController) getApplication()).getSearchDictService();
+		mService.setAdapter(mSearchAdapter);
 	}
 
 	private void initInputText() {
@@ -178,9 +180,10 @@ public final class SearchDictActivity extends Activity implements Observer {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN) {
 					if (keyCode == KeyEvent.KEYCODE_ENTER) { // TODO: Remove this condition later
+						mService.setSearchType(SearchDictService.SEARCH_UNDEFINED);
 						clearResults();
 						mSearchAdapter.addLoading();
-						runSearchThread(null);
+						mService.runSearchThread(null, mInputText.getText().toString());
 						return true;
 					}
 				}
@@ -189,21 +192,9 @@ public final class SearchDictActivity extends Activity implements Observer {
 		});
 	}
 
-	private void stopPreviousThread() {
-		if (mLastTask != null) {
-			mLastTask.cancel(true);
-			mLastTask = null;
-		}
-	}
-	private void runSearchThread(String curPage) { // curPage should be null if first page
-		stopPreviousThread();
-		mLastTask = new SearchAsync(mSearchAdapter);
-		mLastTask.execute(curPage, mInputText.getText().toString());
-	}
-
 	private void clearResults() {
 		mSearchAdapter.clear();
 		mEndlessScrollListener.reset();
-		stopPreviousThread();
+		mService.stopPreviousThread();
 	}
 }

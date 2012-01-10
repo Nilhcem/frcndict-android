@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.Entry;
-import com.nilhcem.frcndict.utils.WordsFormater;
+import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 /* package-private */
 final class SearchAdapter extends ArrayAdapter<Entry> {
@@ -58,8 +58,8 @@ final class SearchAdapter extends ArrayAdapter<Entry> {
 			TextView desc = (TextView) view.findViewById(R.id.slDesc);
 
 			view.setId(entry.getId());
-			chinese.setText(Html.fromHtml(WordsFormater.addColorToHanzi(entry.getSimplified(), entry.getPinyin())));
-			pinyin.setText(WordsFormater.pinyinNbToTones(entry.getPinyin()));
+			chinese.setText(Html.fromHtml(ChineseCharsHandler.addColorToHanzi(entry.getSimplified(), entry.getPinyin())));
+			pinyin.setText(ChineseCharsHandler.pinyinNbToTones(entry.getPinyin()));
 			desc.setText(entry.getDesc());
 		}
 		return view;

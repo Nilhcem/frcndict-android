@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Tables;
-import com.nilhcem.frcndict.utils.WordsFormater;
+import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class WordMeaningActivity extends Activity {
 	public static String ID_INTENT = "id";
@@ -47,8 +47,8 @@ public final class WordMeaningActivity extends Activity {
 				String pinyin = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN));
 				String desc = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION));
 
-				mSimplified.setText(Html.fromHtml(WordsFormater.addColorToHanzi(simplified, pinyin)));
-				mPinyin.setText(WordsFormater.pinyinNbToTones(pinyin));
+				mSimplified.setText(Html.fromHtml(ChineseCharsHandler.addColorToHanzi(simplified, pinyin)));
+				mPinyin.setText(ChineseCharsHandler.pinyinNbToTones(pinyin));
 				mDescription.setText(desc.replace("/", System.getProperty("line.separator")));
 			} else {
 				// TODO

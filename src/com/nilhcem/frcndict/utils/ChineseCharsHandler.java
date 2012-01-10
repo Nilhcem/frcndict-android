@@ -2,7 +2,7 @@ package com.nilhcem.frcndict.utils;
 
 import android.util.Log;
 
-public final class WordsFormater {
+public final class ChineseCharsHandler {
 	// surround hanzi with html color tags depending on their tones
 	public static String addColorToHanzi(String hanzi, String pinyin) {
 		// if pinyin is missing, return normal hanzi
@@ -229,4 +229,11 @@ public final class WordsFormater {
 //				.replaceAll("ǜ", "ü4");
 //		return dest;
 //	}
+
+	public static boolean charIsChinese(char ch) {
+		Character.UnicodeBlock block = Character.UnicodeBlock.of(ch);
+		return (Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS.equals(block)
+			|| Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS.equals(block)
+			|| Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A.equals(block));
+	}
 }

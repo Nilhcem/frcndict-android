@@ -13,6 +13,7 @@ public interface Tables {
 	public static final String ENTRIES_KEY_SIMPLIFIED = "simplified";
 	public static final String ENTRIES_KEY_TRADITIONAL = "traditional";
 	public static final String ENTRIES_KEY_PINYIN = "pinyin";
+	public static final String ENTRIES_KEY_PINYIN2 = "pinyin2";
 	public static final String ENTRIES_KEY_TRANSLATION = "translation";
 
 	// Metadata table

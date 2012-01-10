@@ -33,7 +33,8 @@ public final class DbHandler {
 					+ Tables.ENTRIES_KEY_SIMPLIFIED + ", "
 					+ Tables.ENTRIES_KEY_TRADITIONAL + ", "
 					+ Tables.ENTRIES_KEY_PINYIN + ", "
-					+ Tables.ENTRIES_KEY_TRANSLATION + ") VALUES (?, ?, ?, ?);");
+					+ Tables.ENTRIES_KEY_PINYIN2 + ", "
+					+ Tables.ENTRIES_KEY_TRANSLATION + ") VALUES (?, ?, ?, ?, ?);");
 		} catch (ClassNotFoundException | SQLException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
@@ -69,6 +70,7 @@ public final class DbHandler {
 				+ Tables.ENTRIES_KEY_SIMPLIFIED + " text not null, "
 				+ Tables.ENTRIES_KEY_TRADITIONAL + " text, "
 				+ Tables.ENTRIES_KEY_PINYIN + " text, "
+				+ Tables.ENTRIES_KEY_PINYIN2 + " text, "
 				+ Tables.ENTRIES_KEY_TRANSLATION + " text not null);");
 
 		// METADATA_TABLE_NAME
@@ -107,7 +109,8 @@ public final class DbHandler {
 			prep.setString(1, simplified);
 			prep.setString(2, traditional);
 			prep.setString(3, pinyin);
-			prep.setString(4, translation);
+			prep.setString(4, pinyin.replaceAll("[^a-zA-Z]", "")); // pinyin without tones nor space
+			prep.setString(5, translation);
 			prep.addBatch();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());

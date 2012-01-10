@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,13 +26,14 @@ import com.nilhcem.frcndict.core.ClearableEditText.ClearableTextObservable;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.meaning.WordMeaningActivity;
 
-public final class SearchDictActivity extends Activity implements Observer {
-	private SearchDictService mService;
+public final class SearchActivity extends Activity implements Observer {
+	private SearchService mService;
 	private DatabaseHelper db = DatabaseHelper.getInstance();
 	private TextView mInputText;
 	private ListView mResultList;
 	private SearchAdapter mSearchAdapter;
 	private EndlessScrollListener mEndlessScrollListener;
+	private Button mLangButton;
 	private Toast mPressBackTwiceToast = null;
 
 	@Override
@@ -40,6 +42,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 		setContentView(R.layout.search_dict);
 
 		initResultList();
+		initLangButton();
 		initService();
 		initInputText();
 
@@ -55,6 +58,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		changeButtonLangState();
 		mPressBackTwiceToast = null;
 		mService.setLastBackPressTime(0l);
 	}
@@ -70,7 +74,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 	@Override
 	public void onBackPressed() {
 		if (mService.isBackBtnPressedForTheFirstTime()) {
-			mPressBackTwiceToast = Toast.makeText(this, R.string.search_press_back_twice_exit, SearchDictService.BACK_TO_EXIT_TIMER);
+			mPressBackTwiceToast = Toast.makeText(this, R.string.search_press_back_twice_exit, SearchService.BACK_TO_EXIT_TIMER);
 			mPressBackTwiceToast.show();
 			mService.setLastBackPressTime(System.currentTimeMillis());
 		} else {
@@ -106,6 +110,8 @@ public final class SearchDictActivity extends Activity implements Observer {
 		outState.putInt("cur-page", mEndlessScrollListener.getCurrentPage());
 		outState.putBoolean("loading", mEndlessScrollListener.isLoading());
 		outState.putInt("prev-total", mEndlessScrollListener.getPreviousTotal());
+		outState.putInt("langbtn-visibility", mLangButton.getVisibility());
+		outState.putCharSequence("langbtn-text", mLangButton.getText());
 	}
 
 	private void restore(Bundle savedInstanceState) {
@@ -114,6 +120,8 @@ public final class SearchDictActivity extends Activity implements Observer {
 			mEndlessScrollListener.setCurrentPage(savedInstanceState.getInt("cur-page"));
 			mEndlessScrollListener.setLoading(savedInstanceState.getBoolean("loading"));
 			mEndlessScrollListener.setPreviousTotal(savedInstanceState.getInt("prev-total"));
+			mLangButton.setVisibility(savedInstanceState.getInt("langbtn-visibility"));
+			mLangButton.setText(savedInstanceState.getCharSequence("langbtn-text"));
 		}
 	}
 
@@ -155,7 +163,7 @@ public final class SearchDictActivity extends Activity implements Observer {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if (view.getId() > 0) { // not loading
-					Intent intent = new Intent(SearchDictActivity.this, WordMeaningActivity.class);
+					Intent intent = new Intent(SearchActivity.this, WordMeaningActivity.class);
 					intent.putExtra(WordMeaningActivity.ID_INTENT, view.getId());
 					startActivity(intent);
 				}
@@ -163,8 +171,24 @@ public final class SearchDictActivity extends Activity implements Observer {
 		});
 	}
 
+	private void initLangButton() {
+		mLangButton = (Button) findViewById(R.id.searchLangBtn);
+		mLangButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// Switch search type
+				if (mService.getSearchType() == SearchService.SEARCH_FRENCH) {
+					mService.setSearchType(SearchService.SEARCH_PINYIN);
+				} else {
+					mService.setSearchType(SearchService.SEARCH_FRENCH);
+				}
+				runNewSearch();
+			}
+		});
+	}
 	private void initService() {
 		mService = ((ApplicationController) getApplication()).getSearchDictService();
+		mService.setActivity(this);
 		mService.setAdapter(mSearchAdapter);
 	}
 
@@ -180,10 +204,8 @@ public final class SearchDictActivity extends Activity implements Observer {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN) {
 					if (keyCode == KeyEvent.KEYCODE_ENTER) { // TODO: Remove this condition later
-						mService.setSearchType(SearchDictService.SEARCH_UNDEFINED);
-						clearResults();
-						mSearchAdapter.addLoading();
-						mService.runSearchThread(null, mInputText.getText().toString());
+						mService.setSearchType(SearchService.SEARCH_UNDEFINED);
+						runNewSearch();
 						return true;
 					}
 				}
@@ -192,9 +214,28 @@ public final class SearchDictActivity extends Activity implements Observer {
 		});
 	}
 
+	private void runNewSearch() {
+		clearResults();
+		mSearchAdapter.addLoading();
+		mService.runSearchThread(null, mInputText.getText().toString());
+	}
+
 	private void clearResults() {
+		hideLangButton();
 		mSearchAdapter.clear();
 		mEndlessScrollListener.reset();
 		mService.stopPreviousThread();
+	}
+
+	public void changeButtonLangState() {
+		if (mService.getLangBtnResId() != 0) {
+			mLangButton.setText(mService.getLangBtnResId());
+		}
+		mLangButton.setVisibility(mService.getLangBtnVisibility());
+	}
+
+	private void hideLangButton() {
+		mLangButton.setVisibility(View.GONE);
+		mService.setLangBtnVisibility(View.GONE);
 	}
 }

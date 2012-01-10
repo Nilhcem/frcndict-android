@@ -29,7 +29,7 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <service android:name=".importdb.ImportDataService" android:label="@string/import_service_label"/>
         <activity
-            android:name=".search.SearchDictActivity"
+            android:name=".search.SearchActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".meaning.WordMeaningActivity"

@@ -35,6 +35,8 @@
 	<string name="search_press_back_twice_exit">Press BACK once more to exit</string>
 	<string name="search_hint_text">Search French, 汉字, Pinyin</string>
 	<string name="search_no_results">No Results</string>
+	<string name="search_btn_french">French</string>
+	<string name="search_btn_pinyin">Pinyin</string>
 
     <!-- Menu -->
 	<string name="main_menu_about">About</string>

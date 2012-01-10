@@ -8,8 +8,10 @@
         android:id="@+id/clearable_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingRight="35dp"
         android:inputType="text"
-        android:paddingRight="35dp" />
+        android:ellipsize="end"
+        android:maxLines="1" />
 
     <Button
         android:id="@+id/clearable_button_clear"

@@ -4,7 +4,7 @@ import java.io.File;
 
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.importdb.ImportDataActivity;
-import com.nilhcem.frcndict.search.SearchDictActivity;
+import com.nilhcem.frcndict.search.SearchActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -48,7 +48,7 @@ public final class CheckDataActivity extends Activity {
 		if (initDatabase) {
 			intent = new Intent(this, ImportDataActivity.class);
 		} else {
-			intent = new Intent(this, SearchDictActivity.class);
+			intent = new Intent(this, SearchActivity.class);
 		}
 		intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		startActivity(intent);

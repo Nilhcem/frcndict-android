@@ -1,7 +1,7 @@
 package com.nilhcem.frcndict;
 
 import com.nilhcem.frcndict.database.DatabaseHelper;
-import com.nilhcem.frcndict.search.SearchDictService;
+import com.nilhcem.frcndict.search.SearchService;
 
 import android.app.Application;
 
@@ -15,7 +15,7 @@ public final class ApplicationController extends Application {
 	public static final int NB_ENTRIES_PER_LIST = 20;
 
 	// Services
-	private final SearchDictService searchDictService = new SearchDictService();
+	private final SearchService searchDictService = new SearchService();
 
 	@Override
 	public void onCreate() {
@@ -28,7 +28,7 @@ public final class ApplicationController extends Application {
 		DatabaseHelper.getInstance().close();
 	}
 
-	public SearchDictService getSearchDictService() {
+	public SearchService getSearchDictService() {
 		return searchDictService;
 	}
 }

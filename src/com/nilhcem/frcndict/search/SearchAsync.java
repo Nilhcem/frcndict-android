@@ -14,9 +14,9 @@ import com.nilhcem.frcndict.database.Tables;
 /* package-private */
 final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 	private SearchAdapter refAdapter;
-	private SearchDictService refService;
+	private SearchService refService;
 
-	SearchAsync(SearchAdapter adapter, SearchDictService service) {
+	SearchAsync(SearchAdapter adapter, SearchService service) {
 		this.refAdapter = adapter;
 		this.refService = service;
 	}
@@ -63,6 +63,7 @@ final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 		}
 		refAdapter.removeLoading();
 		refAdapter.add(result, stillLeft);
+		refService.changeLangButton();
 	}
 
 	@Override
@@ -73,9 +74,9 @@ final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 	private Cursor search(String search, int searchType, int currentPage) {
 		DatabaseHelper db = DatabaseHelper.getInstance();
 
-		if (searchType == SearchDictService.SEARCH_HANZI) {
+		if (searchType == SearchService.SEARCH_HANZI) {
 			return db.searchHanzi(search, currentPage);
-		} else if (searchType == SearchDictService.SEARCH_PINYIN) {
+		} else if (searchType == SearchService.SEARCH_PINYIN) {
 			return db.searchPinyin(search, currentPage);
 		}
 		return db.searchFrench(search, currentPage); // by default

@@ -5,10 +5,25 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-	<com.nilhcem.frcndict.core.ClearableEditText
-        android:id="@+id/searchInput"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+
+			<com.nilhcem.frcndict.core.ClearableEditText
+		        android:id="@+id/searchInput"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1" />
+
+				<Button
+				    android:id="@+id/searchLangBtn"
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:layout_weight="5"
+				    android:textSize="8.0dp"
+				    android:visibility="gone" />
+	</LinearLayout>
 
     <ListView
         android:id="@+id/searchList"

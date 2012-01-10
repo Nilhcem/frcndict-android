@@ -73,6 +73,7 @@ final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 
 	private Cursor search(String search, int searchType, int currentPage) {
 		DatabaseHelper db = DatabaseHelper.getInstance();
+		search = search.trim().toLowerCase();
 
 		if (searchType == SearchService.SEARCH_HANZI) {
 			return db.searchHanzi(search, currentPage);

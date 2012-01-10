@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import com.nilhcem.frcndict.ApplicationController;
+import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class DatabaseHelper {
 	public static final String DATABASE_NAME = "dictionary.db";
@@ -21,8 +22,8 @@ public final class DatabaseHelper {
 
 	static {
 		StringBuilder sb;
-		String nbToDisplay = Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST + 1);
 		// add 1 entry we won't display but which is just to know if there are still some elements after.
+		String nbToDisplay = Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST + 1);
 
 		// Hanzi query
 		sb = new StringBuilder("SELECT * FROM ")
@@ -33,27 +34,33 @@ public final class DatabaseHelper {
 			.append(Tables.ENTRIES_KEY_TRADITIONAL)
 			.append(" LIKE ?) ORDER BY length(")
 			.append(Tables.ENTRIES_KEY_SIMPLIFIED)
-			.append(") ASC LIMIT ?,")
+			.append(") ASC, ")
+			.append(Tables.ENTRIES_KEY_SIMPLIFIED)
+			.append(" ASC LIMIT ?,")
 			.append(nbToDisplay);
 		QUERY_HANZI = sb.toString();
 
 		// Pinyin query
 		sb = new StringBuilder("SELECT * FROM ")
 			.append(Tables.ENTRIES_TABLE_NAME)
-			.append(" WHERE (")
+			.append(" WHERE ")
+			.append(Tables.ENTRIES_KEY_PINYIN2)
+			.append(" LIKE ? AND lower(")
 			.append(Tables.ENTRIES_KEY_PINYIN)
-			.append(" LIKE ?) ORDER BY length(")
+			.append(") LIKE ? ORDER BY length(")
 			.append(Tables.ENTRIES_KEY_PINYIN)
-			.append(") ASC LIMIT ?,")
+			.append(") ASC, ")
+			.append(Tables.ENTRIES_KEY_PINYIN2)
+			.append(" ASC LIMIT ?,")
 			.append(nbToDisplay);
 		QUERY_PINYIN = sb.toString();
 
 		// French query
 		sb = new StringBuilder("SELECT * FROM ")
 			.append(Tables.ENTRIES_TABLE_NAME)
-			.append(" WHERE '/' || ")
+			.append(" WHERE '/' || lower(")
 			.append(Tables.ENTRIES_KEY_TRANSLATION)
-			.append(" LIKE ? ORDER BY ")
+			.append(") LIKE ? ORDER BY ")
 			.append(Tables.ENTRIES_KEY_ROWID)
 			.append(" ASC LIMIT ?,")
 			.append(nbToDisplay);
@@ -122,19 +129,25 @@ public final class DatabaseHelper {
 		String criteria = String.format("%%%s%%", search);
 		return mDb.rawQuery(DatabaseHelper.QUERY_HANZI,
 				new String[] { criteria, criteria,
-				Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST * curPage) });
+					Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST * curPage)
+				});
 	}
 
 	public Cursor searchPinyin(String search, Integer curPage) {
+		search = ChineseCharsHandler.pinyinTonesToNb(search);
 		return mDb.rawQuery(DatabaseHelper.QUERY_PINYIN,
-				new String[] { convertToQueryReadyPinyin(search),
-					Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST * curPage) });
+				new String[] {
+					String.format("%%%s%%", search.replaceAll("[^a-zA-Z]", "")),
+					convertToQueryReadyPinyin(search),
+					Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST * curPage)
+				});
 	}
 
 	public Cursor searchFrench(String search, Integer curPage) {
 		return mDb.rawQuery(DatabaseHelper.QUERY_FRENCH,
 				new String[] { String.format("%%/%s%%", search),
-					Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST * curPage) });
+					Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST * curPage)
+				});
 	}
 
 	// Check if search is a pinyin search or a french search
@@ -143,7 +156,8 @@ public final class DatabaseHelper {
 
 		Cursor c = mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] { Tables.ENTRIES_KEY_ROWID },
 				String.format("%s like ?", Tables.ENTRIES_KEY_PINYIN2),
-				new String[] { search.replaceAll("[^a-zA-Z]", "") + "%" }, null, null, null);
+				new String[] { ChineseCharsHandler.pinyinTonesToNb(search).replaceAll("[^a-zA-Z]", "") + "%" },
+				null, null, null);
 		isPinyin = (c.getCount() > 0);
 		c.close();
 		return isPinyin;
@@ -155,7 +169,7 @@ public final class DatabaseHelper {
 
 		StringBuilder newPinyin = new StringBuilder();
 
-		for (char ch : pinyin.trim().toCharArray()) {
+		for (char ch : pinyin.toCharArray()) {
 			if (ch == ' ' && previousCharWasSpace) {
 				continue;
 			}
@@ -166,7 +180,7 @@ public final class DatabaseHelper {
 					newPinyin.append("%");  // No % for a character before a space (ex "%n%i3 %", not "%n%i3% %")
 				}
 			} else {
-				if (ch < '1' || ch > '5') { // No % for a character before a tone (ex "%h%a%o3%", not "%h%a%o%3%")
+				if (ch != ':' && (ch < '1' || ch > '5')) { // No % for a character before a tone (ex "%h%a%o3%", not "%h%a%o%3%")
 					newPinyin.append("%");
 				}
 				previousCharWasSpace = false;

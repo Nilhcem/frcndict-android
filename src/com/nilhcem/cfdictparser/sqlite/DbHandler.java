@@ -109,7 +109,7 @@ public final class DbHandler {
 			prep.setString(1, simplified);
 			prep.setString(2, traditional);
 			prep.setString(3, pinyin);
-			prep.setString(4, pinyin.replaceAll("[^a-zA-Z]", "")); // pinyin without tones nor space
+			prep.setString(4, pinyin.replaceAll("[^a-zA-Z]", "").toLowerCase()); // pinyin lower case without tones nor space
 			prep.setString(5, translation);
 			prep.addBatch();
 		} catch (SQLException e) {

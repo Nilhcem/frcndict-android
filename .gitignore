@@ -1,4 +1,6 @@
 *.u8
-bin/
-dist/
-output/
+bin/*
+build/*
+gen/*
+dist/*
+output/*

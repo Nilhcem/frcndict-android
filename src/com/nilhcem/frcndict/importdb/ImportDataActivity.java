@@ -1,6 +1,5 @@
 package com.nilhcem.frcndict.importdb;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +12,9 @@ import android.widget.TextView;
 
 import com.nilhcem.frcndict.CheckDataActivity;
 import com.nilhcem.frcndict.R;
+import com.nilhcem.frcndict.core.DictActivity;
 
-public final class ImportDataActivity extends Activity {
+public final class ImportDataActivity extends DictActivity {
 	private static final String PERCENT_CHAR = "%";
 
 	private Button mDownloadButton;

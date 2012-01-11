@@ -76,6 +76,10 @@ public final class DatabaseHelper {
 		return instance;
     }
 
+	public File getDatabasePath() {
+		return dbPath;
+	}
+
 	public void setDatabasePath(File dbPath) {
 		this.dbPath = dbPath;
 	}
@@ -96,7 +100,7 @@ public final class DatabaseHelper {
 	public boolean isInitialized() {
 		boolean initialized = false;
 
-		if (dbPath.exists()) {
+		if (dbPath != null && dbPath.exists()) {
 			mDb = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
 			try {
 				mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] {

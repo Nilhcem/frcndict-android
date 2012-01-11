@@ -1,11 +1,11 @@
 package com.nilhcem.frcndict;
 
+import android.app.Application;
+
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.search.SearchService;
 
-import android.app.Application;
-
-// must stay in the root package. see ImportDataService.getAppRootDir()
+// must stay in the root package. See ImportDataService.getAppRootDir()
 public final class ApplicationController extends Application {
 	// Shared preferences
 	public static final String PREFS_NAME = "SharedPrefs";
@@ -15,18 +15,12 @@ public final class ApplicationController extends Application {
 	public static final int NB_ENTRIES_PER_LIST = 20;
 
 	// Services
-	private final DatabaseHelper db = DatabaseHelper.getInstance(); // create singleton
 	private final SearchService searchDictService = new SearchService();
-
-	@Override
-	public void onCreate() {
-		super.onCreate();
-	}
 
 	@Override
 	public void onTerminate() {
 		super.onTerminate();
-		db.close();
+		DatabaseHelper.getInstance().close();
 	}
 
 	public SearchService getSearchDictService() {

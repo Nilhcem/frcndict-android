@@ -3,7 +3,6 @@ package com.nilhcem.frcndict.search;
 import java.util.Observable;
 import java.util.Observer;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -23,12 +22,11 @@ import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.ClearableEditText;
 import com.nilhcem.frcndict.core.ClearableEditText.ClearableTextObservable;
-import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.core.DictActivity;
 import com.nilhcem.frcndict.meaning.WordMeaningActivity;
 
-public final class SearchActivity extends Activity implements Observer {
+public final class SearchActivity extends DictActivity implements Observer {
 	private SearchService mService;
-	private DatabaseHelper db = DatabaseHelper.getInstance();
 	private TextView mInputText;
 	private ListView mResultList;
 	private SearchAdapter mSearchAdapter;
@@ -39,20 +37,16 @@ public final class SearchActivity extends Activity implements Observer {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.search_dict);
+		if (!isFinishing()) {
+			setContentView(R.layout.search_dict);
 
-		initResultList();
-		initLangButton();
-		initService();
-		initInputText();
+			initResultList();
+			initLangButton();
+			initService();
+			initInputText();
 
-		restore(savedInstanceState);
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		db.open();
+			restore(savedInstanceState);
+		}
 	}
 
 	@Override

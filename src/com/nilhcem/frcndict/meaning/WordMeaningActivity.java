@@ -1,6 +1,5 @@
 package com.nilhcem.frcndict.meaning;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,14 +7,13 @@ import android.text.Html;
 import android.widget.TextView;
 
 import com.nilhcem.frcndict.R;
-import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.core.DictActivity;
 import com.nilhcem.frcndict.database.Tables;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
-public final class WordMeaningActivity extends Activity {
+public final class WordMeaningActivity extends DictActivity {
 	public static String ID_INTENT = "id";
 
-	private DatabaseHelper db = DatabaseHelper.getInstance();
 	private TextView mSimplified;
 	private TextView mPinyin;
 	private TextView mDescription;
@@ -23,9 +21,11 @@ public final class WordMeaningActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.word_meaning);
-		initTextViews();
-		loadData();
+		if (!isFinishing()) {
+			setContentView(R.layout.word_meaning);
+			initTextViews();
+			loadData();
+		}
 	}
 
 	private void initTextViews() {

@@ -2,14 +2,13 @@ package com.nilhcem.frcndict;
 
 import java.io.File;
 
-import com.nilhcem.frcndict.database.DatabaseHelper;
-import com.nilhcem.frcndict.importdb.ImportDataActivity;
-import com.nilhcem.frcndict.search.SearchActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
+
+import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.importdb.ImportDataActivity;
+import com.nilhcem.frcndict.search.SearchActivity;
 
 /**
  * Checks if database exists.
@@ -18,11 +17,6 @@ import android.os.Bundle;
  * TODO: Can be a service?
  */
 public final class CheckDataActivity extends Activity {
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-
 	@Override
 	protected void onResume() {
 		super.onResume();

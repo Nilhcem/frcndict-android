@@ -1,23 +1,24 @@
 package com.nilhcem.frcndict;
 
-import com.nilhcem.frcndict.database.DatabaseHelper;
-
-import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
-public final class AboutActivity extends Activity {
+import com.nilhcem.frcndict.core.DictActivity;
+
+public final class AboutActivity extends DictActivity {
 	private static final String TAG = "AboutActivity";
 	private static final String VERSION_SEPARATOR = "-";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.about);
-		fillVersions();
+		if (!isFinishing()) {
+			setContentView(R.layout.about);
+			fillVersions();
+		}
 	}
 
 	private void fillVersions() {
@@ -31,7 +32,7 @@ public final class AboutActivity extends Activity {
 		String appVersion = pInfo.versionName;
 
 		// Get database version
-		String dbVersion = convertDbVersionToFormattedDateVersion(DatabaseHelper.getInstance().getDbVersion());
+		String dbVersion = convertDbVersionToFormattedDateVersion(db.getDbVersion());
 
 		// Display versions
 		String aboutStr = getString(R.string.about_app_version, appVersion);

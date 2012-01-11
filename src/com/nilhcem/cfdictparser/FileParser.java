@@ -88,7 +88,7 @@ public final class FileParser {
 
 			pinyin = formatPinyin(pinyin, simplified);
 			if (pinyin != null) {
-				db.add(simplified, traditional, pinyin, translation);
+				db.add(simplified.trim(), traditional.trim(), pinyin.trim(), translation.trim());
 			}
 		}
 	}

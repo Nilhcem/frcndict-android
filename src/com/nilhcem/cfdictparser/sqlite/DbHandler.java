@@ -34,7 +34,8 @@ public final class DbHandler {
 					+ Tables.ENTRIES_KEY_TRADITIONAL + ", "
 					+ Tables.ENTRIES_KEY_PINYIN + ", "
 					+ Tables.ENTRIES_KEY_PINYIN2 + ", "
-					+ Tables.ENTRIES_KEY_TRANSLATION + ") VALUES (?, ?, ?, ?, ?);");
+					+ Tables.ENTRIES_KEY_TRANSLATION + ", "
+					+ Tables.ENTRIES_KEY_TRANS_AVG_LENGTH + ") VALUES (?, ?, ?, ?, ?, ?);");
 		} catch (ClassNotFoundException | SQLException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
@@ -71,7 +72,8 @@ public final class DbHandler {
 				+ Tables.ENTRIES_KEY_TRADITIONAL + " text, "
 				+ Tables.ENTRIES_KEY_PINYIN + " text, "
 				+ Tables.ENTRIES_KEY_PINYIN2 + " text, "
-				+ Tables.ENTRIES_KEY_TRANSLATION + " text not null);");
+				+ Tables.ENTRIES_KEY_TRANSLATION + " text not null,"
+				+ Tables.ENTRIES_KEY_TRANS_AVG_LENGTH + " integer);");
 
 		// METADATA_TABLE_NAME
 		stat.executeUpdate("DROP TABLE IF EXISTS " + Tables.METADATA_TABLE_NAME + ";");
@@ -111,6 +113,7 @@ public final class DbHandler {
 			prep.setString(3, pinyin);
 			prep.setString(4, pinyin.replaceAll("[^a-zA-Z]", "").toLowerCase()); // pinyin lower case without tones nor space
 			prep.setString(5, translation);
+			prep.setInt(6, getAverageLengthForEachWord(translation));
 			prep.addBatch();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
@@ -130,5 +133,32 @@ public final class DbHandler {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Get a representation of the average length (*100) of each words of the translation.
+	 * <p>
+	 * This is a trick used to get more accurate results, we order each results by their length.<br />
+	 * However, the translation contains many words on one column (yeah... this is not good...) and this can't work.<br />
+	 * We can fix this by creating another table which contains each word separately but it costs much more
+	 * physical and logical memory.
+	 * </p>
+	 *
+	 * @param translation the translation containing many words separated by the / character.
+	 * @return the average number of characters for each word in the translation.
+	 */
+	public int getAverageLengthForEachWord(String translation) {
+		String[] translations = translation.split("/");
+
+		int total = 0;
+		int nbWords = translations.length;
+		for (String curTr : translations) {
+			total += curTr.length();
+		}
+
+		if (nbWords > 0) {
+			total = (int)((double)total * 100 / nbWords);
+		}
+		return total;
 	}
 }

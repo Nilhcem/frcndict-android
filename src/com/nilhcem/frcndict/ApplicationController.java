@@ -15,6 +15,7 @@ public final class ApplicationController extends Application {
 	public static final int NB_ENTRIES_PER_LIST = 20;
 
 	// Services
+	private final DatabaseHelper db = DatabaseHelper.getInstance(); // create singleton
 	private final SearchService searchDictService = new SearchService();
 
 	@Override
@@ -25,7 +26,7 @@ public final class ApplicationController extends Application {
 	@Override
 	public void onTerminate() {
 		super.onTerminate();
-		DatabaseHelper.getInstance().close();
+		db.close();
 	}
 
 	public SearchService getSearchDictService() {

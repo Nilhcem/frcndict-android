@@ -61,6 +61,8 @@ public final class DatabaseHelper {
 			.append(" WHERE '/' || lower(")
 			.append(Tables.ENTRIES_KEY_TRANSLATION)
 			.append(") LIKE ? ORDER BY ")
+			.append(Tables.ENTRIES_KEY_TRANS_AVG_LENGTH)
+			.append(" ASC, ")
 			.append(Tables.ENTRIES_KEY_ROWID)
 			.append(" ASC LIMIT ?,")
 			.append(nbToDisplay);

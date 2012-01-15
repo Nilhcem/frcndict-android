@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Clearable edit text -->
+	<style name="ClearableEditText">
+		<item name="android:paddingRight">@dimen/clearable_text_padding_right</item>
+	</style>
+	<style name="ClearableClearCross">
+		<item name="android:background">@drawable/clear_cross</item>
+		<item name="android:layout_height">@dimen/clearable_cross_dimension</item>
+		<item name="android:layout_width">@dimen/clearable_cross_dimension</item>
+		<item name="android:layout_marginRight">@dimen/clearable_cross_margin_right</item>
+		<item name="android:layout_marginTop">@dimen/clearable_cross_margin_top</item>
+	</style>
+
+	<!-- Search -->
+	<style name="SearchTopBar">
+		<item name="android:background">@color/grey_search_bg</item>
+	</style>
+	<style name="SearchTopBarText">
+		<item name="android:layout_gravity">center</item>
+		<item name="android:layout_marginTop">@dimen/search_text_margin_top</item>
+	</style>
+	<style name="SearchTopBarButton">
+		<item name="android:layout_gravity">center</item>
+		<item name="android:layout_marginLeft">@dimen/search_button_margin_left</item>
+		<item name="android:layout_marginRight">@dimen/search_button_margin_right</item>
+	</style>
+	<style name="SearchList">
+		<item name="android:divider">@drawable/list_divider</item>
+		<item name="android:dividerHeight">@dimen/search_list_divider_height</item>
+	</style>
+
+    <!-- List item -->
+	<style name="ListItem">
+		<item name="android:layout_marginLeft">@dimen/slitem_side_margin</item>
+		<item name="android:layout_marginRight">@dimen/slitem_side_margin</item>
+	</style>
+	<style name="ListItem.Hanzi">
+		<item name="android:textSize">@dimen/slitem_hanzi_size</item>
+	</style>
+	<style name="ListItem.Pinyin">
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textStyle">italic</item>
+		<item name="android:textSize">@dimen/slitem_pinyin_size</item>
+		<item name="android:typeface">serif</item>
+	</style>
+	<style name="ListItem.Translation">
+		<item name="android:textColor">@color/grey</item>
+		<item name="android:layout_marginBottom">@dimen/slitem_margin_before_divider</item>
+		<item name="android:textSize">@dimen/slitem_translation_size</item>
+	</style>
+
+	<!-- No Result -->
+	<style name="ListItemNoResults">
+		<item name="android:gravity">center</item>
+		<item name="android:textSize">@dimen/search_no_item_size</item>
+		<item name="android:paddingTop">@dimen/search_no_item_padding_top</item>
+	</style>
+
+	<!-- Loading -->
+	<style name="ListItemLoadingLayout">
+		<item name="android:layout_height">@dimen/search_loading_layout_size</item>
+		<item name="android:layout_marginTop">@dimen/search_no_item_padding_top</item>
+		<item name="android:gravity">center</item>
+	</style>
+	<style name="ListItemLoadingIcon">
+		<item name="android:layout_height">@dimen/search_loading_icon_size</item>
+		<item name="android:layout_width">@dimen/search_loading_icon_size</item>
+	</style>
+	<style name="ListItemLoadingText">
+		<item name="android:layout_marginLeft">@dimen/search_loading_text_margin_left</item>
+		<item name="android:textSize">@dimen/search_no_item_size</item>
+	</style>
+</resources>

@@ -34,7 +34,9 @@
     <!-- Search entry -->
 	<string name="search_press_back_twice_exit">Press BACK once more to exit</string>
 	<string name="search_hint_text">Search French, 汉字, Pinyin</string>
+	<string name="search_empty_text">Search should not be empty</string>
 	<string name="search_no_results">No Results</string>
+	<string name="search_loading">Loading…</string>
 	<string name="search_btn_french">French</string>
 	<string name="search_btn_pinyin">Pinyin</string>
 
@@ -47,6 +49,8 @@
 	<string name="about_cfdict_url">http://www.chine-informations.com/chinois/open/CFDICT/</string>
 	<string name="about_cc_license">CFDICT is distributed under a Creative Commons license</string>
 	<string name="about_cc_url">http://creativecommons.org/licenses/by-sa/3.0/</string>
+	<string name="about_magnifier">Magnifier icon: made by Sirea (CC-by)</string>
+	<string name="about_magnifier_url">http://www.rw-designer.com/icon-detail/5345</string>
 	<string name="about_src">Application source code available on GitHub</string>
 	<string name="about_src_url">https://github.com/Nilhcem/frcndict-android</string>
 	<string name="about_contact">Bug reports and feedback</string>

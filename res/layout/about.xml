@@ -61,6 +61,19 @@
 	        android:text="@string/about_cc_url"
 	        android:textSize="@dimen/about_url_size" />
 
+	    <!-- Magnifier icon -->
+	    <TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/about_magnifier"
+	        android:textSize="@dimen/about_subtitle_size" />
+	    <TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="@dimen/about_line_separator"
+	        android:text="@string/about_magnifier_url"
+	        android:textSize="@dimen/about_url_size" />
+
 	    <!-- GitHub link -->
 	    <TextView
 	        android:layout_width="fill_parent"

@@ -8,17 +8,15 @@
         android:id="@+id/clearable_edit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="35dp"
-        android:inputType="text"
         android:ellipsize="end"
-        android:maxLines="1" />
+        android:inputType="text"
+        android:maxLines="1"
+        android:layout_centerVertical="true"
+        style="@style/ClearableEditText" />
 
     <Button
         android:id="@+id/clearable_button_clear"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
-        android:background="@android:drawable/ic_notification_clear_all" />
+        style="@style/ClearableClearCross" />
+
 </RelativeLayout>

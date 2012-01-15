@@ -59,7 +59,12 @@ final class SearchAdapter extends ArrayAdapter<Entry> {
 
 			view.setId(entry.getId());
 			chinese.setText(Html.fromHtml(ChineseCharsHandler.addColorToHanzi(entry.getSimplified(), entry.getPinyin())));
-			pinyin.setText(ChineseCharsHandler.pinyinNbToTones(entry.getPinyin()));
+			String pinyinStr = ChineseCharsHandler.pinyinNbToTones(entry.getPinyin());
+			if (pinyinStr.length() > 0) {
+				pinyin.setText(pinyinStr);
+			} else {
+				pinyin.setVisibility(View.GONE); // hide pinyin if empty
+			}
 			desc.setText(entry.getDesc());
 		}
 		return view;

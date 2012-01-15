@@ -12,28 +12,25 @@
         android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name=".ApplicationController">
+        android:name=".ApplicationController"
+        android:theme="@style/Theme">
         <activity
             android:label="@string/app_name"
             android:name=".CheckDataActivity"
-            android:noHistory="true"
-            android:theme="@android:style/Theme.NoTitleBar" >
-            <intent-filter >
+            android:noHistory="true">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".importdb.ImportDataActivity"
-            android:noHistory="true"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:noHistory="true" />
         <service android:name=".importdb.ImportDataService" android:label="@string/import_service_label"/>
         <activity
-            android:name=".search.SearchActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:name=".search.SearchActivity" />
         <activity
-            android:name=".meaning.WordMeaningActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:name=".meaning.WordMeaningActivity" />
         <activity
             android:name=".AboutActivity" />
         </application>

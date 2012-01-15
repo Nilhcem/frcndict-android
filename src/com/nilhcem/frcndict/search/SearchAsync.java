@@ -1,5 +1,6 @@
 package com.nilhcem.frcndict.search;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +16,12 @@ import com.nilhcem.frcndict.database.Tables;
 final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 	private SearchAdapter refAdapter;
 	private SearchService refService;
+	private WeakReference<SearchActivity> refActivity;
 
-	SearchAsync(SearchAdapter adapter, SearchService service) {
+	SearchAsync(SearchAdapter adapter, SearchService service, SearchActivity activity) {
 		this.refAdapter = adapter;
 		this.refService = service;
+		this.refActivity = new WeakReference<SearchActivity>(activity);
 	}
 
 	@Override
@@ -63,7 +66,9 @@ final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 		}
 		refAdapter.removeLoading();
 		refAdapter.add(result, stillLeft);
-		refService.changeLangButton();
+		if (refActivity != null && refActivity.get() != null) {
+			refActivity.get().changeSearchButtonBackground();
+		}
 	}
 
 	@Override

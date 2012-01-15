@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Import data -->
-    <dimen name="import_text_margin_top">8.0dp</dimen>
-    <dimen name="import_text_margin_side">5.0dp</dimen>
-    <dimen name="import_bottom_layout_margin_top">10.0dp</dimen>
-    <dimen name="import_bottom_layout_margin_side">5.0dp</dimen>
+	<!-- Clearable edit text -->
+	<dimen name="clearable_text_padding_right">35.0dp</dimen>
+	<dimen name="clearable_cross_dimension">30.0dp</dimen>
+	<dimen name="clearable_cross_margin_right">5.0dp</dimen>
+	<dimen name="clearable_cross_margin_top">8.0dp</dimen>
 
-    <!-- Search entry -->
-    <dimen name="search_no_results">20.0dp</dimen>
+	<!-- Import data -->
+	<dimen name="import_text_margin_top">8.0dp</dimen>
+	<dimen name="import_text_margin_side">5.0dp</dimen>
+	<dimen name="import_bottom_layout_margin_top">10.0dp</dimen>
+	<dimen name="import_bottom_layout_margin_side">5.0dp</dimen>
 
-    <!-- About menu -->
-    <dimen name="about_app_name_size">20.0dp</dimen>
-    <dimen name="about_version">10.0dp</dimen>
-    <dimen name="about_title_separator">26.0dp</dimen>
-    <dimen name="about_line_separator">16.0dp</dimen>
-	<dimen name="about_subtitle_size">13.0dp</dimen>
-	<dimen name="about_url_size">11.0dp</dimen>
+	<!-- Search -->
+	<dimen name="search_text_margin_top">2.0dp</dimen>
+	<dimen name="search_button_margin_left">4.0dp</dimen>
+	<dimen name="search_button_margin_right">8.0dp</dimen>
+	<dimen name="search_list_divider_height">1.0dp</dimen>
+
+	<!-- Search entry -->
+	<dimen name="search_no_item_size">24.0sp</dimen>
+	<dimen name="search_no_item_padding_top">4.0dp</dimen>
+	<dimen name="search_loading_layout_size">36.0dp</dimen>
+	<dimen name="search_loading_icon_size">30.0dp</dimen>
+	<dimen name="search_loading_text_margin_left">10.0dp</dimen>
+
+	<!-- Search list item -->
+	<dimen name="slitem_side_margin">4.0dp</dimen>
+	<dimen name="slitem_hanzi_size">28.0sp</dimen>
+	<dimen name="slitem_pinyin_size">16.0sp</dimen>
+	<dimen name="slitem_translation_size">15.0sp</dimen>
+	<dimen name="slitem_margin_before_divider">4.0dp</dimen>
+
+	<!-- About menu -->
+	<dimen name="about_app_name_size">20.0sp</dimen>
+	<dimen name="about_version">10.0sp</dimen>
+	<dimen name="about_title_separator">26.0dp</dimen>
+	<dimen name="about_line_separator">16.0dp</dimen>
+	<dimen name="about_subtitle_size">13.0sp</dimen>
+	<dimen name="about_url_size">11.0sp</dimen>
 </resources>

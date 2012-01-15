@@ -3,6 +3,7 @@ package com.nilhcem.frcndict.search;
 import java.util.Observable;
 import java.util.Observer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -10,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -29,10 +32,11 @@ public final class SearchActivity extends DictActivity implements Observer {
 	private SearchService mService;
 	private TextView mInputText;
 	private ListView mResultList;
+	private Button mSearchButton;
 	private SearchAdapter mSearchAdapter;
 	private EndlessScrollListener mEndlessScrollListener;
-	private Button mLangButton;
 	private Toast mPressBackTwiceToast = null;
+	private Toast mSearchEmptyToast = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public final class SearchActivity extends DictActivity implements Observer {
 			setContentView(R.layout.search_dict);
 
 			initResultList();
-			initLangButton();
+			initSearchButton();
 			initService();
 			initInputText();
 
@@ -52,16 +56,15 @@ public final class SearchActivity extends DictActivity implements Observer {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		changeButtonLangState();
+		changeSearchButtonBackground();
 		mPressBackTwiceToast = null;
 		mService.setLastBackPressTime(0l);
 	}
 
 	@Override
 	protected void onPause() {
-		if (mPressBackTwiceToast != null) {
-			mPressBackTwiceToast.cancel();
-		}
+		cancelToastIfNotNull(mPressBackTwiceToast);
+		cancelToastIfNotNull(mSearchEmptyToast);
 		super.onPause();
 	}
 
@@ -104,8 +107,6 @@ public final class SearchActivity extends DictActivity implements Observer {
 		outState.putInt("cur-page", mEndlessScrollListener.getCurrentPage());
 		outState.putBoolean("loading", mEndlessScrollListener.isLoading());
 		outState.putInt("prev-total", mEndlessScrollListener.getPreviousTotal());
-		outState.putInt("langbtn-visibility", mLangButton.getVisibility());
-		outState.putCharSequence("langbtn-text", mLangButton.getText());
 	}
 
 	private void restore(Bundle savedInstanceState) {
@@ -114,8 +115,6 @@ public final class SearchActivity extends DictActivity implements Observer {
 			mEndlessScrollListener.setCurrentPage(savedInstanceState.getInt("cur-page"));
 			mEndlessScrollListener.setLoading(savedInstanceState.getBoolean("loading"));
 			mEndlessScrollListener.setPreviousTotal(savedInstanceState.getInt("prev-total"));
-			mLangButton.setVisibility(savedInstanceState.getInt("langbtn-visibility"));
-			mLangButton.setText(savedInstanceState.getCharSequence("langbtn-text"));
 		}
 	}
 
@@ -132,9 +131,10 @@ public final class SearchActivity extends DictActivity implements Observer {
 	@Override
 	public void update(Observable observable, Object data) {
 		if (observable instanceof EndlessScrollListener) {
-			mService.runSearchThread((String) data, mInputText.getText().toString());
+			mService.runSearchThread((String) data, mInputText.getText().toString(), this);
 		} else if (observable instanceof ClearableTextObservable) {
-			clearResults();
+			clearResults(true);
+			changeSearchButtonBackground();
 		}
 	}
 
@@ -165,24 +165,25 @@ public final class SearchActivity extends DictActivity implements Observer {
 		});
 	}
 
-	private void initLangButton() {
-		mLangButton = (Button) findViewById(R.id.searchLangBtn);
-		mLangButton.setOnClickListener(new View.OnClickListener() {
+	private void initSearchButton() {
+		mSearchButton = (Button) findViewById(R.id.searchBtn);
+		mSearchButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// Switch search type
 				if (mService.getSearchType() == SearchService.SEARCH_FRENCH) {
 					mService.setSearchType(SearchService.SEARCH_PINYIN);
-				} else {
+				} else if (mService.getSearchType() == SearchService.SEARCH_PINYIN) {
 					mService.setSearchType(SearchService.SEARCH_FRENCH);
+				} else {
+					mService.setSearchType(SearchService.SEARCH_UNDEFINED);
 				}
-				runNewSearch();
+				runNewSearch(false);
 			}
 		});
 	}
 	private void initService() {
 		mService = ((ApplicationController) getApplication()).getSearchDictService();
-		mService.setActivity(this);
 		mService.setAdapter(mSearchAdapter);
 	}
 
@@ -193,13 +194,16 @@ public final class SearchActivity extends DictActivity implements Observer {
 		mInputText = (TextView) clearableText.getEditText();
 		mInputText.setHint(R.string.search_hint_text);
 		mInputText.setNextFocusDownId(mInputText.getId());
+		mInputText.setImeOptions(EditorInfo.IME_ACTION_SEARCH); // set search icon as the keyboard return key
 		mInputText.setOnKeyListener(new View.OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN) {
-					if (keyCode == KeyEvent.KEYCODE_ENTER) { // TODO: Remove this condition later
-						mService.setSearchType(SearchService.SEARCH_UNDEFINED);
-						runNewSearch();
+					if (keyCode == KeyEvent.KEYCODE_ENTER) {
+						runNewSearch(true);
+						// Hide keyboard
+		                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		                in.hideSoftInputFromWindow(mInputText.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 						return true;
 					}
 				}
@@ -208,28 +212,45 @@ public final class SearchActivity extends DictActivity implements Observer {
 		});
 	}
 
-	private void runNewSearch() {
-		clearResults();
-		mSearchAdapter.addLoading();
-		mService.runSearchThread(null, mInputText.getText().toString());
+	private void runNewSearch(boolean clearSearchType) {
+		String text = mInputText.getText().toString();
+		if (text.trim().length() == 0) {
+			cancelToastIfNotNull(mSearchEmptyToast);
+			mSearchEmptyToast = Toast.makeText(SearchActivity.this, R.string.search_empty_text, Toast.LENGTH_SHORT);
+			mSearchEmptyToast.show();
+		} else {
+			clearResults(clearSearchType);
+			mSearchAdapter.addLoading();
+			mService.runSearchThread(null, mInputText.getText().toString(), this);
+		}
 	}
 
-	private void clearResults() {
-		hideLangButton();
+	private void clearResults(boolean clearSearchType) {
+		if (clearSearchType) {
+			mService.setSearchType(SearchService.SEARCH_UNDEFINED);
+		}
 		mSearchAdapter.clear();
 		mEndlessScrollListener.reset();
 		mService.stopPreviousThread();
 	}
 
-	public void changeButtonLangState() {
-		if (mService.getLangBtnResId() != 0) {
-			mLangButton.setText(mService.getLangBtnResId());
+	public void changeSearchButtonBackground() {
+		int res = 0;
+		int searchType = mService.getSearchType();
+
+		if (searchType == SearchService.SEARCH_UNDEFINED) {
+			res = R.drawable.magnifier;
+		} else if (searchType == SearchService.SEARCH_FRENCH) {
+			res = R.drawable.magnifier_fr;
+		} else { // hanzi - pinyin
+			res = R.drawable.magnifier_cn;
 		}
-		mLangButton.setVisibility(mService.getLangBtnVisibility());
+		mSearchButton.setBackgroundResource(res);
 	}
 
-	private void hideLangButton() {
-		mLangButton.setVisibility(View.GONE);
-		mService.setLangBtnVisibility(View.GONE);
+	private void cancelToastIfNotNull(Toast toast) {
+		if (toast != null) {
+			toast.cancel();
+		}
 	}
 }

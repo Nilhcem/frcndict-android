@@ -26,6 +26,7 @@
 		<item name="android:layout_marginRight">@dimen/search_button_margin_right</item>
 	</style>
 	<style name="SearchList">
+	    <item name="android:background">@color/white</item>
 		<item name="android:divider">@drawable/list_divider</item>
 		<item name="android:dividerHeight">@dimen/search_list_divider_height</item>
 	</style>

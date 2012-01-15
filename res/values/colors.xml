@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#ff000000</color>
-    <color name="grey">#ff505050</color>
-    <color name="grey_search_bg">#ffcfcfcf</color>
-    <color name="divider_white">#fff4f7f9</color>
-    <color name="divider_grey">#ffdce4ea</color>
+	<color name="black">#ff000000</color>
+	<color name="white">#ffffffff</color>
+	<color name="grey">#ff505050</color>
+	<color name="grey_search_bg">#ffcfcfcf</color>
+	<color name="divider_white">#fff4f7f9</color>
+	<color name="divider_grey">#ffdce4ea</color>
 </resources>

@@ -115,6 +115,8 @@ public final class SearchActivity extends DictActivity implements Observer {
 			mEndlessScrollListener.setCurrentPage(savedInstanceState.getInt("cur-page"));
 			mEndlessScrollListener.setLoading(savedInstanceState.getBoolean("loading"));
 			mEndlessScrollListener.setPreviousTotal(savedInstanceState.getInt("prev-total"));
+		} else {
+			mService.setSearchType(SearchService.SEARCH_UNDEFINED);
 		}
 	}
 

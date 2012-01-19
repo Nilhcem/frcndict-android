@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.View;
 import android.widget.TextView;
 
 import com.nilhcem.frcndict.R;
@@ -16,7 +17,8 @@ public final class WordMeaningActivity extends DictActivity {
 
 	private TextView mSimplified;
 	private TextView mPinyin;
-	private TextView mDescription;
+	private TextView mMeaning;
+	private TextView mMeaningTitle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,8 @@ public final class WordMeaningActivity extends DictActivity {
 	private void initTextViews() {
 		mSimplified = (TextView) findViewById(R.id.wmChinese);
 		mPinyin = (TextView) findViewById(R.id.wmPinyin);
-		mDescription = (TextView) findViewById(R.id.wmDesc);
+		mMeaning = (TextView) findViewById(R.id.wmMeaning);
+		mMeaningTitle = (TextView) findViewById(R.id.wmMeaningTitle);
 	}
 
 	// Load data from database and fill views
@@ -47,9 +50,14 @@ public final class WordMeaningActivity extends DictActivity {
 				String pinyin = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN));
 				String desc = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION));
 
+				if (pinyin.length() > 0) {
+					mPinyin.setText(ChineseCharsHandler.pinyinNbToTones(pinyin));
+				} else {
+					mPinyin.setVisibility(View.GONE); // hide pinyin if empty
+				}
+
 				mSimplified.setText(Html.fromHtml(ChineseCharsHandler.addColorToHanzi(simplified, pinyin)));
-				mPinyin.setText(ChineseCharsHandler.pinyinNbToTones(pinyin));
-				mDescription.setText(desc.replace("/", System.getProperty("line.separator")));
+				mMeaning.setText(getFormattedMeaning(desc));
 			} else {
 				// TODO
 			}
@@ -57,5 +65,24 @@ public final class WordMeaningActivity extends DictActivity {
 		} else {
 			// TODO
 		}
+	}
+
+	private String getFormattedMeaning(String meaning) {
+		StringBuilder sb = new StringBuilder();
+		String[] meanings = meaning.split("/");
+
+		String space = " ";
+		String bullet = getString(R.string.meaning_title_bullet);
+		String separator = System.getProperty("line.separator");
+
+		for (String curMeaning : meanings) {
+			sb.append(bullet).append(space).append(curMeaning).append(separator);
+		}
+
+		// If there are many meanings, put the title in plural form (instead of singular form)
+		if (meanings.length > 1) {
+			mMeaningTitle.setText(R.string.meaning_title_plural);
+		}
+		return sb.toString();
 	}
 }

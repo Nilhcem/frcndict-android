@@ -40,6 +40,11 @@
 	<string name="search_btn_french">French</string>
 	<string name="search_btn_pinyin">Pinyin</string>
 
+	<!-- Word meaning -->
+	<string name="meaning_title_singular">Meaning:</string>
+	<string name="meaning_title_plural">Meanings:</string>
+	<string name="meaning_title_bullet">•</string>
+
     <!-- Menu -->
 	<string name="main_menu_about">About</string>
 

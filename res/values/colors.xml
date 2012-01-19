@@ -6,4 +6,5 @@
 	<color name="grey_search_bg">#ffcfcfcf</color>
 	<color name="divider_white">#fff4f7f9</color>
 	<color name="divider_grey">#ffdce4ea</color>
+	<color name="meaning_title_grey">#ff808080</color>
 </resources>

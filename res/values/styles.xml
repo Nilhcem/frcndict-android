@@ -72,4 +72,37 @@
 		<item name="android:layout_marginLeft">@dimen/search_loading_text_margin_left</item>
 		<item name="android:textSize">@dimen/search_no_item_size</item>
 	</style>
+
+	<!-- Word Meaning -->
+	<style name="WordMeaningLayout">
+		<item name="android:paddingLeft">@dimen/meaning_side_padding</item>
+		<item name="android:paddingRight">@dimen/meaning_side_padding</item>
+	</style>
+	<style name="WordMeaningHanzi">
+		<item name="android:gravity">center</item>
+		<item name="android:textSize">@dimen/meaning_hanzi_size</item>
+	</style>
+	<style name="WordMeaningPinyin">
+		<item name="android:gravity">center</item>
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textStyle">italic</item>
+		<item name="android:typeface">serif</item>
+		<item name="android:textSize">@dimen/meaning_pinyin_size</item>
+	</style>
+	<style name="WordMeaningSeparator">
+		<item name="android:layout_height">@dimen/meaning_separator_size</item>
+		<item name="android:layout_marginBottom">@dimen/meaning_separator_marginTopBottom</item>
+		<item name="android:layout_marginTop">@dimen/meaning_separator_marginTopBottom</item>
+		<item name="android:layout_marginLeft">@dimen/meaning_separator_marginLeftRight</item>
+		<item name="android:layout_marginRight">@dimen/meaning_separator_marginLeftRight</item>
+		<item name="android:background">@drawable/list_divider</item>
+	</style>
+	<style name="WordMeaningMeaningTitle">
+		<item name="android:textColor">@color/meaning_title_grey</item>
+		<item name="android:textSize">@dimen/meaning_meaning_size</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+	<style name="WordMeaningMeaning">
+		<item name="android:textSize">@dimen/meaning_meaning_size</item>
+	</style>
 </resources>

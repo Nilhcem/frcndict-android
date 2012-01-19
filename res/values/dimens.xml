@@ -32,6 +32,15 @@
 	<dimen name="slitem_translation_size">15.0sp</dimen>
 	<dimen name="slitem_margin_before_divider">4.0dp</dimen>
 
+	<!-- Word meaning -->
+	<dimen name="meaning_side_padding">10.0dp</dimen>
+	<dimen name="meaning_hanzi_size">36.0sp</dimen>
+	<dimen name="meaning_pinyin_size">18.0sp</dimen>
+	<dimen name="meaning_meaning_size">18.0sp</dimen>
+	<dimen name="meaning_separator_size">1.0dp</dimen>
+	<dimen name="meaning_separator_marginTopBottom">24.0dp</dimen>
+	<dimen name="meaning_separator_marginLeftRight">32.0dp</dimen>
+
 	<!-- About menu -->
 	<dimen name="about_app_name_size">20.0sp</dimen>
 	<dimen name="about_version">10.0sp</dimen>

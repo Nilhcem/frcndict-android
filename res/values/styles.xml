@@ -74,12 +74,16 @@
 	</style>
 
 	<!-- Word Meaning -->
+	<style name="WordMeaningScrollLayout">
+	    <item name="android:background">@color/white</item>
+	</style>
 	<style name="WordMeaningLayout">
 		<item name="android:paddingLeft">@dimen/meaning_side_padding</item>
 		<item name="android:paddingRight">@dimen/meaning_side_padding</item>
 	</style>
 	<style name="WordMeaningHanzi">
 		<item name="android:gravity">center</item>
+		<item name="android:layout_marginTop">@dimen/meaning_hanzi_marginTop</item>
 		<item name="android:textSize">@dimen/meaning_hanzi_size</item>
 	</style>
 	<style name="WordMeaningPinyin">

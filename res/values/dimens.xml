@@ -34,7 +34,8 @@
 
 	<!-- Word meaning -->
 	<dimen name="meaning_side_padding">10.0dp</dimen>
-	<dimen name="meaning_hanzi_size">36.0sp</dimen>
+	<dimen name="meaning_hanzi_size">38.0sp</dimen>
+	<dimen name="meaning_hanzi_marginTop">16.0dp</dimen>
 	<dimen name="meaning_pinyin_size">18.0sp</dimen>
 	<dimen name="meaning_meaning_size">18.0sp</dimen>
 	<dimen name="meaning_separator_size">1.0dp</dimen>

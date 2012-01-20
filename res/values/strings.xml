@@ -5,7 +5,9 @@
 
     <!-- Import data -->
     <string name="import_service_label">Dictionary import</string>
-    <string name="import_welcome_msg">"Welcome!\n\nThe dictionary needs to be downloaded first.\nPlease make sure your device is connected to the Internet.\n7 MB will be downloaded and about 25 MB will be needed during the installation process.\n\nDo you want to start the download now?"</string>
+    <string name="import_welcome_title">Welcome</string>
+    <string name="import_welcome_msg">The dictionary needs to be downloaded first.\nPlease make sure your device is connected to the Internet.\n8 MB will be downloaded and about 26 MB will be needed during the installation process.\n\nDo you want to start the download now?</string>
+    <string name="import_download_msg">Downloading dictionary data (8M).\nPlease wait…</string>
     <string name="import_download_btn">Download</string>
     <string name="import_exit_btn">Exit</string>
     <string name="import_done">Done</string>

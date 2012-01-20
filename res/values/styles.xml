@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- Import database -->
+	<style name="ImportWelcomeText">
+		<item name="android:gravity">center</item>
+		<item name="android:layout_marginTop">@dimen/import_welcome_text_margin_top</item>
+		<item name="android:textSize">@dimen/import_welcome_text_size</item>
+	</style>
+	<style name="ImportTextFrame">
+		<item name="android:background">@drawable/import_text_bg</item>
+		<item name="android:gravity">center</item>
+		<item name="android:layout_marginLeft">@dimen/import_text_margin_side</item>
+		<item name="android:layout_marginRight">@dimen/import_text_margin_side</item>
+		<item name="android:layout_marginTop">@dimen/import_separator_size</item>
+		<item name="android:layout_marginBottom">@dimen/import_separator_size</item>
+		<item name="android:textColor">@color/black</item>
+	</style>
+	<style name="ImportLayoutMargin">
+		<item name="android:layout_marginLeft">@dimen/import_bottom_layout_margin_side</item>
+		<item name="android:layout_marginRight">@dimen/import_bottom_layout_margin_side</item>
+	</style>
+	<style name="ImportPercentText">
+		<item name="android:gravity">right</item>
+	</style>
+	<style name="ImportProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
+		<item name="android:indeterminate">false</item>
+		<item name="android:max">100</item>
+		<item name="android:progressDrawable">@drawable/progress_bar</item>
+	</style>
+
 	<!-- Clearable edit text -->
 	<style name="ClearableEditText">
 		<item name="android:paddingRight">@dimen/clearable_text_padding_right</item>
@@ -61,7 +89,7 @@
 	<!-- Loading -->
 	<style name="ListItemLoadingLayout">
 		<item name="android:layout_height">@dimen/search_loading_layout_size</item>
-		<item name="android:layout_marginTop">@dimen/search_no_item_padding_top</item>
+		<item name="android:paddingTop">@dimen/search_no_item_padding_top</item>
 		<item name="android:gravity">center</item>
 	</style>
 	<style name="ListItemLoadingIcon">

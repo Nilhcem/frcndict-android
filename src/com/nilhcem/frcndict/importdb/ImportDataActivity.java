@@ -21,6 +21,7 @@ public final class ImportDataActivity extends Activity {
 	private Button mExitButton;
 	private Button mCancelButton;
 
+	private TextView mImportMessage;
 	private ProgressBar mDownloadBar;
 	private TextView mDownloadPercent;
 	private ProgressBar mInstallBar;
@@ -173,6 +174,8 @@ public final class ImportDataActivity extends Activity {
 	}
 
 	private void initProgressData() {
+		mImportMessage = (TextView) findViewById(R.id.importMessage);
+
 		mDownloadBar = (ProgressBar) findViewById(R.id.importDownloadingBar);
 		mInstallBar = (ProgressBar) findViewById(R.id.importInstallingBar);
 
@@ -217,9 +220,11 @@ public final class ImportDataActivity extends Activity {
 		}
 
 		if (status == ImportDataService.STATUS_BEGIN) {
+			mImportMessage.setText(R.string.import_welcome_msg);
 			mImportButtonsLayout.setVisibility(View.VISIBLE);
 			mImportProgressLayout.setVisibility(View.GONE);
 		} else {
+			mImportMessage.setText(R.string.import_download_msg);
 			mImportButtonsLayout.setVisibility(View.GONE);
 			mImportProgressLayout.setVisibility(View.VISIBLE);
 

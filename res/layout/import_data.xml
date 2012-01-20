@@ -1,112 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:orientation="vertical">
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/import_text_margin_side"
-            android:layout_marginRight="@dimen/import_text_margin_side"
-            android:layout_marginTop="@dimen/import_text_margin_top"
-            android:background="@drawable/import_text_bg"
-            android:gravity="center"
-            android:text="@string/import_welcome_msg" />
+		<!-- Welcome message -->
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:text="@string/import_welcome_title"
+			style="@style/ImportWelcomeText" />
 
-        <LinearLayout
-            android:id="@+id/importButtonsLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/import_bottom_layout_margin_side"
-            android:layout_marginRight="@dimen/import_bottom_layout_margin_side"
-            android:layout_marginTop="@dimen/import_bottom_layout_margin_top" >
+		<!-- Text frame -->
+		<TextView
+			android:id="@+id/importMessage"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:text="@string/import_welcome_msg"
+			style="@style/ImportTextFrame" />
 
-            <Button
-                android:id="@+id/importDwnldBtn"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:text="@string/import_download_btn" />
+		<!-- Start download layout -->
+		<LinearLayout
+			android:id="@+id/importButtonsLayout"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			style="@style/ImportLayoutMargin">
 
-            <Button
-                android:id="@+id/importExitBtn"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:text="@string/import_exit_btn" />
-        </LinearLayout>
+			<!-- Download -->
+			<Button
+				android:id="@+id/importDwnldBtn"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:layout_weight="1.0"
+				android:text="@string/import_download_btn" />
 
-        <RelativeLayout
-            android:id="@+id/importProgressLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="@dimen/import_bottom_layout_margin_side"
-            android:layout_marginRight="@dimen/import_bottom_layout_margin_side"
-            android:layout_marginTop="@dimen/import_bottom_layout_margin_top" >
+			<!-- Exit -->
+			<Button
+				android:id="@+id/importExitBtn"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:layout_weight="1.0"
+				android:text="@string/import_exit_btn" />
+		</LinearLayout>
 
-            <TextView
-                android:id="@+id/importDownloadingText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/import_download_text" />
+		<!-- Import progress layout -->
+		<RelativeLayout
+			android:id="@+id/importProgressLayout"
+			android:layout_height="fill_parent"
+			android:layout_width="fill_parent"
+			style="@style/ImportLayoutMargin">
 
-            <TextView
-                android:id="@+id/importDownloadingPercent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@id/importDownloadingText"
-                android:gravity="right"
-                android:text="" />
+			<!-- Download title -->
+			<TextView
+				android:id="@+id/importDownloadingText"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:text="@string/import_download_text" />
 
-            <ProgressBar
-                android:id="@+id/importDownloadingBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/importDownloadingText"
-                android:indeterminate="false"
-                android:max="100" />
+			<!-- Download percent -->
+			<TextView
+				android:id="@+id/importDownloadingPercent"
+				android:layout_alignTop="@id/importDownloadingText"
+				android:layout_alignParentRight="true"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				style="ImportPercentText" />
 
-            <TextView
-                android:id="@+id/importInstallingText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/importDownloadingBar"
-                android:paddingTop="@dimen/import_bottom_layout_margin_top"
-                android:text="@string/import_install_text" />
+			<!-- Download progress bar -->
+			<ProgressBar
+				android:id="@+id/importDownloadingBar"
+				android:layout_below="@id/importDownloadingText"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				style="@style/ImportProgressBar" />
 
-            <TextView
-                android:id="@+id/importInstallingPercent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@id/importInstallingText"
-                android:gravity="right"
-                android:paddingTop="@dimen/import_bottom_layout_margin_top"
-                android:text="" />
+			<!-- Space separator -->
+			<View
+				android:id="@+id/importProgressSeparator"
+				android:layout_below="@id/importDownloadingBar"
+				android:layout_height="@dimen/import_separator_size"
+				android:layout_width="wrap_content" />
 
-            <ProgressBar
-                android:id="@+id/importInstallingBar"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/importInstallingText"
-                android:indeterminate="false"
-                android:max="100"
-                android:paddingBottom="@dimen/import_bottom_layout_margin_top" />
+			<!-- Install title -->
+			<TextView
+				android:id="@+id/importInstallingText"
+				android:layout_below="@+id/importProgressSeparator"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				android:text="@string/import_install_text" />
 
-	        <Button
-	            android:id="@+id/importCancelBtn"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-                android:layout_below="@id/importInstallingBar"
-	            android:text="@string/import_cancel_btn" />
+			<!-- Install percent -->
+			<TextView
+				android:id="@+id/importInstallingPercent"
+				android:layout_alignParentRight="true"
+				android:layout_alignTop="@id/importInstallingText"
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				style="ImportPercentText" />
+
+			<!-- Install progress bar -->
+			<ProgressBar
+				android:id="@+id/importInstallingBar"
+				android:layout_below="@id/importInstallingText"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				style="@style/ImportProgressBar" />
+
+			<!-- Cancel button -->
+			<Button
+				android:id="@+id/importCancelBtn"
+				android:layout_below="@id/importInstallingBar"
+				android:layout_height="wrap_content"
+				android:layout_width="fill_parent"
+				android:layout_marginTop="@dimen/import_separator_size"
+				android:text="@string/import_cancel_btn" />
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

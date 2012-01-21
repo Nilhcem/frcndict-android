@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Misc -->
 	<color name="black">#ff000000</color>
 	<color name="white">#ffffffff</color>
 	<color name="grey">#ff505050</color>
-	<color name="grey_search_bg">#ffcfcfcf</color>
-
-	<!-- List divider -->
-	<color name="divider_white">#fff4f7f9</color>
-	<color name="divider_grey">#ffdce4ea</color>
+	<color name="transparent">#00000000</color>
 
 	<!-- Import text -->
 	<color name="import_text_bg">#fff0eff9</color>
@@ -20,6 +17,14 @@
 	<color name="progress_fg_start">#ff9ba3c4</color>
 	<color name="progress_fg_center">#ff53586b</color>
 	<color name="progress_fg_end">#ff6e748c</color>
+
+	<!-- List divider -->
+	<color name="divider_white">#fff4f7f9</color>
+	<color name="divider_grey">#ffdce4ea</color>
+
+	<!-- Search top bar -->
+	<color name="search_top_bar_grey_start">#ffdbdbdb</color>
+	<color name="search_top_bar_grey_end">#ffc4c4c4</color>
 
 	<!-- Word meaning -->
 	<color name="meaning_title_grey">#ff808080</color>

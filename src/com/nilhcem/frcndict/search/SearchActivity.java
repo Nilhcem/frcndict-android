@@ -241,11 +241,11 @@ public final class SearchActivity extends DictActivity implements Observer {
 		int searchType = mService.getSearchType();
 
 		if (searchType == SearchService.SEARCH_UNDEFINED) {
-			res = R.drawable.magnifier;
+			res = R.drawable.magnifier_selector;
 		} else if (searchType == SearchService.SEARCH_FRENCH) {
-			res = R.drawable.magnifier_fr;
+			res = R.drawable.magnifier_fr_selector;
 		} else { // hanzi - pinyin
-			res = R.drawable.magnifier_cn;
+			res = R.drawable.magnifier_cn_selector;
 		}
 		mSearchButton.setBackgroundResource(res);
 	}

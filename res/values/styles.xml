@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- Core -->
+	<style name="ListViewStyle"> <!-- All ListView should inherit from this -->
+		<item name="android:cacheColorHint">@color/transparent</item>
+	</style>
+
 	<!-- Import database -->
 	<style name="ImportWelcomeText">
 		<item name="android:gravity">center</item>
@@ -33,7 +38,7 @@
 		<item name="android:paddingRight">@dimen/clearable_text_padding_right</item>
 	</style>
 	<style name="ClearableClearCross">
-		<item name="android:background">@drawable/clear_cross</item>
+		<item name="android:background">@drawable/clear_cross_selector</item>
 		<item name="android:layout_height">@dimen/clearable_cross_dimension</item>
 		<item name="android:layout_width">@dimen/clearable_cross_dimension</item>
 		<item name="android:layout_marginRight">@dimen/clearable_cross_margin_right</item>
@@ -42,7 +47,7 @@
 
 	<!-- Search -->
 	<style name="SearchTopBar">
-		<item name="android:background">@color/grey_search_bg</item>
+		<item name="android:background">@drawable/search_top_bar</item>
 	</style>
 	<style name="SearchTopBarText">
 		<item name="android:layout_gravity">center</item>
@@ -53,10 +58,11 @@
 		<item name="android:layout_marginLeft">@dimen/search_button_margin_left</item>
 		<item name="android:layout_marginRight">@dimen/search_button_margin_right</item>
 	</style>
-	<style name="SearchList">
+	<style name="SearchList" parent="ListViewStyle">
 	    <item name="android:background">@color/white</item>
 		<item name="android:divider">@drawable/list_divider</item>
 		<item name="android:dividerHeight">@dimen/search_list_divider_height</item>
+		<item name="android:listSelector">@drawable/list_item_selector</item>
 	</style>
 
     <!-- List item -->

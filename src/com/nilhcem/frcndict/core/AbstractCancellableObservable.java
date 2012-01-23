@@ -1,8 +1,8 @@
-package com.nilhcem.frcndict.utils;
+package com.nilhcem.frcndict.core;
 
 import java.util.Observable;
 
-/* package-private */ abstract class AbstractCancellableObservable extends Observable {
+public abstract class AbstractCancellableObservable extends Observable {
 	protected boolean cancel;
 
 	public AbstractCancellableObservable() {

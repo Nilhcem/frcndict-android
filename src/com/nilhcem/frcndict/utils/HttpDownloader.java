@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.nilhcem.frcndict.core.AbstractCancellableObservable;
+
 public final class HttpDownloader extends AbstractCancellableObservable {
 	private File output;
 	private URL url;

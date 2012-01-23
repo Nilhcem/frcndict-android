@@ -8,11 +8,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.nilhcem.frcndict.R;
-import com.nilhcem.frcndict.core.DictActivity;
+import com.nilhcem.frcndict.core.AbstractDictActivity;
 import com.nilhcem.frcndict.database.Tables;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
-public final class WordMeaningActivity extends DictActivity {
+public final class WordMeaningActivity extends AbstractDictActivity {
 	public static String ID_INTENT = "id";
 
 	private TextView mSimplified;

@@ -1,0 +1,44 @@
+body {
+	background-color: #fff;
+	font-family: arial,sans-serif;
+	padding: 4pt 2pt;
+}
+
+a {
+	color: #555;
+	font-size: 8pt;
+}
+a:visited {
+	color: #555;
+}
+
+hr {
+	margin-bottom: 12pt;
+	margin-top: 12pt;
+	width: 80%;
+}
+
+img {
+	display: block;
+	margin: 0 auto;
+}
+
+#app-name {
+	font-size: 17pt;
+	text-align: center;
+}
+
+#version-div {
+	color: #444;
+	font-size: 11pt;
+	text-align: center;
+}
+
+.main-line {
+	font-size: 11pt;
+}
+
+#button-container {
+	text-align: center;
+	width: 100%;
+}

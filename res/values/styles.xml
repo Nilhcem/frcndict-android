@@ -143,4 +143,11 @@
 	<style name="WordMeaningMeaning">
 		<item name="android:textSize">@dimen/meaning_meaning_size</item>
 	</style>
+
+	<!-- About -->
+	<style name="sAboutDialog" parent="android:Theme.Dialog">
+		<item name="android:textColor">@color/white</item>
+		<item name="android:textSize">@dimen/about_title_size</item>
+		<item name="android:windowIsFloating">true</item>
+	</style>
 </resources>

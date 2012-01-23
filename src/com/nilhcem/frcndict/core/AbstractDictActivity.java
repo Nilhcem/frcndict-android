@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.nilhcem.frcndict.CheckDataActivity;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 
-public class DictActivity extends Activity {
+public abstract class AbstractDictActivity extends Activity {
 	protected DatabaseHelper db = DatabaseHelper.getInstance();
 
 	// should be the first method called, once called, other code should be in a if (!isFinishing()) condition

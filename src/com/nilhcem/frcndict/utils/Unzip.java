@@ -11,6 +11,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
+import com.nilhcem.frcndict.core.AbstractCancellableObservable;
+
 public final class Unzip extends AbstractCancellableObservable {
 	private File location;
 	private File zipFile;

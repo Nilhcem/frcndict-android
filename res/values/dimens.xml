@@ -48,11 +48,6 @@
 	<dimen name="meaning_separator_marginTopBottom">24.0dp</dimen>
 	<dimen name="meaning_separator_marginLeftRight">32.0dp</dimen>
 
-	<!-- About menu -->
-	<dimen name="about_app_name_size">20.0sp</dimen>
-	<dimen name="about_version">10.0sp</dimen>
-	<dimen name="about_title_separator">26.0dp</dimen>
-	<dimen name="about_line_separator">16.0dp</dimen>
-	<dimen name="about_subtitle_size">13.0sp</dimen>
-	<dimen name="about_url_size">11.0sp</dimen>
+	<!-- About dialog -->
+	<dimen name="about_title_size">22.0sp</dimen>
 </resources>

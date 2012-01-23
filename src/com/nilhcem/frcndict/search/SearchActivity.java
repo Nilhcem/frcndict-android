@@ -7,9 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -20,15 +17,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nilhcem.frcndict.AboutActivity;
 import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
+import com.nilhcem.frcndict.core.AbstractMenuActivity;
 import com.nilhcem.frcndict.core.ClearableEditText;
 import com.nilhcem.frcndict.core.ClearableEditText.ClearableTextObservable;
-import com.nilhcem.frcndict.core.DictActivity;
 import com.nilhcem.frcndict.meaning.WordMeaningActivity;
 
-public final class SearchActivity extends DictActivity implements Observer {
+public final class SearchActivity extends AbstractMenuActivity implements Observer {
 	private SearchService mService;
 	private TextView mInputText;
 	private ListView mResultList;
@@ -79,24 +75,6 @@ public final class SearchActivity extends DictActivity implements Observer {
 			mService.stopPreviousThread();
 			db.close();
 			super.onBackPressed();
-		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main_menu, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.main_menu_about) {
-			Intent intent = new Intent(this, AboutActivity.class);
-			startActivity(intent);
-			return true;
-		} else {
-			return super.onOptionsItemSelected(item);
 		}
 	}
 

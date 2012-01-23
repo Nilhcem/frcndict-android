@@ -50,16 +50,6 @@
     <!-- Menu -->
 	<string name="main_menu_about">About</string>
 
-    <!-- About menu -->
-	<string name="about_app_version">version %s</string>
-	<string name="about_db_version">Powered by CFDICT (%s)</string>
-	<string name="about_cfdict_url">http://www.chine-informations.com/chinois/open/CFDICT/</string>
-	<string name="about_cc_license">CFDICT is distributed under a Creative Commons license</string>
-	<string name="about_cc_url">http://creativecommons.org/licenses/by-sa/3.0/</string>
-	<string name="about_magnifier">Magnifier icon: made by Sirea (CC-by)</string>
-	<string name="about_magnifier_url">http://www.rw-designer.com/icon-detail/5345</string>
-	<string name="about_src">Application source code available on GitHub</string>
-	<string name="about_src_url">https://github.com/Nilhcem/frcndict-android</string>
-	<string name="about_contact">Bug reports and feedback</string>
-	<string name="about_contact_mail">nilhcem[at]gmail[dot]com</string>
+    <!-- About dialog (see also ~/assets/about/about.html) -->
+	<string name="about_title">About</string>
 </resources>

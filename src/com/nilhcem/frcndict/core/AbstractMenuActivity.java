@@ -18,7 +18,7 @@ public class AbstractMenuActivity extends AbstractDictActivity {
 		super.onCreate(savedInstanceState);
 		if (savedInstanceState != null) {
 			if (savedInstanceState.getBoolean("about-displayed", false)) {
-				getAboutDialog().show();
+				createAboutDialog().show();
 			}
 		}
 	}
@@ -33,7 +33,7 @@ public class AbstractMenuActivity extends AbstractDictActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.main_menu_about) {
-			getAboutDialog().show();
+			createAboutDialog().show();
 			return true;
 		} else {
 			return super.onOptionsItemSelected(item);
@@ -50,11 +50,8 @@ public class AbstractMenuActivity extends AbstractDictActivity {
 		}
 	}
 
-	// lazy get
-	private Dialog getAboutDialog() {
-		if (mAboutDialog == null) {
-			mAboutDialog = new AboutDialog(this, R.style.sAboutDialog);
-		}
+	private Dialog createAboutDialog() {
+		mAboutDialog = new AboutDialog(this, R.style.sAboutDialog);
 		return mAboutDialog;
 	}
 }

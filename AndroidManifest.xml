@@ -31,5 +31,7 @@
             android:name=".search.SearchActivity" />
         <activity
             android:name=".meaning.WordMeaningActivity" />
+        <activity
+            android:name=".settings.SettingsActivity" />
         </application>
 </manifest>

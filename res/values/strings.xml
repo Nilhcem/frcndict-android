@@ -49,7 +49,31 @@
 
     <!-- Menu -->
 	<string name="main_menu_about">About</string>
+	<string name="main_menu_settings">Settings</string>
 
     <!-- About dialog (see also ~/assets/about/about.html) -->
 	<string name="about_title">About</string>
+
+	<!-- Settings -->
+	<string name="settings_cat_general">General</string>
+	<string name="settings_chinese_chars">Simplified/Traditional</string>
+	<string name="settings_chinese_chars_sum">Display simplified or traditional characters</string>
+	<string name="settings_chinese_chars_simp">Simplified</string>
+	<string name="settings_chinese_chars_trad">Traditional</string>
+	<string name="settings_chinese_chars_both_st">Simpl. [Trad.]</string>
+	<string name="settings_chinese_chars_both_ts">Trad. [Simpl.]</string>
+	<string name="settings_pinyin">Pinyin Tone Marks</string>
+	<string name="settings_pinyin_sum">Choose between pīnyīn, pin1yin1 or pinyin</string>
+	<string name="settings_hanzi_coloring">Hanzi Coloring</string>
+	<string name="settings_hanzi_coloring_sum">Color Chinese characters depending on their tones</string>
+	<string name="settings_cat_display">Appearance</string>
+	<string name="settings_dark_theme">Night Mode</string>
+	<string name="settings_dark_theme_sum">Change the display to a dark theme</string>
+	<string name="settings_cat_advanced">Advanced</string>
+	<string name="settings_db_updates">Check for updates</string>
+	<string name="settings_db_updates_sum">Specify when to check for dictionary updates</string>
+	<string name="settings_db_updates_daily">Daily</string>
+	<string name="settings_db_updates_weekly">Weekly</string>
+	<string name="settings_db_updates_monthly">Monthly</string>
+	<string name="settings_db_updates_never">Never</string>
 </resources>

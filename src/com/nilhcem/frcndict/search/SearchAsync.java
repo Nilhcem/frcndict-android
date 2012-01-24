@@ -7,10 +7,10 @@ import java.util.List;
 import android.database.Cursor;
 import android.os.AsyncTask;
 
-import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Entry;
 import com.nilhcem.frcndict.database.Tables;
+import com.nilhcem.frcndict.settings.SettingsActivity;
 
 /* package-private */
 final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
@@ -60,9 +60,9 @@ final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 	protected void onPostExecute(List<Entry> result) {
 		super.onPostExecute(result);
 		boolean stillLeft = false;
-		if (result.size() > ApplicationController.NB_ENTRIES_PER_LIST) {
+		if (result.size() > SettingsActivity.NB_ENTRIES_PER_LIST) {
 			stillLeft = true;
-			result.remove(ApplicationController.NB_ENTRIES_PER_LIST); // remove last one, just used to know if there are still some elements left
+			result.remove(SettingsActivity.NB_ENTRIES_PER_LIST); // remove last one, just used to know if there are still some elements left
 		}
 		refAdapter.removeLoading();
 		refAdapter.add(result, stillLeft);

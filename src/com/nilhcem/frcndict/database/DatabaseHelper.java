@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.nilhcem.frcndict.ApplicationController;
+import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class DatabaseHelper {
@@ -23,7 +23,7 @@ public final class DatabaseHelper {
 	static {
 		StringBuilder sb;
 		// add 1 entry we won't display but which is just to know if there are still some elements after.
-		String nbToDisplay = Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST + 1);
+		String nbToDisplay = Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST + 1);
 
 		// Hanzi query
 		sb = new StringBuilder("SELECT * FROM ")
@@ -135,7 +135,7 @@ public final class DatabaseHelper {
 		String criteria = String.format("%%%s%%", search);
 		return mDb.rawQuery(DatabaseHelper.QUERY_HANZI,
 				new String[] { criteria, criteria,
-					Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST * curPage)
+					Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
 				});
 	}
 
@@ -145,14 +145,14 @@ public final class DatabaseHelper {
 				new String[] {
 					String.format("%%%s%%", search.replaceAll("[^a-zA-Z]", "")),
 					convertToQueryReadyPinyin(search),
-					Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST * curPage)
+					Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
 				});
 	}
 
 	public Cursor searchFrench(String search, Integer curPage) {
 		return mDb.rawQuery(DatabaseHelper.QUERY_FRENCH,
 				new String[] { String.format("%%/%s%%", search),
-					Integer.toString(ApplicationController.NB_ENTRIES_PER_LIST * curPage)
+					Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
 				});
 	}
 

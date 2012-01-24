@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- General (Simpified/Trad. - Pinyin - Hanzi coloring) -->
+	<PreferenceCategory android:title="@string/settings_cat_general">
+		<ListPreference android:title="@string/settings_chinese_chars"
+			android:summary="@string/settings_chinese_chars_sum"
+			android:key="chineseChars" android:defaultValue="1"
+			android:entries="@array/chineseCharsEntries" android:entryValues="@array/chineseCharsValues" />
+		<ListPreference android:title="@string/settings_pinyin"
+			android:summary="@string/settings_pinyin_sum"
+			android:key="pinyin" android:defaultValue="2"
+			android:entries="@array/pinyinEntries" android:entryValues="@array/pinyinValues" />
+		<CheckBoxPreference android:title="@string/settings_hanzi_coloring"
+			android:defaultValue="true"
+			android:summary="@string/settings_hanzi_coloring_sum"
+			android:key="hanziColoring" />
+	</PreferenceCategory>
+
+	<!-- Appearance (Night mode) -->
+	<PreferenceCategory android:title="@string/settings_cat_display">
+		<CheckBoxPreference android:title="@string/settings_dark_theme"
+			android:defaultValue="false"
+			android:summary="@string/settings_dark_theme_sum"
+			android:key="darkTheme" />
+	</PreferenceCategory>
+
+	<!-- Advanced (Database updates) -->
+	<PreferenceCategory android:title="@string/settings_cat_advanced">
+		<ListPreference android:title="@string/settings_db_updates"
+			android:summary="@string/settings_db_updates_sum"
+			android:key="dbUpdates" android:defaultValue="4"
+			android:entries="@array/dbUpdatesEntries" android:entryValues="@array/dbUpdatesValues" />
+	</PreferenceCategory>
+</PreferenceScreen>

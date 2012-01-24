@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.importdb.ImportDataActivity;
 import com.nilhcem.frcndict.search.SearchActivity;
+import com.nilhcem.frcndict.settings.SettingsActivity;
 
 /**
  * Checks if database exists.
@@ -29,8 +30,8 @@ public final class CheckDataActivity extends Activity {
 	private void checkDatabase() {
 		boolean initDatabase = true;
 
-		SharedPreferences prefs = getSharedPreferences(ApplicationController.PREFS_NAME, MODE_PRIVATE);
-		String dbPath = prefs.getString(ApplicationController.PREFS_DB_PATH, null);
+		SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
+		String dbPath = prefs.getString(SettingsActivity.KEY_DB_PATH, null);
 
 		if (dbPath != null) {
 			DatabaseHelper dbHelper = DatabaseHelper.getInstance();

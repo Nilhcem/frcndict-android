@@ -18,9 +18,9 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.FileReader;
 import com.nilhcem.frcndict.utils.HttpDownloader;
 import com.nilhcem.frcndict.utils.Md5;
@@ -380,9 +380,9 @@ public final class ImportDataService extends Service {
 		}
 
 		private void saveDatabasePath() {
-			SharedPreferences prefs = getSharedPreferences(ApplicationController.PREFS_NAME, MODE_PRIVATE);
+			SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(ApplicationController.PREFS_DB_PATH, zippedFile.getAbsolutePath());
+			editor.putString(SettingsActivity.KEY_DB_PATH, zippedFile.getAbsolutePath());
 			editor.commit();
 		}
 	}

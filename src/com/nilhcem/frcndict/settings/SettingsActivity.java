@@ -10,7 +10,12 @@ public final class SettingsActivity extends PreferenceActivity {
 	public static final String PREFS_NAME = "SharedPrefs";
 	public static final String KEY_DB_PATH = "dbPath";
 	public static final String KEY_CHINESE_CHARS = "chineseChars";
+
 	public static final String KEY_PINYIN = "pinyin";
+	public static final String KEY_PINYIN_NONE = "1";
+	public static final String KEY_PINYIN_TONES = "2";
+	public static final String KEY_PINYIN_NUMBER = "3";
+
 	public static final String KEY_COLOR_HANZI = "hanziColoring";
 	public static final String KEY_DARK_THEME = "darkTheme";
 	public static final String KEY_DATABASE_UPDATES = "dbUpdates";

@@ -127,7 +127,7 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 		if (getLastNonConfigurationInstance() != null) {
 			mSearchAdapter = (SearchAdapter) getLastNonConfigurationInstance();
 		} else {
-			mSearchAdapter = new SearchAdapter(this, R.layout.search_dict_list_item, getLayoutInflater());
+			mSearchAdapter = new SearchAdapter(this, R.layout.search_dict_list_item, getLayoutInflater(), prefs);
 		}
 
 		mResultList = (ListView) findViewById(R.id.searchList);
@@ -162,6 +162,7 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 			}
 		});
 	}
+
 	private void initService() {
 		mService = ((ApplicationController) getApplication()).getSearchDictService();
 		mService.setAdapter(mSearchAdapter);

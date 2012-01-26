@@ -51,7 +51,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 				String desc = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION));
 
 				if (pinyin.length() > 0) {
-					mPinyin.setText(ChineseCharsHandler.pinyinNbToTones(pinyin));
+					mPinyin.setText(ChineseCharsHandler.formatPinyin(pinyin, prefs));
 				} else {
 					mPinyin.setVisibility(View.GONE); // hide pinyin if empty
 				}

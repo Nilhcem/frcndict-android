@@ -3,6 +3,7 @@ package com.nilhcem.frcndict.search;
 import java.util.List;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +21,15 @@ final class SearchAdapter extends ArrayAdapter<Entry> {
 	private Entry loading;
 	private Entry noResults;
 	private LayoutInflater inflater;
+	private SharedPreferences prefs;
 
-	SearchAdapter(Context context, int textViewResourceId, LayoutInflater inflater) {
+	SearchAdapter(Context context, int textViewResourceId, LayoutInflater inflater, SharedPreferences prefs) {
 		super(context, textViewResourceId);
 		this.searchIsOver = false;
 		this.inflater = inflater;
 		this.loading = new Entry();
 		this.noResults = new Entry();
+		this.prefs = prefs;
 	}
 
 	// TODO: Check if convertView != null ?
@@ -59,7 +62,7 @@ final class SearchAdapter extends ArrayAdapter<Entry> {
 
 			view.setId(entry.getId());
 			chinese.setText(Html.fromHtml(ChineseCharsHandler.addColorToHanzi(entry.getSimplified(), entry.getPinyin())));
-			String pinyinStr = ChineseCharsHandler.pinyinNbToTones(entry.getPinyin());
+			String pinyinStr = ChineseCharsHandler.formatPinyin(entry.getPinyin(), prefs);
 			if (pinyinStr.length() > 0) {
 				pinyin.setText(pinyinStr);
 			} else {

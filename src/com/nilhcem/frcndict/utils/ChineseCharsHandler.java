@@ -1,5 +1,8 @@
 package com.nilhcem.frcndict.utils;
 
+import com.nilhcem.frcndict.settings.SettingsActivity;
+
+import android.content.SharedPreferences;
 import android.util.Log;
 
 public final class ChineseCharsHandler {
@@ -233,10 +236,44 @@ public final class ChineseCharsHandler {
 		return dest;
 	}
 
+	// Transform a pin1yin1 with tones number to a pinyin without tone mark.
+	// Ugly, rewrite better if possible. Can't do regex to replace [1-5] because some pinyin contains numbers which are not tones
+	public static String pinyinNbToRaw(String src) {
+		String dest = src
+				.replaceAll("a[1-5]", "a")
+				.replaceAll("e[1-5]", "e")
+				.replaceAll("i[1-5]", "i")
+				.replaceAll("o[1-5]", "o")
+				.replaceAll("u[1-5]", "u")
+				.replaceAll("u:[1-5]?", "v")
+				.replaceAll("an[1-5]", "an")
+				.replaceAll("ang[1-5]", "ang")
+				.replaceAll("en[1-5]", "en")
+				.replaceAll("eng[1-5]", "eng")
+				.replaceAll("in[1-5]", "in")
+				.replaceAll("ing[1-5]", "ing")
+				.replaceAll("ong[1-5]", "ong")
+				.replaceAll("un[1-5]", "un")
+				.replaceAll("er[1-5]", "er");
+		return dest;
+	}
+
 	public static boolean charIsChinese(char ch) {
 		Character.UnicodeBlock block = Character.UnicodeBlock.of(ch);
 		return (Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS.equals(block)
 			|| Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS.equals(block)
 			|| Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A.equals(block));
+	}
+
+	public static String formatPinyin(String pinyin, SharedPreferences prefs) {
+		String prefsPinyin = prefs.getString(SettingsActivity.KEY_PINYIN, SettingsActivity.KEY_PINYIN_TONES);
+
+		if (prefsPinyin.equals(SettingsActivity.KEY_PINYIN_NONE)) {
+			return pinyinNbToRaw(pinyin);
+		} else if (prefsPinyin.equals(SettingsActivity.KEY_PINYIN_NUMBER)) {
+			return pinyin;
+		} else { // KEY_PINYIN_TONES
+			return pinyinNbToTones(pinyin);
+		}
 	}
 }

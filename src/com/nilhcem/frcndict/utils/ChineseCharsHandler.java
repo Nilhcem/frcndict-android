@@ -7,7 +7,7 @@ import android.util.Log;
 
 public final class ChineseCharsHandler {
 	// surround hanzi with html color tags depending on their tones
-	public static String addColorToHanzi(String hanzi, String pinyin) {
+	private static String addColorToHanzi(String hanzi, String pinyin) {
 		// if pinyin is missing, return normal hanzi
 		if (pinyin.length() == 0) {
 			return hanzi;
@@ -275,5 +275,14 @@ public final class ChineseCharsHandler {
 		} else { // KEY_PINYIN_TONES
 			return pinyinNbToTones(pinyin);
 		}
+	}
+
+	public static String formatHanzi(String hanzi, String pinyin, SharedPreferences prefs) {
+		boolean colorHanzi = prefs.getBoolean(SettingsActivity.KEY_COLOR_HANZI, true);
+
+		if (colorHanzi) {
+			return addColorToHanzi(hanzi, pinyin);
+		}
+		return hanzi;
 	}
 }

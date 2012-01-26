@@ -56,7 +56,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 					mPinyin.setVisibility(View.GONE); // hide pinyin if empty
 				}
 
-				mSimplified.setText(Html.fromHtml(ChineseCharsHandler.addColorToHanzi(simplified, pinyin)));
+				mSimplified.setText(Html.fromHtml(ChineseCharsHandler.formatHanzi(simplified, pinyin, prefs)));
 				mMeaning.setText(getFormattedMeaning(desc));
 			} else {
 				// TODO

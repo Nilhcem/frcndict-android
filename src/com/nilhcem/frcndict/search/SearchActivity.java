@@ -55,6 +55,7 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 		changeSearchButtonBackground();
 		mPressBackTwiceToast = null;
 		mService.setLastBackPressTime(0l);
+		mResultList.invalidateViews(); // refresh views, ie: after back from settings
 	}
 
 	@Override

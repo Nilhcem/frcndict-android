@@ -47,6 +47,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 			Cursor c = db.findById(id);
 			if (c.getCount() == 1 && c.moveToFirst()) {
 				String simplified = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED));
+				String traditional = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRADITIONAL));
 				String pinyin = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN));
 				String desc = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION));
 
@@ -56,7 +57,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 					mPinyin.setVisibility(View.GONE); // hide pinyin if empty
 				}
 
-				mSimplified.setText(Html.fromHtml(ChineseCharsHandler.formatHanzi(simplified, pinyin, prefs)));
+				mSimplified.setText(Html.fromHtml(ChineseCharsHandler.formatHanzi(simplified, traditional, pinyin, prefs)));
 				mMeaning.setText(getFormattedMeaning(desc));
 			} else {
 				// TODO

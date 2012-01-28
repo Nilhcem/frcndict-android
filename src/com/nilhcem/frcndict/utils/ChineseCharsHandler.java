@@ -1,11 +1,18 @@
 package com.nilhcem.frcndict.utils;
 
-import com.nilhcem.frcndict.settings.SettingsActivity;
-
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.nilhcem.frcndict.settings.SettingsActivity;
+
 public final class ChineseCharsHandler {
+	private static final String TAG = "ChineseCharsHandler";
+	private static final String SAME_HANZI_REPLACEMENT = "-";
+	private static final String FORMAT_HANZI_ST = "%s [%s]";
+	private static final String[] COLORS_ARRAY = new String[] {
+			null, "red", "#ff8400", "green", "blue", "grey"
+	};
+
 	// surround hanzi with html color tags depending on their tones
 	private static String addColorToHanzi(String hanzi, String pinyin) {
 		// if pinyin is missing, return normal hanzi
@@ -22,10 +29,7 @@ public final class ChineseCharsHandler {
 
 			// loop for each hanzi
 			for (int curHanzi = 0; curHanzi < length; curHanzi++) {
-				String[] colorsArray = new String[] {
-					null, "red", "#ff8400", "green", "blue", "grey"
-				};
-				int nbTones = colorsArray.length;
+				int nbTones = ChineseCharsHandler.COLORS_ARRAY.length;
 
 				boolean foundColor = false;
 				for (int colorNb = 1; colorNb <= nbTones; colorNb++) {
@@ -33,7 +37,7 @@ public final class ChineseCharsHandler {
 							/* TODO: and contains at least one character (to make sure it's not a number */
 							) {
 						sb.append("<font color=\"")
-							.append(colorsArray[colorNb])
+							.append(ChineseCharsHandler.COLORS_ARRAY[colorNb])
 							.append("\">")
 							.append(splitHanzi[curHanzi])
 							.append("</font>");
@@ -47,7 +51,7 @@ public final class ChineseCharsHandler {
 			}
 			return sb.toString();
 		} else {
-			Log.w("WordsConverter", "Size doesn't match: " + hanzi + " - " + pinyin);
+			Log.w(ChineseCharsHandler.TAG, "Size doesn't match: " + hanzi + " - " + pinyin);
 		}
 
 		return hanzi;
@@ -266,23 +270,71 @@ public final class ChineseCharsHandler {
 	}
 
 	public static String formatPinyin(String pinyin, SharedPreferences prefs) {
-		String prefsPinyin = prefs.getString(SettingsActivity.KEY_PINYIN, SettingsActivity.KEY_PINYIN_TONES);
+		String prefsPinyin = prefs.getString(SettingsActivity.KEY_PINYIN, SettingsActivity.VAL_PINYIN_TONES);
 
-		if (prefsPinyin.equals(SettingsActivity.KEY_PINYIN_NONE)) {
+		if (prefsPinyin.equals(SettingsActivity.VAL_PINYIN_NONE)) {
 			return pinyinNbToRaw(pinyin);
-		} else if (prefsPinyin.equals(SettingsActivity.KEY_PINYIN_NUMBER)) {
+		} else if (prefsPinyin.equals(SettingsActivity.VAL_PINYIN_NUMBER)) {
 			return pinyin;
 		} else { // KEY_PINYIN_TONES
 			return pinyinNbToTones(pinyin);
 		}
 	}
 
-	public static String formatHanzi(String hanzi, String pinyin, SharedPreferences prefs) {
-		boolean colorHanzi = prefs.getBoolean(SettingsActivity.KEY_COLOR_HANZI, true);
+	public static String formatHanzi(String simplified, String traditional, String pinyin, SharedPreferences prefs) {
+		boolean prefColorHanzi = prefs.getBoolean(SettingsActivity.KEY_COLOR_HANZI, true);
+		String prefHanzi = prefs.getString(SettingsActivity.KEY_CHINESE_CHARS, SettingsActivity.VAL_CHINESE_CHARS_SIMP);
 
-		if (colorHanzi) {
-			return addColorToHanzi(hanzi, pinyin);
+		// Determine the position of the hanzi [SIMP-TRAD or TRAD-SIMP]
+		String left;
+		String right;
+		if (traditional.length() == 0
+			|| prefHanzi.equals(SettingsActivity.VAL_CHINESE_CHARS_SIMP)
+			|| prefHanzi.equals(SettingsActivity.VAL_CHINESE_CHARS_BOTH_ST)) {
+			left = simplified;
+			right = traditional;
+		} else {
+			left = traditional;
+			right = simplified;
 		}
-		return hanzi;
+
+		// Only one displayed
+		if (prefHanzi.equals(SettingsActivity.VAL_CHINESE_CHARS_SIMP)
+			|| prefHanzi.equals(SettingsActivity.VAL_CHINESE_CHARS_TRAD)
+			|| traditional.length() == 0
+			|| simplified.equalsIgnoreCase(traditional)) {
+			return (prefColorHanzi) ? addColorToHanzi(left, pinyin) : left;
+		} else { // Both are displayed
+			right = replaceSameHanziByDash(left, right);
+
+			// Color hanzi if needed
+			if (prefColorHanzi) {
+				left = ChineseCharsHandler.addColorToHanzi(left, pinyin);
+				right = ChineseCharsHandler.addColorToHanzi(right, pinyin);
+			}
+
+			// Return formatted String
+			return String.format(ChineseCharsHandler.FORMAT_HANZI_ST, left, right);
+		}
+	}
+
+	private static String replaceSameHanziByDash(String base, String toReplace) {
+		int length = base.length();
+		if (length != toReplace.length()) {
+			Log.w(ChineseCharsHandler.TAG, "Size doesn't match: " + base + " - " + toReplace);
+			return toReplace;
+		}
+
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < length; i++) {
+			char curChar = toReplace.charAt(i);
+
+			if (base.charAt(i) == curChar) {
+				sb.append(ChineseCharsHandler.SAME_HANZI_REPLACEMENT);
+			} else {
+				sb.append(curChar);
+			}
+		}
+		return sb.toString();
 	}
 }

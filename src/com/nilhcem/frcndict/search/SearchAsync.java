@@ -46,6 +46,7 @@ final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 					Entry entry = new Entry();
 					entry.setId(c.getInt(c.getColumnIndex(Tables.ENTRIES_KEY_ROWID)));
 					entry.setSimplified(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED)));
+					entry.setTraditional(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRADITIONAL)));
 					entry.setPinyin(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN)));
 					entry.setDesc(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION)));
 					entries.add(entry);

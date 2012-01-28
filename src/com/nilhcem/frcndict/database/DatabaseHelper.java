@@ -24,9 +24,10 @@ public final class DatabaseHelper {
 		StringBuilder sb;
 		// add 1 entry we won't display but which is just to know if there are still some elements after.
 		String nbToDisplay = Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST + 1);
+		String selectAll = "SELECT * FROM ";
 
 		// Hanzi query
-		sb = new StringBuilder("SELECT * FROM ")
+		sb = new StringBuilder(selectAll)
 			.append(Tables.ENTRIES_TABLE_NAME)
 			.append(" WHERE (")
 			.append(Tables.ENTRIES_KEY_SIMPLIFIED)
@@ -41,7 +42,7 @@ public final class DatabaseHelper {
 		QUERY_HANZI = sb.toString();
 
 		// Pinyin query
-		sb = new StringBuilder("SELECT * FROM ")
+		sb = new StringBuilder(selectAll)
 			.append(Tables.ENTRIES_TABLE_NAME)
 			.append(" WHERE ")
 			.append(Tables.ENTRIES_KEY_PINYIN2)
@@ -56,7 +57,7 @@ public final class DatabaseHelper {
 		QUERY_PINYIN = sb.toString();
 
 		// French query
-		sb = new StringBuilder("SELECT * FROM ")
+		sb = new StringBuilder(selectAll)
 			.append(Tables.ENTRIES_TABLE_NAME)
 			.append(" WHERE '/' || lower(")
 			.append(Tables.ENTRIES_KEY_TRANSLATION)

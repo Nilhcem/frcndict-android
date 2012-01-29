@@ -4,6 +4,9 @@
 	<color name="black">#ff000000</color>
 	<color name="white">#ffffffff</color>
 	<color name="grey">#ff505050</color>
+	<color name="light_grey">#ffc9c9c9</color>
+	<color name="lighter_grey">#ffdbdbdb</color>
+	<color name="dark_blue">#ff030119</color>
 	<color name="transparent">#00000000</color>
 
 	<!-- Import text -->
@@ -19,13 +22,19 @@
 	<color name="progress_fg_end">#ff6e748c</color>
 
 	<!-- List divider -->
-	<color name="divider_white">#fff4f7f9</color>
-	<color name="divider_grey">#ffdce4ea</color>
+	<color name="divider_default_side">#fff4f7f9</color>
+	<color name="divider_default_middle">#ffdce4ea</color>
+	<color name="divider_dark_side">#ff030119</color>
+	<color name="divider_dark_middle">#ff5e5e5e</color>
+	<color name="divider_dark_middle_darker">#ff17142b</color>
 
 	<!-- Search top bar -->
-	<color name="search_top_bar_grey_start">#ffdbdbdb</color>
-	<color name="search_top_bar_grey_end">#ffc4c4c4</color>
+	<color name="search_top_bar_default_start">#ffdbdbdb</color>
+	<color name="search_top_bar_default_end">#ffadabab</color>
+	<color name="search_top_bar_dark_start">#ff4f4e63</color>
+	<color name="search_top_bar_dark_end">#ff030119</color>
 
 	<!-- Word meaning -->
-	<color name="meaning_title_grey">#ff808080</color>
+	<color name="meaning_title_grey_default">#ff808080</color>
+	<color name="meaning_title_grey_dark">#ffa3a3a3</color>
 </resources>

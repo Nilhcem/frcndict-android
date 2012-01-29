@@ -47,7 +47,7 @@
 
 	<!-- Search -->
 	<style name="SearchTopBar">
-		<item name="android:background">@drawable/search_top_bar</item>
+		<item name="android:background">?searchTopBar</item>
 	</style>
 	<style name="SearchTopBarText">
 		<item name="android:layout_gravity">center</item>
@@ -59,10 +59,10 @@
 		<item name="android:layout_marginRight">@dimen/search_button_margin_right</item>
 	</style>
 	<style name="SearchList" parent="ListViewStyle">
-	    <item name="android:background">@color/white</item>
-		<item name="android:divider">@drawable/list_divider</item>
+		<item name="android:background">?bgColor</item>
+		<item name="android:divider">?searchListDivider</item>
 		<item name="android:dividerHeight">@dimen/search_list_divider_height</item>
-		<item name="android:listSelector">@drawable/list_item_selector</item>
+		<item name="android:listSelector">?searchListItemSelector</item>
 	</style>
 
     <!-- List item -->
@@ -71,16 +71,17 @@
 		<item name="android:layout_marginRight">@dimen/slitem_side_margin</item>
 	</style>
 	<style name="ListItem.Hanzi">
+		<item name="android:textColor">?hanziColor</item>
 		<item name="android:textSize">@dimen/slitem_hanzi_size</item>
 	</style>
 	<style name="ListItem.Pinyin">
-		<item name="android:textColor">@color/black</item>
+		<item name="android:textColor">?pinyinColor</item>
 		<item name="android:textStyle">italic</item>
 		<item name="android:textSize">@dimen/slitem_pinyin_size</item>
 		<item name="android:typeface">serif</item>
 	</style>
 	<style name="ListItem.Translation">
-		<item name="android:textColor">@color/grey</item>
+		<item name="android:textColor">?translationColor</item>
 		<item name="android:layout_marginBottom">@dimen/slitem_margin_before_divider</item>
 		<item name="android:textSize">@dimen/slitem_translation_size</item>
 	</style>
@@ -88,6 +89,7 @@
 	<!-- No Result -->
 	<style name="ListItemNoResults">
 		<item name="android:gravity">center</item>
+		<item name="android:textColor">?fgColor</item>
 		<item name="android:textSize">@dimen/search_no_item_size</item>
 		<item name="android:paddingTop">@dimen/search_no_item_padding_top</item>
 	</style>
@@ -104,12 +106,13 @@
 	</style>
 	<style name="ListItemLoadingText">
 		<item name="android:layout_marginLeft">@dimen/search_loading_text_margin_left</item>
+		<item name="android:textColor">?fgColor</item>
 		<item name="android:textSize">@dimen/search_no_item_size</item>
 	</style>
 
 	<!-- Word Meaning -->
 	<style name="WordMeaningScrollLayout">
-	    <item name="android:background">@color/white</item>
+		<item name="android:background">?bgColor</item>
 	</style>
 	<style name="WordMeaningLayout">
 		<item name="android:paddingLeft">@dimen/meaning_side_padding</item>
@@ -122,7 +125,6 @@
 	</style>
 	<style name="WordMeaningPinyin">
 		<item name="android:gravity">center</item>
-		<item name="android:textColor">@color/black</item>
 		<item name="android:textStyle">italic</item>
 		<item name="android:typeface">serif</item>
 		<item name="android:textSize">@dimen/meaning_pinyin_size</item>
@@ -133,10 +135,10 @@
 		<item name="android:layout_marginTop">@dimen/meaning_separator_marginTopBottom</item>
 		<item name="android:layout_marginLeft">@dimen/meaning_separator_marginLeftRight</item>
 		<item name="android:layout_marginRight">@dimen/meaning_separator_marginLeftRight</item>
-		<item name="android:background">@drawable/list_divider</item>
+		<item name="android:background">?searchListDivider</item>
 	</style>
 	<style name="WordMeaningMeaningTitle">
-		<item name="android:textColor">@color/meaning_title_grey</item>
+		<item name="android:textColor">?meaningTitleColor</item>
 		<item name="android:textSize">@dimen/meaning_meaning_size</item>
 		<item name="android:textStyle">bold</item>
 	</style>
@@ -145,7 +147,7 @@
 	</style>
 
 	<!-- About -->
-	<style name="sAboutDialog" parent="android:Theme.Dialog">
+	<style name="AboutDialog" parent="android:Theme.Dialog">
 		<item name="android:textColor">@color/white</item>
 		<item name="android:textSize">@dimen/about_title_size</item>
 		<item name="android:windowIsFloating">true</item>

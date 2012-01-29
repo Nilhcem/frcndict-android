@@ -141,7 +141,7 @@ public final class DatabaseHelper {
 	}
 
 	public Cursor searchPinyin(String search, Integer curPage) {
-		search = ChineseCharsHandler.pinyinTonesToNb(search);
+		search = ChineseCharsHandler.getInstance().pinyinTonesToNb(search);
 		return mDb.rawQuery(DatabaseHelper.QUERY_PINYIN,
 				new String[] {
 					String.format("%%%s%%", search.replaceAll("[^a-zA-Z]", "")),
@@ -163,7 +163,7 @@ public final class DatabaseHelper {
 
 		Cursor c = mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] { Tables.ENTRIES_KEY_ROWID },
 				String.format("%s like ?", Tables.ENTRIES_KEY_PINYIN2),
-				new String[] { ChineseCharsHandler.pinyinTonesToNb(search).replaceAll("[^a-zA-Z]", "") + "%" },
+				new String[] { ChineseCharsHandler.getInstance().pinyinTonesToNb(search).replaceAll("[^a-zA-Z]", "") + "%" },
 				null, null, null);
 		isPinyin = (c.getCount() > 0);
 		c.close();

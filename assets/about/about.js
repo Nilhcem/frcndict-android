@@ -1,3 +1,6 @@
+// Load CSS
+loadCss(android.getTheme());
+
 window.onload = function() {
 	// Application name
 	document.getElementById('app-name').innerHTML = android.getAppName();
@@ -13,3 +16,15 @@ window.onload = function() {
 		android.closeDialog();
 	};
 };
+
+function loadCss(css) {
+	if (document.createStyleSheet) {
+		document.createStyleSheet(css);
+	} else {
+		var styles = "@import url('" + css + "');";
+		var newSS = document.createElement('link');
+		newSS.rel = 'stylesheet';
+		newSS.href = 'data:text/css,' + escape(styles);
+		document.getElementsByTagName('head')[0].appendChild(newSS);
+	}
+}

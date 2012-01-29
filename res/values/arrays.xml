@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- Hanzi colors -->
+	<string-array name="hanziColors">
+		<item></item>
+		<item>#ff4444</item>
+		<item>#ff8400</item>
+		<item>#29a552</item>
+		<item>#3d6edb</item>
+		<item>#777777</item>
+	</string-array>
+
 	<!-- Settings - Simplified/Traditional -->
 	<string-array name="chineseCharsEntries">
 		<item>@string/settings_chinese_chars_simp</item>

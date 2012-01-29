@@ -56,7 +56,7 @@ public class AbstractMenuActivity extends AbstractDictActivity {
 	}
 
 	private Dialog createAboutDialog() {
-		mAboutDialog = new AboutDialog(this, R.style.sAboutDialog);
+		mAboutDialog = new AboutDialog(this, R.style.AboutDialog);
 		return mAboutDialog;
 	}
 }

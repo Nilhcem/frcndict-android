@@ -17,14 +17,12 @@
 	</PreferenceCategory>
 
 	<!-- Appearance (Night mode) -->
-	<!--
 	<PreferenceCategory android:title="@string/settings_cat_display">
 		<CheckBoxPreference android:title="@string/settings_dark_theme"
 			android:defaultValue="false"
 			android:summary="@string/settings_dark_theme_sum"
 			android:key="darkTheme" />
 	</PreferenceCategory>
-	 -->
 
 	<!-- Advanced (Database updates) -->
 	<PreferenceCategory android:title="@string/settings_cat_advanced">

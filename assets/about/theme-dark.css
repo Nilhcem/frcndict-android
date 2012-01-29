@@ -1,0 +1,20 @@
+body {
+	background-color: #030119;
+	color: #fff;
+}
+
+img {
+	background-color: #fff;
+	border: 3px solid #b0b0b0;
+}
+
+a {
+	color: #d0d0d0;
+}
+a:visited {
+	color: #d0d0d0;
+}
+
+#version-div {
+	color: #d0d0d0;
+}

@@ -23,6 +23,7 @@ import com.nilhcem.frcndict.core.AbstractMenuActivity;
 import com.nilhcem.frcndict.core.ClearableEditText;
 import com.nilhcem.frcndict.core.ClearableEditText.ClearableTextObservable;
 import com.nilhcem.frcndict.meaning.WordMeaningActivity;
+import com.nilhcem.frcndict.settings.OnPreferencesChangedListener;
 
 public final class SearchActivity extends AbstractMenuActivity implements Observer {
 	private SearchService mService;
@@ -52,10 +53,24 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 	@Override
 	protected void onResume() {
 		super.onResume();
+
 		changeSearchButtonBackground();
 		mPressBackTwiceToast = null;
 		mService.setLastBackPressTime(0l);
-		mResultList.invalidateViews(); // refresh views, ie: after back from settings
+
+		OnPreferencesChangedListener listener = ((ApplicationController) getApplication())
+				.getOnPreferencesChangedListener();
+		// If theme was changed, restart activity.
+		if (listener.hasThemeChanged()) {
+			listener.setThemeHasChanged(false);
+			Intent intent = getIntent();
+			finish();
+			startActivity(intent);
+		} else if (listener.shouldResultListBeUpdated()) {
+			// refresh views after back from settings
+			listener.setResultListShouldBeUpdated(false);
+			mResultList.invalidateViews();
+		}
 	}
 
 	@Override

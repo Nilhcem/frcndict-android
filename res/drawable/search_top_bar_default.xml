@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
 	android:shape="rectangle">
 	<gradient
-		android:startColor="@color/search_top_bar_grey_start"
-		android:endColor="@color/search_top_bar_grey_end"
+		android:startColor="@color/search_top_bar_default_start"
+		android:endColor="@color/search_top_bar_default_end"
 		android:angle="270" />
 </shape>

@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.nilhcem.frcndict.CheckDataActivity;
+import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.settings.SettingsActivity;
 
 public abstract class AbstractDictActivity extends Activity {
 	protected DatabaseHelper db = DatabaseHelper.getInstance();
@@ -31,6 +33,11 @@ public abstract class AbstractDictActivity extends Activity {
 			startActivity(intent);
 		} else {
 			db.open();
+		}
+
+		// Set night mode theme if set by user.
+		if (prefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false)) {
+			setTheme(R.style.DarkTheme);
 		}
 	}
 }

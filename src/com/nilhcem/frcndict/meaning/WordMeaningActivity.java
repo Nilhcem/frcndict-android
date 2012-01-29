@@ -51,13 +51,14 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 				String pinyin = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN));
 				String desc = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION));
 
+				ChineseCharsHandler chineseCharsHandler = ChineseCharsHandler.getInstance();
 				if (pinyin.length() > 0) {
-					mPinyin.setText(ChineseCharsHandler.formatPinyin(pinyin, prefs));
+					mPinyin.setText(chineseCharsHandler.formatPinyin(pinyin, prefs));
 				} else {
 					mPinyin.setVisibility(View.GONE); // hide pinyin if empty
 				}
 
-				mSimplified.setText(Html.fromHtml(ChineseCharsHandler.formatHanzi(simplified, traditional, pinyin, prefs)));
+				mSimplified.setText(Html.fromHtml(chineseCharsHandler.formatHanzi(simplified, traditional, pinyin, prefs)));
 				mMeaning.setText(getFormattedMeaning(desc));
 			} else {
 				// TODO

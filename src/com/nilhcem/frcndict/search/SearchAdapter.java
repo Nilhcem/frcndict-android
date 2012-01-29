@@ -60,10 +60,11 @@ final class SearchAdapter extends ArrayAdapter<Entry> {
 			TextView pinyin = (TextView) view.findViewById(R.id.slPinyin);
 			TextView desc = (TextView) view.findViewById(R.id.slDesc);
 
+			ChineseCharsHandler chineseCharsHandler = ChineseCharsHandler.getInstance();
 			view.setId(entry.getId());
-			chinese.setText(Html.fromHtml(ChineseCharsHandler.formatHanzi(entry.getSimplified(),
+			chinese.setText(Html.fromHtml(chineseCharsHandler.formatHanzi(entry.getSimplified(),
 					entry.getTraditional(), entry.getPinyin() , prefs)));
-			String pinyinStr = ChineseCharsHandler.formatPinyin(entry.getPinyin(), prefs);
+			String pinyinStr = chineseCharsHandler.formatPinyin(entry.getPinyin(), prefs);
 			if (pinyinStr.length() > 0) {
 				pinyin.setText(pinyinStr);
 			} else {

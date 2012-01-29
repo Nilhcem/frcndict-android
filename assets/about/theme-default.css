@@ -1,0 +1,15 @@
+body {
+	background-color: #fff;
+	color: #000;
+}
+
+a {
+	color: #555;
+}
+a:visited {
+	color: #555;
+}
+
+#version-div {
+	color: #444;
+}

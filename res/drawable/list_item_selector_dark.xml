@@ -4,18 +4,18 @@
 		<shape android:shape="rectangle">
 			<gradient
 				android:angle="270"
-				android:startColor="@color/divider_white"
-				android:centerColor="@color/divider_grey"
-				android:endColor="@color/divider_white" />
+				android:startColor="@color/divider_dark_side"
+				android:centerColor="@color/divider_dark_middle_darker"
+				android:endColor="@color/divider_dark_side" />
 		</shape>
 	</item>
 	<item android:state_focused="true">
 		<shape android:shape="rectangle">
 			<gradient
 				android:angle="270"
-				android:startColor="@color/divider_white"
-				android:centerColor="@color/divider_grey"
-				android:endColor="@color/divider_white" />
+				android:startColor="@color/divider_dark_side"
+				android:centerColor="@color/divider_dark_middle_darker"
+				android:endColor="@color/divider_dark_side" />
 		</shape>
 	</item>
 	<item>

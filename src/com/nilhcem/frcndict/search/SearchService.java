@@ -46,7 +46,7 @@ public final class SearchService {
 		if (searchType == SearchService.SEARCH_UNDEFINED) {
 			// Checks if search is in hanzi
 			for (char ch : search.toCharArray()) {
-				if (ChineseCharsHandler.charIsChinese(ch)) {
+				if (ChineseCharsHandler.getInstance().charIsChinese(ch)) {
 					searchType = SearchService.SEARCH_HANZI;
 					return ;
 				}

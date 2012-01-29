@@ -2,17 +2,22 @@ package com.nilhcem.frcndict.about;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.settings.SettingsActivity;
 
 /* package-private */
 final class JavascriptInterface {
 	private static final String TAG = "JavascriptInterface";
 	private static final String VERSION_SEPARATOR = "-";
+	private static final String THEME_DEFAULT = "./theme-default.css";
+	private static final String THEME_DARK = "./theme-dark.css";
 
 	private Context parentContext;
 	private Dialog dialog;
@@ -40,6 +45,18 @@ final class JavascriptInterface {
 		return convertDbVersionToFormattedDateVersion(DatabaseHelper.getInstance().getDbVersion());
 	}
 
+	public void closeDialog() {
+		dialog.dismiss();
+	}
+
+	public String getTheme() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parentContext);
+		if (prefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false)) {
+			return JavascriptInterface.THEME_DARK;
+		}
+		return JavascriptInterface.THEME_DEFAULT;
+	}
+
 	private String convertDbVersionToFormattedDateVersion(String version) {
 		if (version.length() > 8) {
 			return new StringBuilder()
@@ -51,9 +68,5 @@ final class JavascriptInterface {
 				.toString();
 		}
 		return "";
-	}
-
-	public void closeDialog() {
-		dialog.dismiss();
 	}
 }

@@ -7,59 +7,26 @@ import com.nilhcem.frcndict.settings.SettingsActivity;
 
 public final class ChineseCharsHandler {
 	private static final String TAG = "ChineseCharsHandler";
+	private static final ChineseCharsHandler instance = new ChineseCharsHandler();
 	private static final String SAME_HANZI_REPLACEMENT = "-";
 	private static final String FORMAT_HANZI_ST = "%s [%s]";
-	private static final String[] COLORS_ARRAY = new String[] {
-			null, "red", "#ff8400", "green", "blue", "grey"
-	};
 
-	// surround hanzi with html color tags depending on their tones
-	private static String addColorToHanzi(String hanzi, String pinyin) {
-		// if pinyin is missing, return normal hanzi
-		if (pinyin.length() == 0) {
-			return hanzi;
-		}
+	private String[] colorsArray;
 
-		String[] splitPinyin = pinyin.split("\\s");
-		char[] splitHanzi = hanzi.toCharArray();
+	private ChineseCharsHandler() {
+    }
 
-		int length = splitHanzi.length;
-		if (splitPinyin.length == length) {
-			StringBuilder sb = new StringBuilder();
+	public static ChineseCharsHandler getInstance() {
+		return instance;
+    }
 
-			// loop for each hanzi
-			for (int curHanzi = 0; curHanzi < length; curHanzi++) {
-				int nbTones = ChineseCharsHandler.COLORS_ARRAY.length;
-
-				boolean foundColor = false;
-				for (int colorNb = 1; colorNb <= nbTones; colorNb++) {
-					if (splitPinyin[curHanzi].contains(Integer.toString(colorNb))
-							/* TODO: and contains at least one character (to make sure it's not a number */
-							) {
-						sb.append("<font color=\"")
-							.append(ChineseCharsHandler.COLORS_ARRAY[colorNb])
-							.append("\">")
-							.append(splitHanzi[curHanzi])
-							.append("</font>");
-						foundColor = true;
-						break;
-					}
-				}
-				if (!foundColor) {
-					sb.append(splitHanzi[curHanzi]);
-				}
-			}
-			return sb.toString();
-		} else {
-			Log.w(ChineseCharsHandler.TAG, "Size doesn't match: " + hanzi + " - " + pinyin);
-		}
-
-		return hanzi;
+	public void setColorsArray(String[] colorsArray) {
+		this.colorsArray = colorsArray;
 	}
 
 	// Transform a pin1yin1 with tones number to a pīnyīn with tone marks
 	// Ugly, rewrite better if possible
-	public static String pinyinNbToTones(String src) {
+	public String pinyinNbToTones(String src) {
 		String dest = src
 				.replaceAll("a1", "ā")
 				.replaceAll("a2", "á")
@@ -157,7 +124,7 @@ public final class ChineseCharsHandler {
 		return dest;
 	}
 
-	public static String pinyinTonesToNb(String src) {
+	public String pinyinTonesToNb(String src) {
 		String dest = src
 				.replaceAll("āng", "ang1")
 				.replaceAll("áng", "ang2")
@@ -242,7 +209,7 @@ public final class ChineseCharsHandler {
 
 	// Transform a pin1yin1 with tones number to a pinyin without tone mark.
 	// Ugly, rewrite better if possible. Can't do regex to replace [1-5] because some pinyin contains numbers which are not tones
-	public static String pinyinNbToRaw(String src) {
+	public String pinyinNbToRaw(String src) {
 		String dest = src
 				.replaceAll("a[1-5]", "a")
 				.replaceAll("e[1-5]", "e")
@@ -262,14 +229,14 @@ public final class ChineseCharsHandler {
 		return dest;
 	}
 
-	public static boolean charIsChinese(char ch) {
+	public boolean charIsChinese(char ch) {
 		Character.UnicodeBlock block = Character.UnicodeBlock.of(ch);
 		return (Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS.equals(block)
 			|| Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS.equals(block)
 			|| Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A.equals(block));
 	}
 
-	public static String formatPinyin(String pinyin, SharedPreferences prefs) {
+	public String formatPinyin(String pinyin, SharedPreferences prefs) {
 		String prefsPinyin = prefs.getString(SettingsActivity.KEY_PINYIN, SettingsActivity.VAL_PINYIN_TONES);
 
 		if (prefsPinyin.equals(SettingsActivity.VAL_PINYIN_NONE)) {
@@ -281,7 +248,7 @@ public final class ChineseCharsHandler {
 		}
 	}
 
-	public static String formatHanzi(String simplified, String traditional, String pinyin, SharedPreferences prefs) {
+	public String formatHanzi(String simplified, String traditional, String pinyin, SharedPreferences prefs) {
 		boolean prefColorHanzi = prefs.getBoolean(SettingsActivity.KEY_COLOR_HANZI, true);
 		String prefHanzi = prefs.getString(SettingsActivity.KEY_CHINESE_CHARS, SettingsActivity.VAL_CHINESE_CHARS_SIMP);
 
@@ -309,8 +276,8 @@ public final class ChineseCharsHandler {
 
 			// Color hanzi if needed
 			if (prefColorHanzi) {
-				left = ChineseCharsHandler.addColorToHanzi(left, pinyin);
-				right = ChineseCharsHandler.addColorToHanzi(right, pinyin);
+				left = addColorToHanzi(left, pinyin);
+				right = addColorToHanzi(right, pinyin);
 			}
 
 			// Return formatted String
@@ -318,7 +285,7 @@ public final class ChineseCharsHandler {
 		}
 	}
 
-	private static String replaceSameHanziByDash(String base, String toReplace) {
+	private String replaceSameHanziByDash(String base, String toReplace) {
 		int length = base.length();
 		if (length != toReplace.length()) {
 			Log.w(ChineseCharsHandler.TAG, "Size doesn't match: " + base + " - " + toReplace);
@@ -336,5 +303,49 @@ public final class ChineseCharsHandler {
 			}
 		}
 		return sb.toString();
+	}
+
+	// surround hanzi with html color tags depending on their tones
+	private String addColorToHanzi(String hanzi, String pinyin) {
+		// if pinyin is missing, return normal hanzi
+		if (pinyin.length() == 0) {
+			return hanzi;
+		}
+
+		String[] splitPinyin = pinyin.split("\\s");
+		char[] splitHanzi = hanzi.toCharArray();
+
+		int length = splitHanzi.length;
+		if (splitPinyin.length == length) {
+			StringBuilder sb = new StringBuilder();
+
+			// loop for each hanzi
+			for (int curHanzi = 0; curHanzi < length; curHanzi++) {
+				int nbTones = colorsArray.length;
+
+				boolean foundColor = false;
+				for (int colorNb = 1; colorNb <= nbTones; colorNb++) {
+					if (splitPinyin[curHanzi].contains(Integer.toString(colorNb))
+							/* TODO: and contains at least one character (to make sure it's not a number */
+							) {
+						sb.append("<font color=\"")
+							.append(colorsArray[colorNb])
+							.append("\">")
+							.append(splitHanzi[curHanzi])
+							.append("</font>");
+						foundColor = true;
+						break;
+					}
+				}
+				if (!foundColor) {
+					sb.append(splitHanzi[curHanzi]);
+				}
+			}
+			return sb.toString();
+		} else {
+			Log.w(ChineseCharsHandler.TAG, "Size doesn't match: " + hanzi + " - " + pinyin);
+		}
+
+		return hanzi;
 	}
 }

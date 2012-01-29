@@ -1,8 +1,11 @@
 package com.nilhcem.frcndict.settings;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
+import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
 
 public final class SettingsActivity extends PreferenceActivity {
@@ -30,7 +33,15 @@ public final class SettingsActivity extends PreferenceActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// Display night mode theme if set by user.
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		if (prefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false)) {
+			setTheme(R.style.DarkTheme);
+		}
+
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
+		prefs.registerOnSharedPreferenceChangeListener(((ApplicationController) getApplication())
+				.getOnPreferencesChangedListener());
 	}
 }

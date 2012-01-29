@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Core -->
+	<attr name="bgColor" format="reference|color" />
+	<attr name="fgColor" format="reference|color" />
+	<attr name="hanziColor" format="reference|color" />
+	<attr name="pinyinColor" format="reference|color" />
+	<attr name="translationColor" format="reference|color" />
+
+	<!-- Search -->
+	<attr name="searchTopBar" format="reference" />
+	<attr name="searchListDivider" format="reference" />
+	<attr name="searchListItemSelector" format="reference" />
+
+	<!-- Word meaning -->
+	<attr name="meaningTitleColor" format="reference|color" />
+</resources>

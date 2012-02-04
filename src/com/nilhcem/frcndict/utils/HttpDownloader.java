@@ -30,16 +30,23 @@ public final class HttpDownloader extends AbstractCancellableObservable {
 		FileOutputStream fos = new FileOutputStream(output);
 		InputStream is = connection.getInputStream();
 		byte[] buffer = new byte[1024];
-		int curSize = 0;
+		long curSize = 0;
 
 		int read;
+		int prevPercent = 0;
 		while ((!cancel && (read = is.read(buffer, 0, buffer.length)) != -1)) {
 			fos.write(buffer, 0, read);
 
 			// Notify percentage to observers
-			curSize += read;
-			setChanged();
-			notifyObservers(Integer.valueOf(curSize * 100 / totalSize));
+			if (this.countObservers() > 0) {
+				curSize += read;
+				int newPercent = (int) ((curSize * 100) / totalSize);
+				if (newPercent != prevPercent) {
+					setChanged();
+					notifyObservers(Integer.valueOf(newPercent));
+					prevPercent = newPercent;
+				}
+			}
 		}
 		fos.close();
 	}

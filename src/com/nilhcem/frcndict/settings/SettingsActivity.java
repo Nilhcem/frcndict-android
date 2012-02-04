@@ -7,11 +7,13 @@ import android.preference.PreferenceManager;
 
 import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
+import com.nilhcem.frcndict.core.AbstractDictActivity;
 
 public final class SettingsActivity extends PreferenceActivity {
 	// Shared preferences
 	public static final String PREFS_NAME = "SharedPrefs";
 	public static final String KEY_DB_PATH = "dbPath";
+	public static final String KEY_LAST_UPDATE_CHECKED = "lastUpdateChecked";
 
 	public static final String KEY_CHINESE_CHARS = "chineseChars";
 	public static final String VAL_CHINESE_CHARS_SIMP = "1";
@@ -26,22 +28,30 @@ public final class SettingsActivity extends PreferenceActivity {
 
 	public static final String KEY_COLOR_HANZI = "hanziColoring";
 	public static final String KEY_DARK_THEME = "darkTheme";
+
 	public static final String KEY_DATABASE_UPDATES = "dbUpdates";
+	public static final String VAL_DATABASE_UPDATES_DAILY = "1";
+	public static final String VAL_DATABASE_UPDATES_WEEKLY = "2";
+	public static final String VAL_DATABASE_UPDATES_MONTHLY = "3";
+	public static final String VAL_DATABASE_UPDATES_NEVER = "4";
 
 	// Other preferences
 	public static final int NB_ENTRIES_PER_LIST = 20;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// Display night mode theme if set by user.
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		if (prefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false)) {
-			setTheme(R.style.DarkTheme);
-		}
+		AbstractDictActivity.checkForNightModeTheme(this, prefs);
 
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
 		prefs.registerOnSharedPreferenceChangeListener(((ApplicationController) getApplication())
 				.getOnPreferencesChangedListener());
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		AbstractDictActivity.checkForDatabaseImportOrUpdate(this);
 	}
 }

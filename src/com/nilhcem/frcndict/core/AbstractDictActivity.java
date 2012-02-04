@@ -10,6 +10,9 @@ import com.nilhcem.frcndict.CheckDataActivity;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.settings.SettingsActivity;
+import com.nilhcem.frcndict.updatedb.ImportActivity;
+import com.nilhcem.frcndict.updatedb.ImportUpdateService;
+import com.nilhcem.frcndict.updatedb.UpdateActivity;
 
 public abstract class AbstractDictActivity extends Activity {
 	protected DatabaseHelper db = DatabaseHelper.getInstance();
@@ -19,25 +22,56 @@ public abstract class AbstractDictActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (!AbstractDictActivity.checkForDatabaseImportOrUpdate(this)) {
+			// Get shared preferences
+			prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-		// Get shared preferences
-		prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+			// Check if database is initialized and open it (if it is not already opened), otherwise, redirects to the main activity
+			if (db.getDatabasePath() == null) {
+				// redirect to the main activity
+				finish();
+				Intent intent = new Intent(this, CheckDataActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+				overridePendingTransition(0, 0);
+				startActivity(intent);
+			} else {
+				db.open();
+			}
 
-		// Check if database is initialized and open it (if it is not already opened), otherwise, redirects to the main activity
-		if (db.getDatabasePath() == null) {
-			// redirect to the main activity
-			Intent intent = new Intent(this, CheckDataActivity.class);
-			finish();
-			intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			overridePendingTransition(0, 0);
-			startActivity(intent);
-		} else {
-			db.open();
+			AbstractDictActivity.checkForNightModeTheme(this, prefs);
 		}
+	}
 
-		// Set night mode theme if set by user.
+	// Check if upgrade service is running, in that case, redirects there
+	@Override
+	protected void onResume() {
+		super.onResume();
+		DatabaseHelper.getInstance().open(); // if not already
+		AbstractDictActivity.checkForDatabaseImportOrUpdate(this);
+	}
+
+	public static boolean checkForDatabaseImportOrUpdate(Activity activity) {
+		ImportUpdateService service = ImportUpdateService.getInstance();
+
+		// If upgrade service is running, redirects to there
+		if (service != null && service.getStatus() != ImportUpdateService.STATUS_UNSTARTED) {
+			activity.finish();
+			Intent intent = new Intent(activity, service.isImport() ? ImportActivity.class : UpdateActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			activity.overridePendingTransition(0, 0);
+			activity.startActivity(intent);
+			return true;
+		}
+		return false;
+	}
+
+	public static void checkForNightModeTheme(Activity activity, SharedPreferences prefs) {
+		// Display night mode theme if set by user.
+		if (prefs == null) {
+			prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
+		}
 		if (prefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false)) {
-			setTheme(R.style.DarkTheme);
+			activity.setTheme(R.style.DarkTheme);
 		}
 	}
 }

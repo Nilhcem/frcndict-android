@@ -26,7 +26,7 @@ public final class ClearableEditText extends RelativeLayout {
 	public ClearableEditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.clearable_edit_text, this, true);
+		inflater.inflate(R.layout.core_clearable_edit_text, this, true);
 
 		mEditText = (EditText) findViewById(R.id.clearable_edit);
 		mBtnClear = (Button) findViewById(R.id.clearable_button_clear);

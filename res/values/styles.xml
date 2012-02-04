@@ -5,7 +5,33 @@
 		<item name="android:cacheColorHint">@color/transparent</item>
 	</style>
 
+	<!-- Clearable edit text [core] -->
+	<style name="ClearableEditText">
+		<item name="android:paddingRight">@dimen/clearable_text_padding_right</item>
+	</style>
+	<style name="ClearableClearCross">
+		<item name="android:background">@drawable/clear_cross_selector</item>
+		<item name="android:layout_height">@dimen/clearable_cross_dimension</item>
+		<item name="android:layout_width">@dimen/clearable_cross_dimension</item>
+		<item name="android:layout_marginRight">@dimen/clearable_cross_margin_right</item>
+		<item name="android:layout_marginTop">@dimen/clearable_cross_margin_top</item>
+	</style>
+
+	<!-- Progress bar [core] -->
+	<style name="ProgressPercentText">
+		<item name="android:gravity">right</item>
+	</style>
+	<style name="ProgressProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
+		<item name="android:indeterminate">false</item>
+		<item name="android:max">100</item>
+		<item name="android:progressDrawable">@drawable/progress_bar</item>
+	</style>
+
 	<!-- Import database -->
+	<style name="ImportLayout">
+		<item name="android:background">?bgColor</item>
+		<item name="android:textColor">?fgColor</item>
+	</style>
 	<style name="ImportWelcomeText">
 		<item name="android:gravity">center</item>
 		<item name="android:layout_marginTop">@dimen/import_welcome_text_margin_top</item>
@@ -23,26 +49,6 @@
 	<style name="ImportLayoutMargin">
 		<item name="android:layout_marginLeft">@dimen/import_bottom_layout_margin_side</item>
 		<item name="android:layout_marginRight">@dimen/import_bottom_layout_margin_side</item>
-	</style>
-	<style name="ImportPercentText">
-		<item name="android:gravity">right</item>
-	</style>
-	<style name="ImportProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
-		<item name="android:indeterminate">false</item>
-		<item name="android:max">100</item>
-		<item name="android:progressDrawable">@drawable/progress_bar</item>
-	</style>
-
-	<!-- Clearable edit text -->
-	<style name="ClearableEditText">
-		<item name="android:paddingRight">@dimen/clearable_text_padding_right</item>
-	</style>
-	<style name="ClearableClearCross">
-		<item name="android:background">@drawable/clear_cross_selector</item>
-		<item name="android:layout_height">@dimen/clearable_cross_dimension</item>
-		<item name="android:layout_width">@dimen/clearable_cross_dimension</item>
-		<item name="android:layout_marginRight">@dimen/clearable_cross_margin_right</item>
-		<item name="android:layout_marginTop">@dimen/clearable_cross_margin_top</item>
 	</style>
 
 	<!-- Search -->

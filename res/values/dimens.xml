@@ -19,6 +19,9 @@
 	<dimen name="import_text_frame_paddingTopBottom">10.0dp</dimen>
 
 	<!-- Search -->
+	<dimen name="search_intro_padding_side">24.0dp</dimen>
+	<dimen name="search_intro_padding_top">18.0dp</dimen>
+	<dimen name="search_intro_size">18.0sp</dimen>
 	<dimen name="search_text_margin_top">2.0dp</dimen>
 	<dimen name="search_button_margin_left">4.0dp</dimen>
 	<dimen name="search_button_margin_right">8.0dp</dimen>

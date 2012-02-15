@@ -6,6 +6,7 @@ import java.util.Observer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -24,9 +25,11 @@ import com.nilhcem.frcndict.core.ClearableEditText;
 import com.nilhcem.frcndict.core.ClearableEditText.ClearableTextObservable;
 import com.nilhcem.frcndict.meaning.WordMeaningActivity;
 import com.nilhcem.frcndict.settings.OnPreferencesChangedListener;
+import com.nilhcem.frcndict.settings.SettingsActivity;
 
 public final class SearchActivity extends AbstractMenuActivity implements Observer {
 	private SearchService mService;
+	private TextView mIntroText;
 	private TextView mInputText;
 	private ListView mResultList;
 	private Button mSearchButton;
@@ -45,6 +48,7 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 			initSearchButton();
 			initService();
 			initInputText();
+			initIntroText();
 
 			restore(savedInstanceState);
 		}
@@ -54,6 +58,10 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 	protected void onResume() {
 		super.onResume();
 
+		// Display intro text only if search has not been started
+		if (!mSearchAdapter.isEmpty()) {
+			showHideIntroText(false);
+		}
 		changeSearchButtonBackground();
 		mPressBackTwiceToast = null;
 		mService.setLastBackPressTime(0l);
@@ -209,6 +217,14 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 		});
 	}
 
+	private void initIntroText() {
+		mIntroText = (TextView) findViewById(R.id.searchIntro);
+		mIntroText.setText(Html.fromHtml(
+			String.format("<font color=\"%s\"><b>%s</b></font><br />%s",
+				getResources().getStringArray(R.array.introTitleColors)[prefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false) ? 1 : 0],
+				getString(R.string.app_name), getString(R.string.search_intro))));
+	}
+
 	private void runNewSearch(boolean clearSearchType) {
 		String text = mInputText.getText().toString();
 		if (text.trim().length() == 0) {
@@ -217,6 +233,7 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 			mSearchEmptyToast.show();
 		} else {
 			clearResults(clearSearchType);
+			showHideIntroText(false);
 			mSearchAdapter.addLoading();
 			mService.runSearchThread(null, mInputText.getText().toString(), this);
 		}
@@ -229,6 +246,17 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 		mSearchAdapter.clear();
 		mEndlessScrollListener.reset();
 		mService.stopPreviousThread();
+		showHideIntroText(true);
+	}
+
+	private void showHideIntroText(boolean show) {
+		if (show) {
+			mResultList.setVisibility(View.GONE);
+			mIntroText.setVisibility(View.VISIBLE);
+		} else {
+			mIntroText.setVisibility(View.GONE);
+			mResultList.setVisibility(View.VISIBLE);
+		}
 	}
 
 	public void changeSearchButtonBackground() {

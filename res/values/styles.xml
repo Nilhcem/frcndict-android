@@ -64,6 +64,15 @@
 		<item name="android:layout_marginLeft">@dimen/search_button_margin_left</item>
 		<item name="android:layout_marginRight">@dimen/search_button_margin_right</item>
 	</style>
+	<style name="SearchIntro">
+		<item name="android:background">?bgColor</item>
+		<item name="android:gravity">center_horizontal|top</item>
+		<item name="android:paddingLeft">@dimen/search_intro_padding_side</item>
+		<item name="android:paddingRight">@dimen/search_intro_padding_side</item>
+		<item name="android:paddingTop">@dimen/search_intro_padding_top</item>
+		<item name="android:textColor">?introColor</item>
+		<item name="android:textSize">@dimen/search_intro_size</item>
+	</style>
 	<style name="SearchList" parent="ListViewStyle">
 		<item name="android:background">?bgColor</item>
 		<item name="android:divider">?searchListDivider</item>

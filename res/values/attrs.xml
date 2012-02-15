@@ -3,6 +3,7 @@
 	<!-- Core -->
 	<attr name="bgColor" format="reference|color" />
 	<attr name="fgColor" format="reference|color" />
+	<attr name="introColor" format="reference|color" />
 	<attr name="hanziColor" format="reference|color" />
 	<attr name="pinyinColor" format="reference|color" />
 	<attr name="translationColor" format="reference|color" />

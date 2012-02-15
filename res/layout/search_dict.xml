@@ -4,6 +4,7 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical">
 
+    <!-- Search Top Bar -->
 	<LinearLayout
 		style="@style/SearchTopBar"
 		android:layout_height="wrap_content"
@@ -24,10 +25,19 @@
 				style="@style/SearchTopBarButton" />
 	</LinearLayout>
 
+	<!-- Help Text (intro) -->
+	<TextView
+		android:id="@+id/searchIntro"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		style="@style/SearchIntro" />
+
+	<!-- Results List View -->
 	<ListView
 		android:id="@+id/searchList"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:footerDividersEnabled="false"
+		android:visibility="gone"
 		style="@style/SearchList" />
 </LinearLayout>

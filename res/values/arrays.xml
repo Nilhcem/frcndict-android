@@ -10,6 +10,12 @@
 		<item>#777777</item>
 	</string-array>
 
+	<!-- Intro title colors -->
+	<string-array name="introTitleColors">
+		<item>#545454</item>
+		<item>#bababa</item>
+	</string-array>
+
 	<!-- Settings - Simplified/Traditional -->
 	<string-array name="chineseCharsEntries">
 		<item>@string/settings_chinese_chars_simp</item>

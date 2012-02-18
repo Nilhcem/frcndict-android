@@ -20,6 +20,7 @@ public final class HttpDownloader extends AbstractCancellableObservable {
 		this.url = new URL(urlStr);
 	}
 
+	@Override
 	public void start() throws IOException {
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod("GET");
@@ -33,19 +34,13 @@ public final class HttpDownloader extends AbstractCancellableObservable {
 		long curSize = 0;
 
 		int read;
-		int prevPercent = 0;
 		while ((!cancel && (read = is.read(buffer, 0, buffer.length)) != -1)) {
 			fos.write(buffer, 0, read);
 
 			// Notify percentage to observers
 			if (this.countObservers() > 0) {
 				curSize += read;
-				int newPercent = (int) ((curSize * 100) / totalSize);
-				if (newPercent != prevPercent) {
-					setChanged();
-					notifyObservers(Integer.valueOf(newPercent));
-					prevPercent = newPercent;
-				}
+				updateProgress((int) ((curSize * 100) / totalSize));
 			}
 		}
 		fos.close();

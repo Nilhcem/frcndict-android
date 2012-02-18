@@ -21,6 +21,8 @@ import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.settings.SettingsActivity;
+import com.nilhcem.frcndict.updatedb.xml.BackupXmlWriter;
+import com.nilhcem.frcndict.updatedb.xml.RestoreXmlReader;
 import com.nilhcem.frcndict.utils.FileHandler;
 import com.nilhcem.frcndict.utils.HttpDownloader;
 import com.nilhcem.frcndict.utils.Md5;
@@ -28,7 +30,7 @@ import com.nilhcem.frcndict.utils.Unzip;
 
 public final class ImportUpdateService extends Service {
 	private static ImportUpdateService sInstance = null; // singleton
-	private static WeakReference<AbstrImportUpdateActivity> sActivity;
+	private static WeakReference<AbstractImportUpdateActivity> sActivity;
 
 	private BackupAsync backupTask;
 	private DownloadFileAsync downloadTask;
@@ -36,6 +38,7 @@ public final class ImportUpdateService extends Service {
 	private RestoreAsync restoreTask;
 	private NotificationManager mNotificationMngr;
 
+	private File xmlFile; // "starred words" backup
 	private int curStatus; // activity status, see STATUS_*
 	private int curErrorId; //error string id or 0 if no error
 	private boolean mImport; //import or update
@@ -46,6 +49,7 @@ public final class ImportUpdateService extends Service {
 	public static final String INTENT_SDCARD_KEY = "install-on-sdcard";
 
 	// File names
+	private static final String TEMP_XML_FILE = "backup.xml";
 	private static final String TEMP_ZIP_FILE = "download.tmp";
 	private static final String TEMP_MD5_FILE = "md5sum";
 
@@ -65,8 +69,8 @@ public final class ImportUpdateService extends Service {
 		return sInstance;
 	}
 
-	public static void setActivity(AbstrImportUpdateActivity activity) {
-		ImportUpdateService.sActivity = new WeakReference<AbstrImportUpdateActivity>(activity);
+	public static void setActivity(AbstractImportUpdateActivity activity) {
+		ImportUpdateService.sActivity = new WeakReference<AbstractImportUpdateActivity>(activity);
 	}
 
 	@Override
@@ -248,19 +252,40 @@ public final class ImportUpdateService extends Service {
 				backup.renameTo(dbPath);
 			}
 		}
+
+		// Delete "starred words" backup
+		if (xmlFile != null && xmlFile.exists()) {
+			xmlFile.delete();
+		}
 	}
 
 	private class BackupAsync extends AsyncTask<Void, Integer, Void> implements Observer {
+		private static final String TAG = "BackupAsync";
 		private static final String BACKUP_EXTENS = ".bak";
+		private File rootDir;
+		private BackupXmlWriter xmlWriter = null;
+
+		public BackupAsync() {
+			xmlFile = null;
+		}
 
 		@Override
 		protected Void doInBackground(Void... params) {
 			DatabaseHelper db = DatabaseHelper.getInstance();
-//			db.open();
-//			long nbBackup = db.getNbBackup();
-//			save in xml
 			File dbPath = db.getDatabasePath();
-//			db.close();
+
+			rootDir = FileHandler.getAppRootDir(getApplication(), FileHandler.isDatabaseInstalledOnSDcard());
+			xmlFile = new File(rootDir, TEMP_XML_FILE);
+
+			// Backup starred words in the XML file
+			try {
+				xmlWriter = new BackupXmlWriter(db, xmlFile);
+				xmlWriter.addObserver(this);
+				xmlWriter.start();
+			} catch (IOException e) {
+				Log.e(BackupAsync.TAG, "doInBackground() exception", e);
+				// Do nothing
+			}
 
 			// Rename current db to create a backup
 			if (!isCancelled()) {
@@ -269,30 +294,29 @@ public final class ImportUpdateService extends Service {
 					dbPath.renameTo(backup);
 				}
 			}
-
-			publishProgress(Integer.valueOf(100));
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
-
-			File rootDir = FileHandler.getAppRootDir(getApplication(), FileHandler.isDatabaseInstalledOnSDcard());
 			downloadTask.execute(rootDir);
 		}
 
 		@Override
 		protected void onCancelled() {
-			super.onCancelled();
-			// rollBack();
+			if (xmlWriter != null) {
+				xmlWriter.cancel();
+			}
 		}
 
 		@Override
-		public void update(Observable arg0, Object arg1) {
-//			if (observable instanceof FileXmlParser) {
-//				publishProgress((Integer) data); // will call onProgressUpdate
-//			}
+		public void update(Observable observable, Object data) {
+			if (!isCancelled()) {
+				if (observable instanceof BackupXmlWriter) {
+					publishProgress((Integer) data); // will call onProgressUpdate
+				}
+			}
 		}
 
 		@Override
@@ -300,9 +324,6 @@ public final class ImportUpdateService extends Service {
 			super.onProgressUpdate(values);
 			updateProgressData(ImportUpdateService.PROGRESS_BAR_BACKUP, values[0]);
 		}
-
-//		private void rollBack() {
-//		}
 	}
 
 	private class DownloadFileAsync extends AsyncTask<File, Integer, Integer> implements Observer {
@@ -327,7 +348,7 @@ public final class ImportUpdateService extends Service {
 					errorCode = checkMd5();
 				}
 			} catch (Exception e) {
-				Log.e(TAG, "doInBackground() exception", e);
+				Log.e(DownloadFileAsync.TAG, "doInBackground() exception", e);
 				errorCode = R.string.import_err_cannot_download;
 			}
 			return errorCode;
@@ -356,8 +377,10 @@ public final class ImportUpdateService extends Service {
 
 		@Override
 		public void update(Observable observable, Object data) {
-			if (observable instanceof HttpDownloader) {
-				publishProgress((Integer) data); // will call onProgressUpdate
+			if (!isCancelled()) {
+				if (observable instanceof HttpDownloader) {
+					publishProgress((Integer) data);
+				}
 			}
 		}
 
@@ -377,11 +400,11 @@ public final class ImportUpdateService extends Service {
 
 				String remoteMd5 = FileHandler.readFile(md5File);
 				if (!md5.equalsIgnoreCase(remoteMd5)) {
-					Log.e(TAG, "md5 doesn't match");
+					Log.e(DownloadFileAsync.TAG, "md5 doesn't match");
 					errorCode = R.string.import_err_wrong_dictionary_file;
 				}
 			} catch (IOException e) {
-				Log.e(TAG, "checkMd5() exception", e);
+				Log.e(DownloadFileAsync.TAG, "checkMd5() exception", e);
 				errorCode = R.string.import_err_wrong_dictionary_file;
 			} finally {
 				md5File.delete();
@@ -420,7 +443,7 @@ public final class ImportUpdateService extends Service {
 					throw new IOException("File cannot be found");
 				}
 			} catch (IOException e) {
-				Log.e(TAG, "checkMd5() exception", e);
+				Log.e(UnzipAsync.TAG, "checkMd5() exception", e);
 				errorCode = R.string.import_err_wrong_dictionary_file;
 			}
 			return errorCode;
@@ -462,7 +485,7 @@ public final class ImportUpdateService extends Service {
 		public void update(Observable observable, Object data) {
 			if (!isCancelled()) {
 				if (observable instanceof Unzip) {
-					publishProgress((Integer) data); // will call onProgressUpdate
+					publishProgress((Integer) data);
 				}
 			}
 		}
@@ -491,17 +514,19 @@ public final class ImportUpdateService extends Service {
 	}
 
 	private class RestoreAsync extends AsyncTask<Void, Integer, Void> implements Observer {
+		private static final String TAG = "RestoreAsync";
+		private RestoreXmlReader xmlReader = null;
+
 		@Override
 		protected Void doInBackground(Void... params) {
-			publishProgress(Integer.valueOf(100));
-			// Proceed
-
-			// Delete previous backup
-			if (!isCancelled()) {
-				File backup = new File(DatabaseHelper.getInstance().getDatabasePath().getAbsolutePath() + BackupAsync.BACKUP_EXTENS);
-				if (backup.exists()) {
-					backup.delete();
-				}
+			// Restore starred words from the XML file
+			try {
+				xmlReader = new RestoreXmlReader(DatabaseHelper.getInstance(), xmlFile);
+				xmlReader.addObserver(this);
+				xmlReader.start();
+			} catch (IOException e) {
+				Log.e(RestoreAsync.TAG, "doInBackground() exception", e);
+				// Do nothing
 			}
 			return null;
 		}
@@ -509,11 +534,30 @@ public final class ImportUpdateService extends Service {
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
+
+			// Delete previous backup
+			File backup = new File(DatabaseHelper.getInstance().getDatabasePath().getAbsolutePath() + BackupAsync.BACKUP_EXTENS);
+			if (backup.exists()) {
+				backup.delete();
+			}
 			stopService(0);
 		}
 
 		@Override
-		public void update(Observable arg0, Object arg1) {
+		public void update(Observable observable, Object data) {
+			if (!isCancelled()) {
+				if (observable instanceof RestoreXmlReader) {
+					publishProgress((Integer) data);
+				}
+			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			super.onCancelled();
+			if (xmlReader != null) {
+				xmlReader.cancel();
+			}
 		}
 
 		@Override

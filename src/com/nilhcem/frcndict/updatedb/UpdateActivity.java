@@ -6,7 +6,7 @@ import android.view.View;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.ProgressBar;
 
-public final class UpdateActivity extends AbstrImportUpdateActivity {
+public final class UpdateActivity extends AbstractImportUpdateActivity {
 	private ProgressBar mBackupProgress;
 	private ProgressBar mRestoreProgress;
 

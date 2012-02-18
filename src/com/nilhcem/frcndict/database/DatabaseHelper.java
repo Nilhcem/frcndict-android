@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteStatement;
 
 import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
@@ -231,5 +232,30 @@ public final class DatabaseHelper {
 		String whereClause = String.format("%s=%d", Tables.ENTRIES_KEY_ROWID, id);
 
 		mDb.update(Tables.ENTRIES_TABLE_NAME, values, whereClause, null);
+	}
+
+	public void setStarredDate(String simplified, String starredDate) {
+		ContentValues values = new ContentValues();
+		values.put(Tables.ENTRIES_KEY_STARRED_DATE, starredDate);
+
+		mDb.update(Tables.ENTRIES_TABLE_NAME, values,
+				String.format("%s like ?", Tables.ENTRIES_KEY_SIMPLIFIED),
+				new String[] { simplified });
+	}
+
+	public long getNbStarred() {
+		// Create query
+		StringBuilder query = new StringBuilder("SELECT count(*) FROM ")
+			.append(Tables.ENTRIES_TABLE_NAME)
+			.append(" WHERE ").append(Tables.ENTRIES_KEY_STARRED_DATE)
+			.append(" IS NOT NULL");
+
+		SQLiteStatement statement = mDb.compileStatement(query.toString());
+		return statement.simpleQueryForLong();
+	}
+
+	public Cursor getAllStarred() {
+		return mDb.query(Tables.ENTRIES_TABLE_NAME, null,
+				String.format("%s IS NOT NULL", Tables.ENTRIES_KEY_STARRED_DATE), null, null, null, null);
 	}
 }

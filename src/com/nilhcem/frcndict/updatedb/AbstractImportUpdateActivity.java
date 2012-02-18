@@ -14,7 +14,7 @@ import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractDictActivity;
 import com.nilhcem.frcndict.core.ProgressBar;
 
-public abstract class AbstrImportUpdateActivity extends Activity {
+public abstract class AbstractImportUpdateActivity extends Activity {
 	protected boolean mImport; // true if import, false if update
 	protected View.OnClickListener mStartServiceListener;
 	protected DialogInterface.OnClickListener mCompletedListener;

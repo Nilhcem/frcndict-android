@@ -46,6 +46,7 @@ public final class Unzip extends AbstractCancellableObservable {
 		return totalSize;
 	}
 
+	@Override
 	public void start() throws IOException {
 		long totalSize = 0l;
 
@@ -68,19 +69,13 @@ public final class Unzip extends AbstractCancellableObservable {
 				BufferedOutputStream out = new BufferedOutputStream(fos, buffer.length);
 
 				int read;
-				int prevPercent = 0;
 				while ((read = in.read(buffer, 0, buffer.length)) != -1) {
 					out.write(buffer, 0, read);
 
 					// Notify percentage to observers
 					if (this.countObservers() > 0 && totalSize != 0) {
 						curSize += read;
-						int newPercent = (int) ((curSize * 100) / totalSize);
-						if (newPercent != prevPercent) {
-							setChanged();
-							notifyObservers(Integer.valueOf(newPercent));
-							prevPercent = newPercent;
-						}
+						updateProgress((int) ((curSize * 100) / totalSize));
 					}
 				}
 				out.flush();

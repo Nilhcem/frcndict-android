@@ -10,7 +10,7 @@ import android.view.View;
 import com.nilhcem.frcndict.CheckDataActivity;
 import com.nilhcem.frcndict.R;
 
-public final class ImportActivity extends AbstrImportUpdateActivity {
+public final class ImportActivity extends AbstractImportUpdateActivity {
 	private AlertDialog mStorageDialog;
 
 	public ImportActivity() {

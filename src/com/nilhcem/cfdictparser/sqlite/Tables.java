@@ -16,6 +16,7 @@ public interface Tables {
 	public static final String ENTRIES_KEY_PINYIN2 = "pinyin2";
 	public static final String ENTRIES_KEY_TRANSLATION = "translation";
 	public static final String ENTRIES_KEY_TRANS_AVG_LENGTH = "trans_avg_length"; // see DbHandler.getAverageLengthForEachWord
+	public static final String ENTRIES_KEY_STARRED_DATE = "starred_date";
 
 	// Metadata table
 	public static final String METADATA_TABLE_NAME = "dict_metadata";

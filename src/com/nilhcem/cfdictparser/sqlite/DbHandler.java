@@ -73,7 +73,8 @@ public final class DbHandler {
 				+ Tables.ENTRIES_KEY_PINYIN + " text, "
 				+ Tables.ENTRIES_KEY_PINYIN2 + " text, "
 				+ Tables.ENTRIES_KEY_TRANSLATION + " text not null,"
-				+ Tables.ENTRIES_KEY_TRANS_AVG_LENGTH + " integer);");
+				+ Tables.ENTRIES_KEY_TRANS_AVG_LENGTH + " integer,"
+				+ Tables.ENTRIES_KEY_STARRED_DATE + " text);");
 
 		// METADATA_TABLE_NAME
 		stat.executeUpdate("DROP TABLE IF EXISTS " + Tables.METADATA_TABLE_NAME + ";");

@@ -41,7 +41,9 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 
 			// Do the query depending on the searchType
 			refService.detectAndSetSearchType(search);
-			Cursor c = search(search, refService.getSearchType(), currentPage);
+			DatabaseHelper db = DatabaseHelper.getInstance();
+			db.open();
+			Cursor c = search(db, search, refService.getSearchType(), currentPage);
 			if (c.moveToFirst()) {
 				do {
 					Entry entry = new Entry();
@@ -54,6 +56,7 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 				} while (c.moveToNext() && !isCancelled());
 			}
 			c.close();
+			db.close();
 		}
 		return entries;
 	}
@@ -78,9 +81,7 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 		super.onCancelled();
 	}
 
-	private Cursor search(String search, int searchType, int currentPage) {
-		DatabaseHelper db = DatabaseHelper.getInstance();
-
+	private Cursor search(DatabaseHelper db, String search, int searchType, int currentPage) {
 		if (searchType == AbstractSearchService.SEARCH_STARRED) {
 			return db.searchStarred(currentPage);
 		}

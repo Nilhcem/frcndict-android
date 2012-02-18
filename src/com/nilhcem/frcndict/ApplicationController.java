@@ -2,7 +2,6 @@ package com.nilhcem.frcndict;
 
 import android.app.Application;
 
-import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.search.SearchService;
 import com.nilhcem.frcndict.settings.OnPreferencesChangedListener;
 import com.nilhcem.frcndict.starred.StarredService;
@@ -31,12 +30,6 @@ public final class ApplicationController extends Application {
 		// Set color Array to ChineseCharsHandler to color hanzi
 		ChineseCharsHandler.getInstance().setColorsArray(getResources().getStringArray(R.array.hanziColors));
 		super.onCreate();
-	}
-
-	@Override
-	public void onTerminate() {
-		super.onTerminate();
-		DatabaseHelper.getInstance().close();
 	}
 
 	public SearchService getSearchDictService() {

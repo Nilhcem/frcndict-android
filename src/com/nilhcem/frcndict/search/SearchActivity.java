@@ -118,9 +118,7 @@ public final class SearchActivity extends AbstractListActivity {
 			mPressBackTwiceToast.show();
 			searchService.setLastBackPressTime(System.currentTimeMillis());
 		} else {
-			// It is a real exit, close DB
 			mService.stopPreviousThread();
-			db.close();
 			super.onBackPressed();
 		}
 	}

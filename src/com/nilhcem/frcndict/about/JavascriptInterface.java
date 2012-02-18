@@ -42,7 +42,11 @@ final class JavascriptInterface {
 	}
 
 	public String getDbVersion() {
-		return convertDbVersionToFormattedDateVersion(DatabaseHelper.getInstance().getDbVersion());
+		DatabaseHelper db = DatabaseHelper.getInstance();
+		db.open();
+		String version = db.getDbVersion();
+		db.close();
+		return convertDbVersionToFormattedDateVersion(version);
 	}
 
 	public void closeDialog() {

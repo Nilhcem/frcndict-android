@@ -34,10 +34,7 @@ public abstract class AbstractDictActivity extends Activity {
 				intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 				overridePendingTransition(0, 0);
 				startActivity(intent);
-			} else {
-				db.open();
 			}
-
 			AbstractDictActivity.checkForNightModeTheme(this, prefs);
 		}
 	}
@@ -46,8 +43,14 @@ public abstract class AbstractDictActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		DatabaseHelper.getInstance().open(); // if not already
+		db.open();
 		AbstractDictActivity.checkForDatabaseImportOrUpdate(this);
+	}
+
+	@Override
+	protected void onPause() {
+		db.close();
+		super.onPause();
 	}
 
 	public static boolean checkForDatabaseImportOrUpdate(Activity activity) {

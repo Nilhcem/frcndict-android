@@ -47,7 +47,6 @@ public final class StarredActivity extends AbstractListActivity {
 	@Override
 	protected void onDestroy() {
 		mService.stopPreviousThread();
-		db.close();
 		super.onDestroy();
 	}
 

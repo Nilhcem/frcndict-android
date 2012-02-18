@@ -33,11 +33,14 @@ public final class SearchService extends AbstractSearchService {
 			}
 
 			// Determines if search is in pinyin or in french
-			if (DatabaseHelper.getInstance().isPinyin(search)) {
+			DatabaseHelper db = DatabaseHelper.getInstance();
+			db.open();
+			if (db.isPinyin(search)) {
 				searchType = AbstractSearchService.SEARCH_PINYIN;
 			} else {
 				searchType = AbstractSearchService.SEARCH_FRENCH;
 			}
+			db.close();
 		}
 	}
 }

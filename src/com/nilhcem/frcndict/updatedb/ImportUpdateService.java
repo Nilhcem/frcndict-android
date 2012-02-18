@@ -144,7 +144,6 @@ public final class ImportUpdateService extends Service {
 	public void setAsFinished() {
 		resetService();
 		sInstance = null;
-		DatabaseHelper.getInstance().close();
 	}
 
 	private void resetService() {

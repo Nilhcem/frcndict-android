@@ -76,6 +76,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 	// Load data from database and fill views
 	private void loadData() {
 		if (mId > 0) {
+			db.open();
 			Cursor c = db.findById(mId);
 			if (c.getCount() == 1 && c.moveToFirst()) {
 				String simplified = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED));
@@ -98,6 +99,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 				// TODO
 			}
 			c.close();
+			db.close();
 		} else {
 			// TODO
 		}

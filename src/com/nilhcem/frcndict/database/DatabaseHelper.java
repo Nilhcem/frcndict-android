@@ -18,6 +18,7 @@ public final class DatabaseHelper {
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	private static final DatabaseHelper instance = new DatabaseHelper();
 
+	private int used = 0;
 	private File dbPath;
 	private SQLiteDatabase mDb;
 
@@ -102,14 +103,16 @@ public final class DatabaseHelper {
 		this.dbPath = dbPath;
 	}
 
-	public void open() {
-		if (mDb == null || !mDb.isOpen()) {
+	// "start using database"
+	public synchronized void open() {
+		if (++used == 1) {
 			mDb = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
 		}
 	}
 
-	public void close() {
-		if (mDb != null && mDb.isOpen()) {
+	// "stop using database"
+	public synchronized void close() {
+		if (--used == 0) {
 			mDb.close();
 		}
 	}
@@ -119,7 +122,7 @@ public final class DatabaseHelper {
 		boolean initialized = false;
 
 		if (dbPath != null && dbPath.exists()) {
-			mDb = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
+			open();
 			try {
 				mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] {
 						Tables.ENTRIES_KEY_ROWID }, null, null, null, null, null);

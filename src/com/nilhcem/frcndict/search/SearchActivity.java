@@ -1,56 +1,77 @@
 package com.nilhcem.frcndict.search;
 
 import java.util.Observable;
-import java.util.Observer;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
-import com.nilhcem.frcndict.core.AbstractMenuActivity;
+import com.nilhcem.frcndict.about.AboutDialog;
 import com.nilhcem.frcndict.core.ClearableEditText;
 import com.nilhcem.frcndict.core.ClearableEditText.ClearableTextObservable;
-import com.nilhcem.frcndict.meaning.WordMeaningActivity;
+import com.nilhcem.frcndict.core.list.AbstractListActivity;
+import com.nilhcem.frcndict.core.list.AbstractSearchService;
+import com.nilhcem.frcndict.core.list.EndlessScrollListener;
 import com.nilhcem.frcndict.settings.OnPreferencesChangedListener;
 import com.nilhcem.frcndict.settings.SettingsActivity;
+import com.nilhcem.frcndict.starred.StarredActivity;
 
-public final class SearchActivity extends AbstractMenuActivity implements Observer {
-	private SearchService mService;
+public final class SearchActivity extends AbstractListActivity {
 	private TextView mIntroText;
 	private TextView mInputText;
-	private ListView mResultList;
 	private Button mSearchButton;
-	private SearchAdapter mSearchAdapter;
-	private EndlessScrollListener mEndlessScrollListener;
 	private Toast mPressBackTwiceToast = null;
 	private Toast mSearchEmptyToast = null;
+	private Dialog mAboutDialog = null;
+
+	@Override
+	protected int getLayoutResId() {
+		return R.layout.search_dict;
+	}
+
+	@Override
+	protected int getListResId() {
+		return R.id.searchList;
+	}
+
+	@Override
+	protected Context getPackageContext() {
+		return SearchActivity.this;
+	}
+
+	@Override
+	protected AbstractSearchService getService() {
+		return ((ApplicationController) getApplication()).getSearchDictService();
+	}
+
+	@Override
+	protected void initBeforeRestore() {
+		initSearchButton();
+		initInputText();
+		initIntroText();
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (!isFinishing()) {
-			setContentView(R.layout.search_dict);
-
-			initResultList();
-			initSearchButton();
-			initService();
-			initInputText();
-			initIntroText();
-
-			restore(savedInstanceState);
+		if (savedInstanceState != null) {
+			if (savedInstanceState.getBoolean("about-displayed", false)) {
+				createAboutDialog().show();
+			}
 		}
 	}
 
@@ -59,12 +80,12 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 		super.onResume();
 
 		// Display intro text only if search has not been started
-		if (!mSearchAdapter.isEmpty()) {
+		if (!mListAdapter.isEmpty()) {
 			showHideIntroText(false);
 		}
 		changeSearchButtonBackground();
 		mPressBackTwiceToast = null;
-		mService.setLastBackPressTime(0l);
+		((SearchService)mService).setLastBackPressTime(0l);
 
 		OnPreferencesChangedListener listener = ((ApplicationController) getApplication())
 				.getOnPreferencesChangedListener();
@@ -90,10 +111,12 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 
 	@Override
 	public void onBackPressed() {
-		if (mService.isBackBtnPressedForTheFirstTime()) {
+		SearchService searchService = (SearchService) mService;
+
+		if (searchService.isBackBtnPressedForTheFirstTime()) {
 			mPressBackTwiceToast = Toast.makeText(this, R.string.search_press_back_twice_exit, SearchService.BACK_TO_EXIT_TIMER);
 			mPressBackTwiceToast.show();
-			mService.setLastBackPressTime(System.currentTimeMillis());
+			searchService.setLastBackPressTime(System.currentTimeMillis());
 		} else {
 			// It is a real exit, close DB
 			mService.stopPreviousThread();
@@ -106,67 +129,55 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putCharSequence("search", mInputText.getText());
-		outState.putInt("cur-page", mEndlessScrollListener.getCurrentPage());
-		outState.putBoolean("loading", mEndlessScrollListener.isLoading());
-		outState.putInt("prev-total", mEndlessScrollListener.getPreviousTotal());
+
+		if (mAboutDialog != null && mAboutDialog.isShowing()) {
+			outState.putBoolean("about-displayed", true);
+			mAboutDialog.dismiss();
+		}
 	}
 
-	private void restore(Bundle savedInstanceState) {
+	@Override
+	protected void restore(Bundle savedInstanceState) {
+		super.restore(savedInstanceState);
+
 		if (savedInstanceState != null) {
 			mInputText.setText(savedInstanceState.getCharSequence("search"));
-			mEndlessScrollListener.setCurrentPage(savedInstanceState.getInt("cur-page"));
-			mEndlessScrollListener.setLoading(savedInstanceState.getBoolean("loading"));
-			mEndlessScrollListener.setPreviousTotal(savedInstanceState.getInt("prev-total"));
 		} else {
-			mService.setSearchType(SearchService.SEARCH_UNDEFINED);
+			mService.setSearchType(AbstractSearchService.SEARCH_UNDEFINED);
 		}
-	}
-
-	// TODO: Deprecated
-	// Saves the search adapter to keep results when application state change
-	@Override
-	public Object onRetainNonConfigurationInstance() {
-		if (mSearchAdapter != null) {
-			return mSearchAdapter;
-		}
-		return super.onRetainNonConfigurationInstance();
 	}
 
 	@Override
 	public void update(Observable observable, Object data) {
 		if (observable instanceof EndlessScrollListener) {
-			mService.runSearchThread((String) data, mInputText.getText().toString(), this);
+			mService.runSearchThread(this, (String) data, mInputText.getText().toString());
 		} else if (observable instanceof ClearableTextObservable) {
 			clearResults(true);
 			changeSearchButtonBackground();
 		}
 	}
 
-	private void initResultList() {
-		mEndlessScrollListener = new EndlessScrollListener();
-		mEndlessScrollListener.addObserver(this);
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		return true;
+	}
 
-		// TODO deprecated
-		// Get the instance of the object that was stored if one exists
-		if (getLastNonConfigurationInstance() != null) {
-			mSearchAdapter = (SearchAdapter) getLastNonConfigurationInstance();
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.main_menu_about) {
+			createAboutDialog().show();
+			return true;
+		} else if (item.getItemId() == R.id.main_menu_settings) {
+			startActivity(new Intent(this, SettingsActivity.class));
+			return true;
+		} else if (item.getItemId() == R.id.main_menu_starred) {
+			startActivity(new Intent(this, StarredActivity.class));
+			return true;
 		} else {
-			mSearchAdapter = new SearchAdapter(this, R.layout.search_dict_list_item, getLayoutInflater(), prefs);
+			return super.onOptionsItemSelected(item);
 		}
-
-		mResultList = (ListView) findViewById(R.id.searchList);
-		mResultList.setAdapter(mSearchAdapter);
-		mResultList.setOnScrollListener(mEndlessScrollListener);
-		mResultList.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (view.getId() > 0) { // not loading
-					Intent intent = new Intent(SearchActivity.this, WordMeaningActivity.class);
-					intent.putExtra(WordMeaningActivity.ID_INTENT, view.getId());
-					startActivity(intent);
-				}
-			}
-		});
 	}
 
 	private void initSearchButton() {
@@ -175,21 +186,16 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 			@Override
 			public void onClick(View v) {
 				// Switch search type
-				if (mService.getSearchType() == SearchService.SEARCH_FRENCH) {
-					mService.setSearchType(SearchService.SEARCH_PINYIN);
-				} else if (mService.getSearchType() == SearchService.SEARCH_PINYIN) {
-					mService.setSearchType(SearchService.SEARCH_FRENCH);
+				if (mService.getSearchType() == AbstractSearchService.SEARCH_FRENCH) {
+					mService.setSearchType(AbstractSearchService.SEARCH_PINYIN);
+				} else if (mService.getSearchType() == AbstractSearchService.SEARCH_PINYIN) {
+					mService.setSearchType(AbstractSearchService.SEARCH_FRENCH);
 				} else {
-					mService.setSearchType(SearchService.SEARCH_UNDEFINED);
+					mService.setSearchType(AbstractSearchService.SEARCH_UNDEFINED);
 				}
 				runNewSearch(false);
 			}
 		});
-	}
-
-	private void initService() {
-		mService = ((ApplicationController) getApplication()).getSearchDictService();
-		mService.setAdapter(mSearchAdapter);
 	}
 
 	private void initInputText() {
@@ -225,6 +231,11 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 				getString(R.string.app_name), getString(R.string.search_intro))));
 	}
 
+	private Dialog createAboutDialog() {
+		mAboutDialog = new AboutDialog(this, R.style.AboutDialog);
+		return mAboutDialog;
+	}
+
 	private void runNewSearch(boolean clearSearchType) {
 		String text = mInputText.getText().toString();
 		if (text.trim().length() == 0) {
@@ -234,16 +245,16 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 		} else {
 			clearResults(clearSearchType);
 			showHideIntroText(false);
-			mSearchAdapter.addLoading();
-			mService.runSearchThread(null, mInputText.getText().toString(), this);
+			mListAdapter.addLoading();
+			mService.runSearchThread(this, null, mInputText.getText().toString());
 		}
 	}
 
 	private void clearResults(boolean clearSearchType) {
 		if (clearSearchType) {
-			mService.setSearchType(SearchService.SEARCH_UNDEFINED);
+			mService.setSearchType(AbstractSearchService.SEARCH_UNDEFINED);
 		}
-		mSearchAdapter.clear();
+		mListAdapter.clear();
 		mEndlessScrollListener.reset();
 		mService.stopPreviousThread();
 		showHideIntroText(true);
@@ -263,9 +274,9 @@ public final class SearchActivity extends AbstractMenuActivity implements Observ
 		int res = 0;
 		int searchType = mService.getSearchType();
 
-		if (searchType == SearchService.SEARCH_UNDEFINED) {
+		if (searchType == AbstractSearchService.SEARCH_UNDEFINED) {
 			res = R.drawable.magnifier_selector;
-		} else if (searchType == SearchService.SEARCH_FRENCH) {
+		} else if (searchType == AbstractSearchService.SEARCH_FRENCH) {
 			res = R.drawable.magnifier_fr_selector;
 		} else { // hanzi - pinyin
 			res = R.drawable.magnifier_cn_selector;

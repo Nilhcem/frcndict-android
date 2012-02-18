@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	style="@style/StarButtonLayout">
+
+	<!-- Star -->
+	<ImageButton
+		android:id="@+id/starButton"
+		android:contentDescription="@string/meaning_star_desc"
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		style="@style/StarButtonImg" />
+
+	<!-- Text -->
+	<TextView
+		android:id="@+id/starText"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_toRightOf="@+id/starButton"
+		android:text="@string/meaning_not_starred"
+		style="@style/StarButtonText" />
+</RelativeLayout>

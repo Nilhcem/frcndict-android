@@ -7,18 +7,19 @@ import java.util.List;
 import android.database.Cursor;
 import android.os.AsyncTask;
 
+import com.nilhcem.frcndict.core.list.AbstractSearchService;
+import com.nilhcem.frcndict.core.list.ListAdapter;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Entry;
 import com.nilhcem.frcndict.database.Tables;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 
-/* package-private */
-final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
-	private SearchAdapter refAdapter;
-	private SearchService refService;
+public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
+	private ListAdapter refAdapter;
+	private AbstractSearchService refService;
 	private WeakReference<SearchActivity> refActivity;
 
-	SearchAsync(SearchAdapter adapter, SearchService service, SearchActivity activity) {
+	public SearchAsync(ListAdapter adapter, AbstractSearchService service, SearchActivity activity) {
 		this.refAdapter = adapter;
 		this.refService = service;
 		this.refActivity = new WeakReference<SearchActivity>(activity);
@@ -79,11 +80,15 @@ final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 
 	private Cursor search(String search, int searchType, int currentPage) {
 		DatabaseHelper db = DatabaseHelper.getInstance();
-		search = search.trim().toLowerCase();
 
-		if (searchType == SearchService.SEARCH_HANZI) {
+		if (searchType == AbstractSearchService.SEARCH_STARRED) {
+			return db.searchStarred(currentPage);
+		}
+
+		search = search.trim().toLowerCase();
+		if (searchType == AbstractSearchService.SEARCH_HANZI) {
 			return db.searchHanzi(search, currentPage);
-		} else if (searchType == SearchService.SEARCH_PINYIN) {
+		} else if (searchType == AbstractSearchService.SEARCH_PINYIN) {
 			return db.searchPinyin(search, currentPage);
 		}
 		return db.searchFrench(search, currentPage); // by default

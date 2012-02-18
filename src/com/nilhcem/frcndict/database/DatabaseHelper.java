@@ -1,7 +1,10 @@
 package com.nilhcem.frcndict.database;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -11,6 +14,7 @@ import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class DatabaseHelper {
 	public static final String DATABASE_NAME = "dictionary.db";
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	private static final DatabaseHelper instance = new DatabaseHelper();
 
 	private File dbPath;
@@ -19,6 +23,7 @@ public final class DatabaseHelper {
 	private static final String QUERY_HANZI;
 	private static final String QUERY_PINYIN;
 	private static final String QUERY_FRENCH;
+	private static final String QUERY_STARRED;
 
 	static {
 		StringBuilder sb;
@@ -68,6 +73,17 @@ public final class DatabaseHelper {
 			.append(" ASC LIMIT ?,")
 			.append(nbToDisplay);
 		QUERY_FRENCH = sb.toString();
+
+		// Starred query
+		sb = new StringBuilder(selectAll)
+			.append(Tables.ENTRIES_TABLE_NAME)
+			.append(" WHERE ")
+			.append(Tables.ENTRIES_KEY_STARRED_DATE)
+			.append(" IS NOT NULL ORDER BY ")
+			.append(Tables.ENTRIES_KEY_STARRED_DATE)
+			.append(" DESC LIMIT ?,")
+			.append(nbToDisplay);
+		QUERY_STARRED = sb.toString();
 	}
 
 	private DatabaseHelper() {
@@ -135,26 +151,33 @@ public final class DatabaseHelper {
 	public Cursor searchHanzi(String search, Integer curPage) {
 		String criteria = String.format("%%%s%%", search);
 		return mDb.rawQuery(DatabaseHelper.QUERY_HANZI,
-				new String[] { criteria, criteria,
-					Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
-				});
+			new String[] { criteria, criteria,
+				Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
+			});
 	}
 
 	public Cursor searchPinyin(String search, Integer curPage) {
 		search = ChineseCharsHandler.getInstance().pinyinTonesToNb(search);
 		return mDb.rawQuery(DatabaseHelper.QUERY_PINYIN,
-				new String[] {
-					String.format("%%%s%%", search.replaceAll("[^a-zA-Z]", "")),
-					convertToQueryReadyPinyin(search),
-					Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
-				});
+			new String[] {
+				String.format("%%%s%%", search.replaceAll("[^a-zA-Z]", "")),
+				convertToQueryReadyPinyin(search),
+				Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
+			});
 	}
 
 	public Cursor searchFrench(String search, Integer curPage) {
 		return mDb.rawQuery(DatabaseHelper.QUERY_FRENCH,
-				new String[] { String.format("%%/%s%%", search),
-					Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
-				});
+			new String[] { String.format("%%/%s%%", search),
+				Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
+			});
+	}
+
+	public Cursor searchStarred(Integer curPage) {
+		return mDb.rawQuery(DatabaseHelper.QUERY_STARRED,
+			new String[] {
+				Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
+			});
 	}
 
 	// Check if search is a pinyin search or a french search
@@ -196,5 +219,17 @@ public final class DatabaseHelper {
 		}
 		newPinyin.append("%");
 		return newPinyin.toString();
+	}
+
+	public synchronized void setStarredDate(int id, Date starredDate) {
+		ContentValues values = new ContentValues();
+		if (starredDate == null) {
+			values.put(Tables.ENTRIES_KEY_STARRED_DATE, (String) null);
+		} else {
+			values.put(Tables.ENTRIES_KEY_STARRED_DATE, DATE_FORMAT.format(starredDate));
+		}
+		String whereClause = String.format("%s=%d", Tables.ENTRIES_KEY_ROWID, id);
+
+		mDb.update(Tables.ENTRIES_TABLE_NAME, values, whereClause, null);
 	}
 }

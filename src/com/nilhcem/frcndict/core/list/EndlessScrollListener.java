@@ -1,17 +1,16 @@
-package com.nilhcem.frcndict.search;
+package com.nilhcem.frcndict.core.list;
 
 import java.util.Observable;
 
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
-/* package-private */
-final class EndlessScrollListener extends Observable implements OnScrollListener {
+public final class EndlessScrollListener extends Observable implements OnScrollListener {
 	private int currentPage; // Current loaded "page" of data
 	private int previousTotal; // Total nb of items in the dataset.
 	private boolean loading; // True if we are still waiting for the last set of data to load.
 
-	EndlessScrollListener() {
+	public EndlessScrollListener() {
 		reset();
 	}
 

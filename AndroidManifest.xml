@@ -1,41 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nilhcem.frcndict"
-    android:versionCode="1"
-    android:versionName="1.0" >
+	package="com.nilhcem.frcndict"
+	android:versionCode="1"
+	android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="7" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-sdk android:minSdkVersion="7" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application
-        android:debuggable="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:name=".ApplicationController"
-        android:theme="@style/DefaultTheme">
-        <activity
-            android:label="@string/app_name"
-            android:name=".CheckDataActivity"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".updatedb.ImportActivity"
-            android:noHistory="true" />
-        <activity
-            android:name=".updatedb.UpdateActivity"
-            android:noHistory="true" />
-        <service android:name=".updatedb.ImportUpdateService" android:label="@string/import_service_label"/>
-        <service android:name=".updatedb.CheckForUpdatesService" android:label="@string/update_service_label"/>
-        <activity
-            android:name=".search.SearchActivity" />
-        <activity
-            android:name=".meaning.WordMeaningActivity" />
-        <activity
-            android:name=".settings.SettingsActivity" />
-        </application>
+	<application
+		android:debuggable="true"
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name"
+		android:name=".ApplicationController"
+		android:theme="@style/DefaultTheme">
+		<activity
+			android:label="@string/app_name"
+			android:name=".CheckDataActivity"
+			android:noHistory="true">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity
+			android:name=".updatedb.ImportActivity"
+			android:noHistory="true" />
+		<activity
+			android:name=".updatedb.UpdateActivity"
+			android:noHistory="true" />
+		<service android:name=".updatedb.ImportUpdateService" android:label="@string/import_service_label"/>
+		<service android:name=".updatedb.CheckForUpdatesService" android:label="@string/update_service_label"/>
+		<activity
+			android:name=".search.SearchActivity" />
+		<activity
+			android:name=".meaning.WordMeaningActivity" />
+		<activity
+			android:name=".starred.StarredActivity" />
+		<activity
+			android:name=".settings.SettingsActivity" />
+		</application>
 </manifest>

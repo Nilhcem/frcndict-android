@@ -6,6 +6,7 @@
 	<color name="grey">#ff505050</color>
 	<color name="light_grey">#ffc9c9c9</color>
 	<color name="lighter_grey">#ffdbdbdb</color>
+	<color name="dark_grey">#ff555555</color>
 	<color name="dark_blue">#ff030119</color>
 	<color name="transparent">#00000000</color>
 
@@ -33,6 +34,8 @@
 	<color name="search_top_bar_default_end">#ffadabab</color>
 	<color name="search_top_bar_dark_start">#ff4f4e63</color>
 	<color name="search_top_bar_dark_end">#ff030119</color>
+	<color name="search_loading_default">#ff3a3a3a</color>
+	<color name="search_loading_dark">#ffbfbfbf</color>
 
 	<!-- Search intro -->
 	<color name="search_intro_light">#ff8c8c8c</color>

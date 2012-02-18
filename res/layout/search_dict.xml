@@ -25,6 +25,11 @@
 				style="@style/SearchTopBarButton" />
 	</LinearLayout>
 
+    <!-- Separator -->
+    <View
+        android:layout_width="fill_parent"
+        style="@style/StarredTopBarSeparator" />
+
 	<!-- Help Text (intro) -->
 	<TextView
 		android:id="@+id/searchIntro"

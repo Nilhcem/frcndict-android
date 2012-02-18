@@ -1,4 +1,4 @@
-package com.nilhcem.frcndict.search;
+package com.nilhcem.frcndict.core.list;
 
 import java.util.List;
 
@@ -15,15 +15,14 @@ import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.Entry;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
-/* package-private */
-final class SearchAdapter extends ArrayAdapter<Entry> {
+public final class ListAdapter extends ArrayAdapter<Entry> {
 	private boolean searchIsOver; // true if no more result to avoid checking database
 	private Entry loading;
 	private Entry noResults;
 	private LayoutInflater inflater;
 	private SharedPreferences prefs;
 
-	SearchAdapter(Context context, int textViewResourceId, LayoutInflater inflater, SharedPreferences prefs) {
+	public ListAdapter(Context context, int textViewResourceId, LayoutInflater inflater, SharedPreferences prefs) {
 		super(context, textViewResourceId);
 		this.searchIsOver = false;
 		this.inflater = inflater;

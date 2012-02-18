@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<!-- Search Top Bar -->
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:orientation="horizontal"
+		style="@style/SearchTopBar">
+
+		<TextView
+			android:id="@+id/starredIntro"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/starred_words_title"
+			style="@style/StarredTopBarText" />
+	</LinearLayout>
+
+    <!-- Separator -->
+    <View
+        android:layout_width="fill_parent"
+        style="@style/StarredTopBarSeparator" />
+
+	<!-- Results List View -->
+	<ListView
+		android:id="@+id/starredList"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:footerDividersEnabled="false"
+		style="@style/SearchList" />
+</LinearLayout>

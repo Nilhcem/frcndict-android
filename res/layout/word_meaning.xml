@@ -1,48 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    style="@style/WordMeaningScrollLayout">
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	style="@style/WordMeaningScrollLayout">
 
 	<LinearLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    style="@style/WordMeaningLayout">
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		style="@style/WordMeaningLayout">
 
-	    <!-- Hanzi -->
-	    <TextView
-	        android:id="@+id/wmChinese"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        style="@style/WordMeaningHanzi" />
+		<!-- Hanzi -->
+		<TextView
+			android:id="@+id/wmChinese"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/WordMeaningHanzi" />
 
-	    <!-- Pinyin -->
-	    <TextView
-	        android:id="@+id/wmPinyin"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        style="@style/WordMeaningPinyin" />
+		<!-- Pinyin -->
+		<TextView
+			android:id="@+id/wmPinyin"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/WordMeaningPinyin" />
 
 	    <!-- Separator -->
 	    <View
-	        android:layout_width="fill_parent"
+			android:layout_width="fill_parent"
 			style="@style/WordMeaningSeparator" />
 
-	    <!-- Meaning title -->
-	    <TextView
-	        android:id="@+id/wmMeaningTitle"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/meaning_title_singular"
-	        style="@style/WordMeaningMeaningTitle" />
+		<!-- Meaning title -->
+		<TextView
+			android:id="@+id/wmMeaningTitle"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/meaning_title_singular"
+			style="@style/WordMeaningMeaningTitle" />
 
-	    <!-- Meaning -->
-	    <TextView
-	        android:id="@+id/wmMeaning"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        style="@style/WordMeaningMeaning" />
+		<!-- Meaning -->
+		<TextView
+			android:id="@+id/wmMeaning"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/WordMeaningMeaning" />
 
+		<!-- Separator -->
+		<View
+			android:layout_width="fill_parent"
+			style="@style/WordMeaningSeparator.star" />
+
+		<!-- Star button -->
+		<com.nilhcem.frcndict.core.StarButton
+			android:id="@+id/wmStarButton"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
 	</LinearLayout>
 </ScrollView>

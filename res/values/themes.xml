@@ -9,10 +9,12 @@
 		<item name="hanziColor">@color/black</item>
 		<item name="pinyinColor">@color/black</item>
 		<item name="translationColor">@color/grey</item>
+		<item name="loadingColor">@color/search_loading_default</item>
 		<item name="searchTopBar">@drawable/search_top_bar_default</item>
 		<item name="searchListDivider">@drawable/list_divider_default</item>
 		<item name="searchListItemSelector">@drawable/list_item_selector_default</item>
 		<item name="meaningTitleColor">@color/meaning_title_grey_default</item>
+		<item name="starredTopBarSize">@dimen/meaning_separator_size</item>
 	</style>
 
 	<!-- Night mode theme -->
@@ -24,9 +26,11 @@
 		<item name="hanziColor">@color/light_grey</item>
 		<item name="pinyinColor">@color/lighter_grey</item>
 		<item name="translationColor">@color/light_grey</item>
+		<item name="loadingColor">@color/search_loading_dark</item>
 		<item name="searchTopBar">@drawable/search_top_bar_dark</item>
 		<item name="searchListDivider">@drawable/list_divider_dark</item>
 		<item name="searchListItemSelector">@drawable/list_item_selector_dark</item>
 		<item name="meaningTitleColor">@color/meaning_title_grey_dark</item>
+		<item name="starredTopBarSize">0dp</item>
 	</style>
 </resources>

@@ -50,6 +50,11 @@
 	<dimen name="meaning_separator_size">1.0dp</dimen>
 	<dimen name="meaning_separator_marginTopBottom">24.0dp</dimen>
 	<dimen name="meaning_separator_marginLeftRight">32.0dp</dimen>
+	<dimen name="meaning_star_text_padding_left">10.0dp</dimen>
+
+	<!-- Starred words -->
+	<dimen name="starred_title_side_padding">10.0dp</dimen>
+	<dimen name="starred_title_size">22.0sp</dimen>
 
 	<!-- About dialog -->
 	<dimen name="about_title_size">22.0sp</dimen>

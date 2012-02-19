@@ -62,6 +62,8 @@ public class CheckForUpdatesService extends Service {
 	}
 
 	private class CheckForUpdatesAsync extends AsyncTask<String, Void, Void> {
+		private static final String VERSION_URL = "version";
+
 		@Override
 		protected Void doInBackground(String... params) {
 			// Download version file
@@ -69,7 +71,7 @@ public class CheckForUpdatesService extends Service {
 			File versionFile = new File(rootDir, CheckForUpdatesService.TEMP_VERSION_FILE);
 
 			try {
-				HttpDownloader downloader = new HttpDownloader(ApplicationController.VERSION_URL, versionFile);
+				HttpDownloader downloader = new HttpDownloader(ApplicationController.DICT_URL + CheckForUpdatesAsync.VERSION_URL, versionFile);
 				downloader.start();
 
 				// Open file

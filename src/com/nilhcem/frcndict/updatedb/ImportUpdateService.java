@@ -327,6 +327,8 @@ public final class ImportUpdateService extends Service {
 
 	private class DownloadFileAsync extends AsyncTask<File, Integer, Integer> implements Observer {
 		private static final String TAG = "DownloadFileAsync";
+		private static final String ZIP_FILE = "dictionary.zip";
+		private static final String MD5_FILE = "md5sum";
 		private File rootDir;
 		private File zipFile;
 		private File md5File;
@@ -340,7 +342,7 @@ public final class ImportUpdateService extends Service {
 			md5File = new File(rootDir, TEMP_MD5_FILE);
 
 			try {
-				downloader = new HttpDownloader(ApplicationController.DICT_URL, zipFile);
+				downloader = new HttpDownloader(ApplicationController.DICT_URL + DownloadFileAsync.ZIP_FILE, zipFile);
 				downloader.addObserver(this);
 				downloader.start();
 				if (!isCancelled()) {
@@ -394,7 +396,7 @@ public final class ImportUpdateService extends Service {
 
 			try {
 				String md5 = Md5.getMd5Sum(zipFile);
-				downloader = new HttpDownloader(ApplicationController.MD5_URL, md5File);
+				downloader = new HttpDownloader(ApplicationController.DICT_URL + DownloadFileAsync.MD5_FILE, md5File);
 				downloader.start();
 
 				String remoteMd5 = FileHandler.readFile(md5File);

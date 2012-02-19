@@ -16,7 +16,6 @@ import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Tables;
 
 public final class BackupXmlWriter extends AbstractCancellableObservable {
-	public static final String XML_COUNT_TAG = "count";
 	public static final String XML_SUB_TAG = "entry";
 	public static final String XML_ENCODING = "UTF-8";
 	private static final String XML_MAIN_TAG = "starred";

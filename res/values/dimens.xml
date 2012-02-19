@@ -29,8 +29,8 @@
 
 	<!-- Search entry -->
 	<dimen name="search_no_item_size">24.0sp</dimen>
-	<dimen name="search_no_item_padding_top">4.0dp</dimen>
-	<dimen name="search_loading_layout_size">36.0dp</dimen>
+	<dimen name="search_no_item_padding_top_bottom">14.0dp</dimen>
+	<dimen name="search_loading_layout_size">60.0dp</dimen>
 	<dimen name="search_loading_icon_size">30.0dp</dimen>
 	<dimen name="search_loading_text_margin_left">10.0dp</dimen>
 

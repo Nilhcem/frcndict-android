@@ -121,13 +121,14 @@
 		<item name="android:gravity">center</item>
 		<item name="android:textColor">?loadingNoResultsColor</item>
 		<item name="android:textSize">@dimen/search_no_item_size</item>
-		<item name="android:paddingTop">@dimen/search_no_item_padding_top</item>
+		<item name="android:paddingTop">@dimen/search_no_item_padding_top_bottom</item>
 	</style>
 
 	<!-- Loading -->
 	<style name="ListItemLoadingLayout">
 		<item name="android:layout_height">@dimen/search_loading_layout_size</item>
-		<item name="android:paddingTop">@dimen/search_no_item_padding_top</item>
+		<item name="android:paddingTop">@dimen/search_no_item_padding_top_bottom</item>
+		<item name="android:paddingBottom">@dimen/search_no_item_padding_top_bottom</item>
 		<item name="android:gravity">center</item>
 	</style>
 	<style name="ListItemLoadingIcon">

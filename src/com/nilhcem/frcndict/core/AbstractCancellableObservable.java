@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Observable;
 
 public abstract class AbstractCancellableObservable extends Observable {
-	protected boolean mCancelled;
+	protected volatile boolean mCancelled;
 	private int mPrevPercent = 0;
 
 	public AbstractCancellableObservable() {

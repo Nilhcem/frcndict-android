@@ -71,8 +71,11 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 		}
 		refAdapter.removeLoading();
 		refAdapter.add(result, stillLeft);
-		if (refActivity != null && refActivity.get() != null) {
-			refActivity.get().changeSearchButtonBackground();
+		if (refActivity != null) {
+			SearchActivity activity = refActivity.get();
+			if (activity != null) {
+				activity.changeSearchButtonBackground();
+			}
 		}
 	}
 

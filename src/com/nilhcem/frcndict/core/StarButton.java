@@ -50,7 +50,7 @@ public final class StarButton extends RelativeLayout {
 			String parsedDate;
 			mStarredBtn.setSelected(true);
 			try {
-				parsedDate = mDateFormat.format(DatabaseHelper.DATE_FORMAT.parse(starredDate));
+				parsedDate = mDateFormat.format(DatabaseHelper.getInstance().getDateFormat().parse(starredDate));
 			} catch (ParseException e) {
 				parsedDate = starredDate;
 			}

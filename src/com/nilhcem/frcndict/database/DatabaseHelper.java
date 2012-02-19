@@ -15,7 +15,6 @@ import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class DatabaseHelper {
 	public static final String DATABASE_NAME = "dictionary.db";
-	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	private static final DatabaseHelper instance = new DatabaseHelper();
 
 	private int used = 0;
@@ -26,6 +25,8 @@ public final class DatabaseHelper {
 	private static final String QUERY_PINYIN;
 	private static final String QUERY_FRENCH;
 	private static final String QUERY_STARRED;
+
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	static {
 		StringBuilder sb;
@@ -230,7 +231,7 @@ public final class DatabaseHelper {
 		if (starredDate == null) {
 			values.put(Tables.ENTRIES_KEY_STARRED_DATE, (String) null);
 		} else {
-			values.put(Tables.ENTRIES_KEY_STARRED_DATE, DATE_FORMAT.format(starredDate));
+			values.put(Tables.ENTRIES_KEY_STARRED_DATE, dateFormat.format(starredDate));
 		}
 		String whereClause = String.format("`%s`=%d", Tables.ENTRIES_KEY_ROWID, id);
 
@@ -260,5 +261,9 @@ public final class DatabaseHelper {
 	public Cursor getAllStarred() {
 		return mDb.query(Tables.ENTRIES_TABLE_NAME, null,
 				String.format("`%s` IS NOT NULL", Tables.ENTRIES_KEY_STARRED_DATE), null, null, null, null);
+	}
+
+	public SimpleDateFormat getDateFormat() {
+		return dateFormat;
 	}
 }

@@ -38,7 +38,7 @@ final class JavascriptInterface {
 		} catch (NameNotFoundException e) {
 			Log.e(TAG, "fillVersions() exception", e);
 		}
-		return pInfo.versionName;
+		return (pInfo != null ? pInfo.versionName : "");
 	}
 
 	public String getDbVersion() {

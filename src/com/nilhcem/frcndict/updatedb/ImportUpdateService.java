@@ -76,7 +76,7 @@ public final class ImportUpdateService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		sInstance = this;
+		ImportUpdateService.setInstance(this);
 		mNotificationMngr = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
 		resetService();
 		backupTask = new BackupAsync();
@@ -124,8 +124,9 @@ public final class ImportUpdateService extends Service {
 
 	public void changeStatus(int newStatus) {
 		curStatus = newStatus;
-		if (sActivity.get() != null) {
-			sActivity.get().updateDisplay();
+		AbstractImportUpdateActivity activity = sActivity.get();
+		if (activity != null) {
+			activity.updateDisplay();
 		}
 	}
 
@@ -143,7 +144,11 @@ public final class ImportUpdateService extends Service {
 
 	public void setAsFinished() {
 		resetService();
-		sInstance = null;
+		ImportUpdateService.setInstance(null);
+	}
+
+	private static void setInstance(ImportUpdateService instance) {
+		sInstance = instance;
 	}
 
 	private void resetService() {
@@ -237,8 +242,9 @@ public final class ImportUpdateService extends Service {
 	// Saves progress percent, useful if activity resume from pause, get the progress data directly.
 	private void updateProgressData(int progressBarId, Integer value) {
 		progressPercents[progressBarId] = value;
-		if (sActivity.get() != null) {
-			sActivity.get().updateProgressData(progressBarId, value);
+		AbstractImportUpdateActivity activity = sActivity.get();
+		if (activity != null) {
+			activity.updateProgressData(progressBarId, value);
 		}
 	}
 

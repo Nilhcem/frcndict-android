@@ -263,4 +263,16 @@ public final class DatabaseHelper {
 	public SimpleDateFormat getDateFormat() {
 		return mDateFormat;
 	}
+
+	public void beginTransaction() {
+		mDb.beginTransaction();
+	}
+
+	public void setTransactionSuccessfull() {
+		mDb.setTransactionSuccessful();
+	}
+
+	public void endTransaction() {
+		mDb.endTransaction();
+	}
 }

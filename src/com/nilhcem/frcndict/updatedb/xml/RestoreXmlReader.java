@@ -34,6 +34,7 @@ public final class RestoreXmlReader extends AbstractCancellableObservable {
 	@Override
 	public void start() throws IOException {
 		mDb.open();
+		mDb.beginTransaction();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 		try {
@@ -64,12 +65,15 @@ public final class RestoreXmlReader extends AbstractCancellableObservable {
 					updateProgress(((i + 1) * 100) / totalEntries);
 				}
 			}
+			mDb.setTransactionSuccessfull();
 		} catch (ParserConfigurationException e) {
 			// Do nothing
 			Log.e(RestoreXmlReader.LOG, e.getMessage());
 		} catch (SAXException e) {
 			// Do nothing
 			Log.e(RestoreXmlReader.LOG, e.getMessage());
+		} finally {
+			mDb.endTransaction();
 		}
 		updateProgress(100); // Notify that it is finished (even if 0 elements to restore)
 		mDb.close();

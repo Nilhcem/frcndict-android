@@ -50,7 +50,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 		boolean stopProcessing;
 
 		if (item.getItemId() == R.id.starred_menu_search) {
-			this.finish();
+			finish();
 			stopProcessing = true;
 		} else {
 			stopProcessing = super.onOptionsItemSelected(item);
@@ -73,14 +73,14 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 
 	private void initStarButton() {
 		mStarButton = (StarButton) findViewById(R.id.wmStarButton);
-		mStarButton.init(mId, db, this);
+		mStarButton.init(mId, mDb, this);
 	}
 
 	// Load data from database and fill views
 	private void loadData() {
 		if (mId > 0) {
-			db.open();
-			Cursor c = db.findById(mId);
+			mDb.open();
+			Cursor c = mDb.findById(mId);
 			if (c.getCount() == 1 && c.moveToFirst()) {
 				String simplified = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED));
 				String traditional = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRADITIONAL));
@@ -90,17 +90,17 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 
 				ChineseCharsHandler chineseCharsHandler = ChineseCharsHandler.getInstance();
 				if (pinyin.length() > 0) {
-					mPinyin.setText(chineseCharsHandler.formatPinyin(pinyin, prefs));
+					mPinyin.setText(chineseCharsHandler.formatPinyin(pinyin, mPrefs));
 				} else {
 					mPinyin.setVisibility(View.GONE); // hide pinyin if empty
 				}
 
-				mSimplified.setText(Html.fromHtml(chineseCharsHandler.formatHanzi(simplified, traditional, pinyin, prefs)));
+				mSimplified.setText(Html.fromHtml(chineseCharsHandler.formatHanzi(simplified, traditional, pinyin, mPrefs)));
 				mMeaning.setText(getFormattedMeaning(desc));
 				mStarButton.setStarredDate(starredDate);
 			}
 			c.close();
-			db.close();
+			mDb.close();
 		}
 	}
 

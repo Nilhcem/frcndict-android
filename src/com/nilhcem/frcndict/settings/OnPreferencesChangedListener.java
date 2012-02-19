@@ -3,8 +3,8 @@ package com.nilhcem.frcndict.settings;
 import android.content.SharedPreferences;
 
 public final class OnPreferencesChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener {
-	private boolean themeHasChanged;
-	private boolean resultListShouldBeUpdated;
+	private boolean mThemeHasChanged;
+	private boolean mResultListShouldBeUpdated;
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -18,16 +18,16 @@ public final class OnPreferencesChangedListener implements SharedPreferences.OnS
 	}
 
 	public boolean hasThemeChanged() {
-		return themeHasChanged;
+		return mThemeHasChanged;
 	}
 	public void setThemeHasChanged(boolean themeHasChanged) {
-		this.themeHasChanged = themeHasChanged;
+		mThemeHasChanged = themeHasChanged;
 	}
 
 	public boolean shouldResultListBeUpdated() {
-		return resultListShouldBeUpdated;
+		return mResultListShouldBeUpdated;
 	}
 	public void setResultListShouldBeUpdated(boolean resultListShouldBeUpdated) {
-		this.resultListShouldBeUpdated = resultListShouldBeUpdated;
+		mResultListShouldBeUpdated = resultListShouldBeUpdated;
 	}
 }

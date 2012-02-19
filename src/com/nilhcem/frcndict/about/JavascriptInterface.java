@@ -19,22 +19,22 @@ final class JavascriptInterface {
 	private static final String THEME_DEFAULT = "./theme-default.css";
 	private static final String THEME_DARK = "./theme-dark.css";
 
-	private final Context parentContext;
-	private final Dialog dialog;
+	private final Context mParentContext;
+	private final Dialog mDialog;
 
 	JavascriptInterface(Context parent, Dialog dialog) {
-		this.parentContext = parent;
-		this.dialog = dialog;
+		mParentContext = parent;
+		mDialog = dialog;
 	}
 
 	public String getAppName() {
-		return parentContext.getString(R.string.app_name);
+		return mParentContext.getString(R.string.app_name);
 	}
 
 	public String getAppVersion() {
 		String version;
 		try {
-			PackageInfo pInfo = parentContext.getPackageManager().getPackageInfo(parentContext.getPackageName(), 0);
+			PackageInfo pInfo = mParentContext.getPackageManager().getPackageInfo(mParentContext.getPackageName(), 0);
 			version = pInfo.versionName;
 		} catch (NameNotFoundException e) {
 			Log.e(TAG, "fillVersions() exception", e);
@@ -52,11 +52,11 @@ final class JavascriptInterface {
 	}
 
 	public void closeDialog() {
-		dialog.dismiss();
+		mDialog.dismiss();
 	}
 
 	public String getTheme() {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parentContext);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mParentContext);
 		return (prefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false))
 			? JavascriptInterface.THEME_DARK : JavascriptInterface.THEME_DEFAULT;
 	}

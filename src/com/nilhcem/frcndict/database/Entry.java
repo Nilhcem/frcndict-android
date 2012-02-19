@@ -1,56 +1,56 @@
 package com.nilhcem.frcndict.database;
 
 public final class Entry {
-	private int id;
-	private String simplified;
-	private String traditional;
-	private String pinyin;
-	private String desc;
+	private int mId;
+	private String mSimplified;
+	private String mTraditional;
+	private String mPinyin;
+	private String mDesc;
 
 	public Entry() {
 		// Do nothing.
 	}
 
 	public Entry(int id, String simp, String trad, String piny, String desc) {
-		this.id = id;
-		this.simplified = simp;
-		this.traditional = trad;
-		this.pinyin = piny;
-		this.desc = desc;
+		mId = id;
+		mSimplified = simp;
+		mTraditional = trad;
+		mPinyin = piny;
+		mDesc = desc;
 	}
 
 	public int getId() {
-		return id;
+		return mId;
 	}
 	public void setId(int id) {
-		this.id = id;
+		mId = id;
 	}
 
 	public String getSimplified() {
-		return simplified;
+		return mSimplified;
 	}
 	public void setSimplified(String simplified) {
-		this.simplified = simplified;
+		mSimplified = simplified;
 	}
 
 	public String getTraditional() {
-		return traditional;
+		return mTraditional;
 	}
 	public void setTraditional(String traditional) {
-		this.traditional = traditional;
+		mTraditional = traditional;
 	}
 
 	public String getPinyin() {
-		return pinyin;
+		return mPinyin;
 	}
 	public void setPinyin(String pinyin) {
-		this.pinyin = pinyin;
+		mPinyin = pinyin;
 	}
 
 	public String getDesc() {
-		return desc;
+		return mDesc;
 	}
 	public void setDesc(String desc) {
-		this.desc = desc;
+		mDesc = desc;
 	}
 }

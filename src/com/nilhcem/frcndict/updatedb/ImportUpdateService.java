@@ -32,17 +32,17 @@ public final class ImportUpdateService extends Service {
 	private static ImportUpdateService sInstance = null; // singleton
 	private static WeakReference<AbstractImportUpdateActivity> sActivity;
 
-	private BackupAsync backupTask;
-	private DownloadFileAsync downloadTask;
-	private UnzipAsync unzipTask;
-	private RestoreAsync restoreTask;
+	private BackupAsync mBackupTask;
+	private DownloadFileAsync mDownloadTask;
+	private UnzipAsync mUnzipTask;
+	private RestoreAsync mRestoreTask;
 	private NotificationManager mNotificationMngr;
 
-	private File xmlFile; // "starred words" backup
-	private int curStatus; // activity status, see STATUS_*
-	private int curErrorId; //error string id or 0 if no error
+	private File mXmlFile; // "starred words" backup
+	private int mCurStatus; // activity status, see STATUS_*
+	private int mCurErrorId; //error string id or 0 if no error
 	private boolean mImport; //import or update
-	private int[] progressPercents = new int[ImportUpdateService.PROGRESS_BAR_RESTORE + 1]; // percent of each progressbar, see PROGRESS_BAR_* for idx
+	private int[] mProgressPercents = new int[ImportUpdateService.PROGRESS_BAR_RESTORE + 1]; // percent of each progressbar, see PROGRESS_BAR_* for idx
 
 	// Intent keys
 	public static final String INTENT_IMPORT_KEY = "is-import";
@@ -79,10 +79,10 @@ public final class ImportUpdateService extends Service {
 		ImportUpdateService.setInstance(this);
 		mNotificationMngr = ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
 		resetService();
-		backupTask = new BackupAsync();
-		downloadTask = new DownloadFileAsync();
-		unzipTask = new UnzipAsync();
-		restoreTask = new RestoreAsync();
+		mBackupTask = new BackupAsync();
+		mDownloadTask = new DownloadFileAsync();
+		mUnzipTask = new UnzipAsync();
+		mRestoreTask = new RestoreAsync();
 	}
 
 	@Override
@@ -94,10 +94,10 @@ public final class ImportUpdateService extends Service {
 
 		if (mImport) {
 			File rootDir = FileHandler.getAppRootDir(getApplication(), intent.getBooleanExtra(ImportUpdateService.INTENT_SDCARD_KEY, false));
-			downloadTask.execute(rootDir);
+			mDownloadTask.execute(rootDir);
 		} else {
 			mNotificationMngr.cancel(ApplicationController.NOTIF_UPDATE_AVAILABLE);
-			backupTask.execute();
+			mBackupTask.execute();
 		}
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -106,10 +106,10 @@ public final class ImportUpdateService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		mNotificationMngr.cancel(ApplicationController.NOTIF_IMPORTING);
-		backupTask.cancel(true);
-		downloadTask.cancel(true);
-		unzipTask.cancel(true);
-		restoreTask.cancel(true);
+		mBackupTask.cancel(true);
+		mDownloadTask.cancel(true);
+		mUnzipTask.cancel(true);
+		mRestoreTask.cancel(true);
 		rollbackUpdate();
 	}
 
@@ -119,11 +119,11 @@ public final class ImportUpdateService extends Service {
 	}
 
 	public int getStatus() {
-		return curStatus;
+		return mCurStatus;
 	}
 
 	public void changeStatus(int newStatus) {
-		curStatus = newStatus;
+		mCurStatus = newStatus;
 		AbstractImportUpdateActivity activity = sActivity.get();
 		if (activity != null) {
 			activity.updateDisplay();
@@ -131,11 +131,11 @@ public final class ImportUpdateService extends Service {
 	}
 
 	public int getErrorId() {
-		return curErrorId;
+		return mCurErrorId;
 	}
 
 	public int getPercent(int progressBarId) {
-		return progressPercents[progressBarId];
+		return mProgressPercents[progressBarId];
 	}
 
 	public boolean isImport() {
@@ -152,8 +152,8 @@ public final class ImportUpdateService extends Service {
 	}
 
 	private void resetService() {
-		curStatus = ImportUpdateService.STATUS_UNSTARTED;
-		curErrorId = 0;
+		mCurStatus = ImportUpdateService.STATUS_UNSTARTED;
+		mCurErrorId = 0;
 
 		mNotificationMngr.cancel(ApplicationController.NOTIF_IMPORTING);
 		mNotificationMngr.cancel(ApplicationController.NOTIF_IMPORT_SUCCESS);
@@ -162,10 +162,10 @@ public final class ImportUpdateService extends Service {
 	}
 
 	private void resetProgressPercents() {
-		progressPercents[ImportUpdateService.PROGRESS_BAR_BACKUP] = 0;
-		progressPercents[ImportUpdateService.PROGRESS_BAR_DOWNLOAD] = 0;
-		progressPercents[ImportUpdateService.PROGRESS_BAR_INSTALL] = 0;
-		progressPercents[ImportUpdateService.PROGRESS_BAR_RESTORE] = 0;
+		mProgressPercents[ImportUpdateService.PROGRESS_BAR_BACKUP] = 0;
+		mProgressPercents[ImportUpdateService.PROGRESS_BAR_DOWNLOAD] = 0;
+		mProgressPercents[ImportUpdateService.PROGRESS_BAR_INSTALL] = 0;
+		mProgressPercents[ImportUpdateService.PROGRESS_BAR_RESTORE] = 0;
 	}
 
 	private void stopService(int errorId) {
@@ -175,7 +175,7 @@ public final class ImportUpdateService extends Service {
 				displaySuccessNotification();
 			}
 		} else { // an error appeared: display error
-			curErrorId = errorId;
+			mCurErrorId = errorId;
 
 			if (sActivity.get() == null) {
 				displayErrorNotification();
@@ -241,7 +241,7 @@ public final class ImportUpdateService extends Service {
 
 	// Saves progress percent, useful if activity resume from pause, get the progress data directly.
 	private void updateProgressData(int progressBarId, Integer value) {
-		progressPercents[progressBarId] = value;
+		mProgressPercents[progressBarId] = value;
 		AbstractImportUpdateActivity activity = sActivity.get();
 		if (activity != null) {
 			activity.updateProgressData(progressBarId, value);
@@ -259,20 +259,20 @@ public final class ImportUpdateService extends Service {
 		}
 
 		// Delete "starred words" backup
-		if (xmlFile != null && xmlFile.exists()) {
-			xmlFile.delete();
+		if (mXmlFile != null && mXmlFile.exists()) {
+			mXmlFile.delete();
 		}
 	}
 
 	private class BackupAsync extends AsyncTask<Void, Integer, Void> implements Observer {
 		private static final String TAG = "BackupAsync";
 		private static final String BACKUP_EXTENS = ".bak";
-		private File rootDir;
-		private BackupXmlWriter xmlWriter = null;
+		private File mRootDir;
+		private BackupXmlWriter mXmlWriter = null;
 
 		public BackupAsync() {
 			super();
-			xmlFile = null;
+			mXmlFile = null;
 		}
 
 		@Override
@@ -280,14 +280,14 @@ public final class ImportUpdateService extends Service {
 			DatabaseHelper db = DatabaseHelper.getInstance();
 			File dbPath = db.getDatabasePath();
 
-			rootDir = FileHandler.getAppRootDir(getApplication(), FileHandler.isDatabaseInstalledOnSDcard());
-			xmlFile = new File(rootDir, TEMP_XML_FILE);
+			mRootDir = FileHandler.getAppRootDir(getApplication(), FileHandler.isDatabaseInstalledOnSDcard());
+			mXmlFile = new File(mRootDir, TEMP_XML_FILE);
 
 			// Backup starred words in the XML file
 			try {
-				xmlWriter = new BackupXmlWriter(db, xmlFile);
-				xmlWriter.addObserver(this);
-				xmlWriter.start();
+				mXmlWriter = new BackupXmlWriter(db, mXmlFile);
+				mXmlWriter.addObserver(this);
+				mXmlWriter.start();
 			} catch (IOException e) {
 				Log.e(BackupAsync.TAG, "doInBackground() exception", e);
 				// Do nothing
@@ -304,13 +304,13 @@ public final class ImportUpdateService extends Service {
 		@Override
 		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
-			downloadTask.execute(rootDir);
+			mDownloadTask.execute(mRootDir);
 		}
 
 		@Override
 		protected void onCancelled() {
-			if (xmlWriter != null) {
-				xmlWriter.cancel();
+			if (mXmlWriter != null) {
+				mXmlWriter.cancel();
 			}
 		}
 
@@ -332,26 +332,26 @@ public final class ImportUpdateService extends Service {
 		private static final String TAG = "DownloadFileAsync";
 		private static final String ZIP_FILE = "dictionary.zip";
 		private static final String MD5_FILE = "md5sum";
-		private File rootDir;
-		private File zipFile;
-		private File md5File;
-		private HttpDownloader downloader = null;
+		private File mRootDir;
+		private File mZipFile;
+		private File mMd5File;
+		private HttpDownloader mDownloader = null;
 
 		@Override
 		protected Integer doInBackground(File... params) {
 			Integer errorCode = null;
-			rootDir = params[0];
-			zipFile = new File(rootDir, TEMP_ZIP_FILE);
-			md5File = new File(rootDir, TEMP_MD5_FILE);
+			mRootDir = params[0];
+			mZipFile = new File(mRootDir, TEMP_ZIP_FILE);
+			mMd5File = new File(mRootDir, TEMP_MD5_FILE);
 
 			try {
-				downloader = new HttpDownloader(ApplicationController.DICT_URL + DownloadFileAsync.ZIP_FILE, zipFile);
-				downloader.addObserver(this);
-				downloader.start();
+				mDownloader = new HttpDownloader(ApplicationController.DICT_URL + DownloadFileAsync.ZIP_FILE, mZipFile);
+				mDownloader.addObserver(this);
+				mDownloader.start();
 				if (!isCancelled()) {
 					errorCode = checkMd5();
 				}
-			} catch (Exception e) {
+			} catch (IOException e) {
 				Log.e(DownloadFileAsync.TAG, "doInBackground() exception", e);
 				errorCode = R.string.import_err_cannot_download;
 			}
@@ -363,7 +363,7 @@ public final class ImportUpdateService extends Service {
 			super.onPostExecute(result);
 
 			if (result == null) { // no error
-				unzipTask.execute(zipFile, rootDir);
+				mUnzipTask.execute(mZipFile, mRootDir);
 			} else {
 				rollBack();
 				stopService(result);
@@ -373,8 +373,8 @@ public final class ImportUpdateService extends Service {
 		@Override
 		protected void onCancelled() {
 			super.onCancelled();
-			if (downloader != null) {
-				downloader.cancel();
+			if (mDownloader != null) {
+				mDownloader.cancel();
 			}
 			rollBack();
 		}
@@ -396,11 +396,11 @@ public final class ImportUpdateService extends Service {
 			Integer errorCode = null;
 
 			try {
-				String md5 = Md5.getMd5Sum(zipFile);
-				downloader = new HttpDownloader(ApplicationController.DICT_URL + DownloadFileAsync.MD5_FILE, md5File);
-				downloader.start();
+				String md5 = Md5.getMd5Sum(mZipFile);
+				mDownloader = new HttpDownloader(ApplicationController.DICT_URL + DownloadFileAsync.MD5_FILE, mMd5File);
+				mDownloader.start();
 
-				String remoteMd5 = FileHandler.readFile(md5File);
+				String remoteMd5 = FileHandler.readFile(mMd5File);
 				if (!md5.equalsIgnoreCase(remoteMd5)) {
 					Log.e(DownloadFileAsync.TAG, "md5 doesn't match");
 					errorCode = R.string.import_err_wrong_dictionary_file;
@@ -409,39 +409,39 @@ public final class ImportUpdateService extends Service {
 				Log.e(DownloadFileAsync.TAG, "checkMd5() exception", e);
 				errorCode = R.string.import_err_wrong_dictionary_file;
 			} finally {
-				md5File.delete();
+				mMd5File.delete();
 			}
 
 			return errorCode;
 		}
 
 		private void rollBack() {
-			if (zipFile != null && zipFile.exists()) {
-				zipFile.delete();
+			if (mZipFile != null && mZipFile.exists()) {
+				mZipFile.delete();
 			}
-			if (md5File != null && md5File.exists()) {
-				md5File.delete();
+			if (mMd5File != null && mMd5File.exists()) {
+				mMd5File.delete();
 			}
 		}
 	}
 
 	private class UnzipAsync extends AsyncTask<File, Integer, Integer> implements Observer {
 		private static final String TAG = "UnzipAsync";
-		private File zipFile = null;
-		private File zippedFile = null;
-		private Unzip unzip = null;
+		private File mZipFile = null;
+		private File mZippedFile = null;
+		private Unzip mUnzip = null;
 
 		@Override
 		protected Integer doInBackground(File... params) {
 			Integer errorCode = null;
 
-			zipFile = params[0];
-			zippedFile = new File(params[1], DatabaseHelper.DATABASE_NAME);
-			unzip = new Unzip(zipFile, params[1]);
-			unzip.addObserver(this);
+			mZipFile = params[0];
+			mZippedFile = new File(params[1], DatabaseHelper.DATABASE_NAME);
+			mUnzip = new Unzip(mZipFile, params[1]);
+			mUnzip.addObserver(this);
 			try {
-				unzip.start();
-				if (!isCancelled() && !zippedFile.exists()) {
+				mUnzip.start();
+				if (!isCancelled() && !mZippedFile.exists()) {
 					throw new IOException("File cannot be found");
 				}
 			} catch (IOException e) {
@@ -455,8 +455,8 @@ public final class ImportUpdateService extends Service {
 		protected void onPostExecute(Integer result) {
 			super.onPostExecute(result);
 
-			if (zipFile != null && zipFile.exists()) {
-				zipFile.delete();
+			if (mZipFile != null && mZipFile.exists()) {
+				mZipFile.delete();
 			}
 
 			if (result == null) {
@@ -466,7 +466,7 @@ public final class ImportUpdateService extends Service {
 				if (mImport) {
 					stopService(0);
 				} else {
-					restoreTask.execute();
+					mRestoreTask.execute();
 				}
 			} else {
 				rollback();
@@ -477,8 +477,8 @@ public final class ImportUpdateService extends Service {
 		@Override
 		protected void onCancelled() {
 			super.onCancelled();
-			if (unzip != null) {
-				unzip.cancel();
+			if (mUnzip != null) {
+				mUnzip.cancel();
 			}
 			rollback();
 		}
@@ -499,31 +499,31 @@ public final class ImportUpdateService extends Service {
 		private void saveDatabasePath() {
 			SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(SettingsActivity.KEY_DB_PATH, zippedFile.getAbsolutePath());
+			editor.putString(SettingsActivity.KEY_DB_PATH, mZippedFile.getAbsolutePath());
 			editor.commit();
 		}
 
 		private void rollback() {
-			if (zipFile != null && zipFile.exists()) {
-				zipFile.delete();
+			if (mZipFile != null && mZipFile.exists()) {
+				mZipFile.delete();
 			}
-			if (zippedFile != null && zippedFile.exists()) {
-				zippedFile.delete();
+			if (mZippedFile != null && mZippedFile.exists()) {
+				mZippedFile.delete();
 			}
 		}
 	}
 
 	private class RestoreAsync extends AsyncTask<Void, Integer, Void> implements Observer {
 		private static final String TAG = "RestoreAsync";
-		private RestoreXmlReader xmlReader = null;
+		private RestoreXmlReader mXmlReader = null;
 
 		@Override
 		protected Void doInBackground(Void... params) {
 			// Restore starred words from the XML file
 			try {
-				xmlReader = new RestoreXmlReader(DatabaseHelper.getInstance(), xmlFile);
-				xmlReader.addObserver(this);
-				xmlReader.start();
+				mXmlReader = new RestoreXmlReader(DatabaseHelper.getInstance(), mXmlFile);
+				mXmlReader.addObserver(this);
+				mXmlReader.start();
 			} catch (IOException e) {
 				Log.e(RestoreAsync.TAG, "doInBackground() exception", e);
 				// Do nothing
@@ -553,8 +553,8 @@ public final class ImportUpdateService extends Service {
 		@Override
 		protected void onCancelled() {
 			super.onCancelled();
-			if (xmlReader != null) {
-				xmlReader.cancel();
+			if (mXmlReader != null) {
+				mXmlReader.cancel();
 			}
 		}
 

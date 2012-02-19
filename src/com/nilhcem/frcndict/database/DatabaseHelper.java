@@ -18,8 +18,8 @@ public final class DatabaseHelper {
 	public static final String DATABASE_NAME = "dictionary.db";
 	private static final DatabaseHelper INSTANCE = new DatabaseHelper();
 
-	private int used = 0;
-	private File dbPath;
+	private int mUsed = 0;
+	private File mDbPath;
 	private SQLiteDatabase mDb;
 
 	private static final String QUERY_HANZI;
@@ -27,7 +27,7 @@ public final class DatabaseHelper {
 	private static final String QUERY_FRENCH;
 	private static final String QUERY_STARRED;
 
-	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+	private final SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
 	static {
 		StringBuilder sb;
@@ -98,23 +98,23 @@ public final class DatabaseHelper {
     }
 
 	public File getDatabasePath() {
-		return dbPath;
+		return mDbPath;
 	}
 
 	public void setDatabasePath(File dbPath) {
-		this.dbPath = dbPath;
+		mDbPath = dbPath;
 	}
 
 	// "start using database"
 	public synchronized void open() {
-		if (++used == 1) {
-			mDb = SQLiteDatabase.openDatabase(dbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
+		if (++mUsed == 1) {
+			mDb = SQLiteDatabase.openDatabase(mDbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
 		}
 	}
 
 	// "stop using database"
 	public synchronized void close() {
-		if (--used == 0) {
+		if (--mUsed == 0) {
 			mDb.close();
 		}
 	}
@@ -123,7 +123,7 @@ public final class DatabaseHelper {
 	public boolean isInitialized() {
 		boolean initialized = false;
 
-		if (dbPath != null && dbPath.exists()) {
+		if (mDbPath != null && mDbPath.exists()) {
 			open();
 			try {
 				mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] {
@@ -228,7 +228,7 @@ public final class DatabaseHelper {
 		if (starredDate == null) {
 			values.put(Tables.ENTRIES_KEY_STARRED_DATE, (String) null);
 		} else {
-			values.put(Tables.ENTRIES_KEY_STARRED_DATE, dateFormat.format(starredDate));
+			values.put(Tables.ENTRIES_KEY_STARRED_DATE, mDateFormat.format(starredDate));
 		}
 		String whereClause = String.format("`%s`=%d", Tables.ENTRIES_KEY_ROWID, id);
 
@@ -261,6 +261,6 @@ public final class DatabaseHelper {
 	}
 
 	public SimpleDateFormat getDateFormat() {
-		return dateFormat;
+		return mDateFormat;
 	}
 }

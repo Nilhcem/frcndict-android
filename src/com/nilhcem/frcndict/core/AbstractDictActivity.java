@@ -15,8 +15,8 @@ import com.nilhcem.frcndict.updatedb.ImportUpdateService;
 import com.nilhcem.frcndict.updatedb.UpdateActivity;
 
 public abstract class AbstractDictActivity extends Activity {
-	protected DatabaseHelper db = DatabaseHelper.getInstance();
-	protected SharedPreferences prefs;
+	protected DatabaseHelper mDb = DatabaseHelper.getInstance();
+	protected SharedPreferences mPrefs;
 
 	// should be the first method called, once called, other code should be in a if (!isFinishing()) condition
 	@Override
@@ -24,10 +24,10 @@ public abstract class AbstractDictActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		if (!AbstractDictActivity.checkForDatabaseImportOrUpdate(this)) {
 			// Get shared preferences
-			prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+			mPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
 			// Check if database is initialized and open it (if it is not already opened), otherwise, redirects to the main activity
-			if (db.getDatabasePath() == null) {
+			if (mDb.getDatabasePath() == null) {
 				// redirect to the main activity
 				finish();
 				Intent intent = new Intent(this, CheckDataActivity.class);
@@ -35,7 +35,7 @@ public abstract class AbstractDictActivity extends Activity {
 				overridePendingTransition(0, 0);
 				startActivity(intent);
 			}
-			AbstractDictActivity.checkForNightModeTheme(this, prefs);
+			AbstractDictActivity.checkForNightModeTheme(this, mPrefs);
 		}
 	}
 
@@ -43,13 +43,13 @@ public abstract class AbstractDictActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		db.open();
+		mDb.open();
 		AbstractDictActivity.checkForDatabaseImportOrUpdate(this);
 	}
 
 	@Override
 	protected void onPause() {
-		db.close();
+		mDb.close();
 		super.onPause();
 	}
 

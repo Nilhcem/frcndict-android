@@ -9,11 +9,11 @@ import com.nilhcem.frcndict.R;
 
 public final class AboutDialog extends Dialog {
 	private static final String ABOUT_URL = "file:///android_asset/about/about.html";
-	private final Context parentContext;
+	private final Context mParentContext;
 
 	public AboutDialog(Context context, int theme) {
 		super(context, theme);
-		this.parentContext = context;
+		mParentContext = context;
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public final class AboutDialog extends Dialog {
 		setTitle(R.string.about_title);
 
 		// Create interface
-		JavascriptInterface jsInterface = new JavascriptInterface(parentContext, this);
+		JavascriptInterface jsInterface = new JavascriptInterface(mParentContext, this);
 
 		// Get webview and enable JS
 		WebView webView = (WebView) findViewById(R.id.aboutWebView);

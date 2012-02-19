@@ -16,19 +16,19 @@ import com.nilhcem.frcndict.database.Entry;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class ListAdapter extends ArrayAdapter<Entry> {
-	private boolean searchIsOver; // true if no more result to avoid checking database
-	private final Entry loading;
-	private final Entry noResults;
-	private final LayoutInflater inflater;
-	private final SharedPreferences prefs;
+	private boolean mSearchIsOver; // true if no more result to avoid checking database
+	private final Entry mLoading;
+	private final Entry mNoResults;
+	private final LayoutInflater mInflater;
+	private final SharedPreferences mPrefs;
 
 	public ListAdapter(Context context, int textViewResourceId, LayoutInflater inflater, SharedPreferences prefs) {
 		super(context, textViewResourceId);
-		this.searchIsOver = false;
-		this.inflater = inflater;
-		this.loading = new Entry();
-		this.noResults = new Entry();
-		this.prefs = prefs;
+		mSearchIsOver = false;
+		mInflater = inflater;
+		mLoading = new Entry();
+		mNoResults = new Entry();
+		mPrefs = prefs;
 	}
 
 	// TODO: Check if convertView != null ?
@@ -37,17 +37,17 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 		Entry entry = getItem(position);
 
 		int resId;
-		if (entry.equals(loading)) {
+		if (entry.equals(mLoading)) {
 			resId = R.layout.search_dict_loading;
-		} else if (entry.equals(noResults)) {
+		} else if (entry.equals(mNoResults)) {
 			resId = R.layout.search_dict_no_results;
 		} else {
 			resId = R.layout.search_dict_list_item;
 		}
 
-		View view = inflater.inflate(resId, parent, false);
+		View view = mInflater.inflate(resId, parent, false);
 
-		if (entry.equals(loading) || entry.equals(noResults)) {
+		if (entry.equals(mLoading) || entry.equals(mNoResults)) {
 			// Make entry unclickable
 			view.setId(0);
 			view.setClickable(false);
@@ -62,8 +62,8 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 			ChineseCharsHandler charsHandler = ChineseCharsHandler.getInstance();
 			view.setId(entry.getId());
 			chinese.setText(Html.fromHtml(charsHandler.formatHanzi(entry.getSimplified(),
-					entry.getTraditional(), entry.getPinyin() , prefs)));
-			String pinyinStr = charsHandler.formatPinyin(entry.getPinyin(), prefs);
+					entry.getTraditional(), entry.getPinyin() , mPrefs)));
+			String pinyinStr = charsHandler.formatPinyin(entry.getPinyin(), mPrefs);
 			if (pinyinStr.length() > 0) {
 				pinyin.setText(pinyinStr);
 			} else {
@@ -78,20 +78,20 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 	@Override
 	public void clear() {
 		super.clear();
-		searchIsOver = false;
+		mSearchIsOver = false;
 	}
 
 	public void addLoading() {
-		add(loading);
+		add(mLoading);
 	}
 	public void removeLoading() {
-		this.remove(loading);
+		remove(mLoading);
 	}
 
 	public void add(List<Entry> entries, boolean stillLeft) {
 		// Check if any result found
 		if (entries.isEmpty() && getCount() == 0) {
-			add(noResults);
+			add(mNoResults);
 		} else {
 			for (Entry entry : entries) {
 				add(entry);
@@ -102,12 +102,12 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 		if (stillLeft) { // add loading if still some entries left
 			addLoading();
 		} else {
-			searchIsOver = true;
+			mSearchIsOver = true;
 		}
 		notifyDataSetChanged();
 	}
 
 	public boolean isSearchOver() {
-		return searchIsOver;
+		return mSearchIsOver;
 	}
 }

@@ -19,9 +19,9 @@ public final class ApplicationController extends Application {
 	public static final int NOTIF_UPDATE_AVAILABLE = 4;
 
 	// Services
-	private final SearchService searchDictService = new SearchService();
-	private final StarredService starredService = new StarredService();
-	private final OnPreferencesChangedListener onPreferencesChangedListener = new OnPreferencesChangedListener();
+	private final SearchService mSearchDictService = new SearchService();
+	private final StarredService mStarredService = new StarredService();
+	private final OnPreferencesChangedListener mOnPreferencesChangedListener = new OnPreferencesChangedListener();
 
 	@Override
 	public void onCreate() {
@@ -31,14 +31,14 @@ public final class ApplicationController extends Application {
 	}
 
 	public SearchService getSearchDictService() {
-		return searchDictService;
+		return mSearchDictService;
 	}
 
 	public StarredService getStarredService() {
-		return starredService;
+		return mStarredService;
 	}
 
 	public OnPreferencesChangedListener getOnPreferencesChangedListener() {
-		return onPreferencesChangedListener;
+		return mOnPreferencesChangedListener;
 	}
 }

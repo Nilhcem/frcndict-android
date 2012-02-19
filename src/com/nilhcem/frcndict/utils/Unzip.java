@@ -14,18 +14,18 @@ import java.util.zip.ZipInputStream;
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
 
 public final class Unzip extends AbstractCancellableObservable {
-	private final File location;
-	private final File zipFile;
+	private final File mLocation;
+	private final File mZipFile;
 
 	public Unzip(File zipFile, File location) {
 		super();
-		this.zipFile = zipFile;
-		this.location = location;
+		mZipFile = zipFile;
+		mLocation = location;
 		dirChecker("");
 	}
 
 	private void dirChecker(String dir) {
-		File curDir = new File(location.getAbsolutePath() + File.separator + dir);
+		File curDir = new File(mLocation.getAbsolutePath() + File.separator + dir);
 		if (!curDir.isDirectory()) {
 			curDir.mkdirs();
 		}
@@ -34,9 +34,9 @@ public final class Unzip extends AbstractCancellableObservable {
 	private long getTotalSize() throws IOException {
 		long totalSize = 0l;
 
-		ZipFile zf = new ZipFile(zipFile);
+		ZipFile zf = new ZipFile(mZipFile);
 		Enumeration<? extends ZipEntry> e = zf.entries();
-		while (!cancelled && e.hasMoreElements()) {
+		while (!mCancelled && e.hasMoreElements()) {
 			ZipEntry ze = (ZipEntry) e.nextElement();
 			if (ze.getSize() > 0) {
 				totalSize += ze.getSize();
@@ -57,15 +57,15 @@ public final class Unzip extends AbstractCancellableObservable {
 		long curSize = 0;
 		byte[] buffer = new byte[1024];
 
-		ZipInputStream zip = new ZipInputStream(new FileInputStream(zipFile));
+		ZipInputStream zip = new ZipInputStream(new FileInputStream(mZipFile));
 		BufferedInputStream in = new BufferedInputStream(zip, buffer.length);
 
 		ZipEntry entry;
-		while ((!cancelled && (entry = zip.getNextEntry()) != null)) {
+		while ((!mCancelled && (entry = zip.getNextEntry()) != null)) {
 			if (entry.isDirectory()) {
 				dirChecker(entry.getName());
 			} else {
-				FileOutputStream fos = new FileOutputStream(location.getAbsolutePath() + File.separator + entry.getName());
+				FileOutputStream fos = new FileOutputStream(mLocation.getAbsolutePath() + File.separator + entry.getName());
 				BufferedOutputStream out = new BufferedOutputStream(fos, buffer.length);
 
 				int read;
@@ -73,7 +73,7 @@ public final class Unzip extends AbstractCancellableObservable {
 					out.write(buffer, 0, read);
 
 					// Notify percentage to observers
-					if (this.countObservers() > 0 && totalSize != 0) {
+					if (countObservers() > 0 && totalSize != 0) {
 						curSize += read;
 						updateProgress((int) ((curSize * 100) / totalSize));
 					}

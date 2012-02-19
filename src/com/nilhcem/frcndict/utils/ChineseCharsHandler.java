@@ -11,7 +11,7 @@ public final class ChineseCharsHandler {
 	private static final String SAME_HANZI_REPLACEMENT = "-";
 	private static final String FORMAT_HANZI_ST = "%s [%s]";
 
-	private String[] colorsArray;
+	private String[] mColorsArray;
 
 	private ChineseCharsHandler() {
     }
@@ -21,7 +21,7 @@ public final class ChineseCharsHandler {
     }
 
 	public void setColorsArray(String[] colorsArray) {
-		this.colorsArray = colorsArray.clone();
+		mColorsArray = colorsArray.clone();
 	}
 
 	// Transform a pin1yin1 with tones number to a pīnyīn with tone marks
@@ -321,7 +321,7 @@ public final class ChineseCharsHandler {
 
 			// loop for each hanzi
 			for (int curHanzi = 0; curHanzi < length; curHanzi++) {
-				int nbTones = colorsArray.length;
+				int nbTones = mColorsArray.length;
 
 				boolean foundColor = false;
 				for (int colorNb = 1; colorNb <= nbTones; colorNb++) {
@@ -329,7 +329,7 @@ public final class ChineseCharsHandler {
 							/* TODO: and contains at least one character (to make sure it's not a number */
 							) {
 						sb.append("<font color=\"")
-							.append(colorsArray[colorNb])
+							.append(mColorsArray[colorNb])
 							.append("\">")
 							.append(splitHanzi[curHanzi])
 							.append("</font>");

@@ -12,41 +12,41 @@ public abstract class AbstractSearchService {
 	public static final int SEARCH_HANZI = 3;
 	public static final int SEARCH_STARRED = 4;
 
-	protected int searchType;
+	protected int mSearchType;
 
 	// Search Thread
-	protected SearchAsync lastTask = null;
+	protected SearchAsync mLastTask = null;
 
 	// Reference
-	protected WeakReference<ListAdapter> refSearchAdapter;
+	protected WeakReference<ListAdapter> mRefSearchAdapter;
 
 	public abstract void detectAndSetSearchType(String search);
 
 	public void setAdapter(ListAdapter searchAdapter) {
-		this.refSearchAdapter = new WeakReference<ListAdapter>(searchAdapter);
+		mRefSearchAdapter = new WeakReference<ListAdapter>(searchAdapter);
 	}
 
 	public int getSearchType() {
-		return searchType;
+		return mSearchType;
 	}
 
 	public void setSearchType(int searchType) {
-		this.searchType = searchType;
+		mSearchType = searchType;
 	}
 
 	public void stopPreviousThread() {
-		if (lastTask != null) {
-			lastTask.cancel(true);
-			lastTask = null;
+		if (mLastTask != null) {
+			mLastTask.cancel(true);
+			mLastTask = null;
 		}
 	}
 
 	public void runSearchThread(SearchActivity activity, String curPage, String search) { // curPage should be null if first page
 		stopPreviousThread();
 
-		if (refSearchAdapter != null && refSearchAdapter.get() != null) {
-			lastTask = new SearchAsync(refSearchAdapter.get(), this, activity);
-			lastTask.execute(curPage, search);
+		if (mRefSearchAdapter != null && mRefSearchAdapter.get() != null) {
+			mLastTask = new SearchAsync(mRefSearchAdapter.get(), this, activity);
+			mLastTask.execute(curPage, search);
 		}
 	}
 }

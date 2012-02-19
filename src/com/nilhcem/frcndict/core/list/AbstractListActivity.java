@@ -70,7 +70,7 @@ public abstract class AbstractListActivity extends AbstractDictActivity implemen
 		// TODO deprecated
 		// Get the instance of the object that was stored if one exists
 		if (getLastNonConfigurationInstance() == null) {
-			mListAdapter = new ListAdapter(getPackageContext(), R.layout.search_dict_list_item, getLayoutInflater(), prefs);
+			mListAdapter = new ListAdapter(getPackageContext(), R.layout.search_dict_list_item, getLayoutInflater(), mPrefs);
 		} else {
 			mListAdapter = (ListAdapter) getLastNonConfigurationInstance();
 		}

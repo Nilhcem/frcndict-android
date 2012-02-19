@@ -1,6 +1,7 @@
 package com.nilhcem.frcndict.updatedb;
 
 import java.io.File;
+import java.io.IOException;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -8,6 +9,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.IBinder;
 
@@ -74,7 +76,13 @@ public class CheckForUpdatesService extends Service {
 				String[] splitted = versionStr.split(CheckForUpdatesService.VERSION_SEPARATOR);
 				if (splitted.length > 1 && splitted[1] != null && splitted[0].length() > 0 && splitted[1].length() > 0) {
 					// Check App version code
-					int curVersionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+					int curVersionCode;
+					try {
+						curVersionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+					} catch (NameNotFoundException e) {
+						// Skip update notification
+						curVersionCode = Integer.MAX_VALUE;
+					}
 					int minVersionCode = Integer.parseInt(splitted[1]);
 
 					if (curVersionCode >= minVersionCode && !params[0].equals(splitted[0])) {
@@ -82,7 +90,7 @@ public class CheckForUpdatesService extends Service {
 						CheckForUpdatesService.displayUpdateNotification(CheckForUpdatesService.this);
 					}
 				}
-			} catch (Exception e) {
+			} catch (IOException e) {
 				// TODO
 			} finally {
 				versionFile.delete();

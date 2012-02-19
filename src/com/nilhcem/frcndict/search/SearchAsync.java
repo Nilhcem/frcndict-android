@@ -15,31 +15,31 @@ import com.nilhcem.frcndict.database.Tables;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 
 public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
-	private final ListAdapter refAdapter;
-	private final AbstractSearchService refService;
-	private final WeakReference<SearchActivity> refActivity;
+	private final ListAdapter mRefAdapter;
+	private final AbstractSearchService mRefService;
+	private final WeakReference<SearchActivity> mRefActivity;
 
 	public SearchAsync(ListAdapter adapter, AbstractSearchService service, SearchActivity activity) {
 		super();
-		this.refAdapter = adapter;
-		this.refService = service;
-		this.refActivity = new WeakReference<SearchActivity>(activity);
+		mRefAdapter = adapter;
+		mRefService = service;
+		mRefActivity = new WeakReference<SearchActivity>(activity);
 	}
 
 	@Override
 	protected List<Entry> doInBackground(String... params) {
 		List<Entry> entries = new ArrayList<Entry>();
 
-		if (!refAdapter.isSearchOver()) {
+		if (!mRefAdapter.isSearchOver()) {
 			// Get parameters
 			int currentPage = (params[0] == null) ? 0 : Integer.parseInt(params[0]);
 			String search = params[1];
 
 			// Do the query depending on the searchType
-			refService.detectAndSetSearchType(search);
+			mRefService.detectAndSetSearchType(search);
 			DatabaseHelper db = DatabaseHelper.getInstance();
 			db.open();
-			Cursor c = search(db, search, refService.getSearchType(), currentPage);
+			Cursor c = search(db, search, mRefService.getSearchType(), currentPage);
 			if (c.moveToFirst()) {
 				do {
 					Entry entry = new Entry();
@@ -65,10 +65,10 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 			stillLeft = true;
 			result.remove(SettingsActivity.NB_ENTRIES_PER_LIST); // remove last one, just used to know if there are still some elements left
 		}
-		refAdapter.removeLoading();
-		refAdapter.add(result, stillLeft);
-		if (refActivity != null) {
-			SearchActivity activity = refActivity.get();
+		mRefAdapter.removeLoading();
+		mRefAdapter.add(result, stillLeft);
+		if (mRefActivity != null) {
+			SearchActivity activity = mRefActivity.get();
 			if (activity != null) {
 				activity.changeSearchButtonBackground();
 			}

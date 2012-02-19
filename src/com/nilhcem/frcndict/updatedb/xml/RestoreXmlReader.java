@@ -5,12 +5,14 @@ import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import android.util.Log;
 
@@ -20,23 +22,23 @@ import com.nilhcem.frcndict.database.Tables;
 
 public final class RestoreXmlReader extends AbstractCancellableObservable {
 	private static final String LOG = "RestoreXmlReader";
-	private final File xmlFile;
-	private final DatabaseHelper db;
+	private final File mXmlFile;
+	private final DatabaseHelper mDb;
 
 	public RestoreXmlReader(DatabaseHelper db, File xmlFile) {
 		super();
-		this.db = db;
-		this.xmlFile = xmlFile;
+		mDb = db;
+		mXmlFile = xmlFile;
 	}
 
 	@Override
 	public void start() throws IOException {
-		db.open();
+		mDb.open();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document dom = builder.parse(xmlFile);
+			Document dom = builder.parse(mXmlFile);
 			Element root = dom.getDocumentElement();
 			NodeList items = root.getElementsByTagName(BackupXmlWriter.XML_SUB_TAG);
 
@@ -53,20 +55,23 @@ public final class RestoreXmlReader extends AbstractCancellableObservable {
 					String starredDate = starredNode.getNodeValue();
 
 					if (simplified != null && starredDate != null) {
-						db.setStarredDate(simplified, starredDate);
+						mDb.setStarredDate(simplified, starredDate);
 					}
 				}
 
 				// Notify percentage to observers
-				if (this.countObservers() > 0) {
+				if (countObservers() > 0) {
 					updateProgress(((i + 1) * 100) / totalEntries);
 				}
 			}
-		} catch (Exception e) {
+		} catch (ParserConfigurationException e) {
+			// Do nothing
+			Log.e(RestoreXmlReader.LOG, e.getMessage());
+		} catch (SAXException e) {
 			// Do nothing
 			Log.e(RestoreXmlReader.LOG, e.getMessage());
 		}
 		updateProgress(100); // Notify that it is finished (even if 0 elements to restore)
-		db.close();
+		mDb.close();
 	}
 }

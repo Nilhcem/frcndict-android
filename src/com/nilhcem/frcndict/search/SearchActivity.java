@@ -229,7 +229,7 @@ public final class SearchActivity extends AbstractListActivity {
 		mIntroText = (TextView) findViewById(R.id.searchIntro);
 		mIntroText.setText(Html.fromHtml(
 			String.format("<font color=\"%s\"><b>%s</b></font><br />%s",
-				getResources().getStringArray(R.array.introTitleColors)[prefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false) ? 1 : 0],
+				getResources().getStringArray(R.array.introTitleColors)[mPrefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false) ? 1 : 0],
 				getString(R.string.app_name), getString(R.string.search_intro))));
 	}
 

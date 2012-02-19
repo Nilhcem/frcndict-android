@@ -6,29 +6,28 @@ import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class SearchService extends AbstractSearchService {
 	public static final int BACK_TO_EXIT_TIMER = 4000;
-
-	private long lastBackPressTime = 0l;
+	private long mLastBackPressTime = 0l;
 
 	public SearchService() {
 		super();
-		searchType = AbstractSearchService.SEARCH_UNDEFINED;
+		mSearchType = AbstractSearchService.SEARCH_UNDEFINED;
 	}
 
 	public void setLastBackPressTime(long value) {
-		lastBackPressTime = value;
+		mLastBackPressTime = value;
 	}
 
 	public boolean isBackBtnPressedForTheFirstTime() {
-		return (lastBackPressTime < System.currentTimeMillis() - SearchService.BACK_TO_EXIT_TIMER);
+		return (mLastBackPressTime < System.currentTimeMillis() - SearchService.BACK_TO_EXIT_TIMER);
 	}
 
 	@Override
 	public void detectAndSetSearchType(String search) {
-		if (searchType == AbstractSearchService.SEARCH_UNDEFINED) {
+		if (mSearchType == AbstractSearchService.SEARCH_UNDEFINED) {
 			// Checks if search is in hanzi
 			for (char ch : search.toCharArray()) {
 				if (ChineseCharsHandler.getInstance().charIsChinese(ch)) {
-					searchType = AbstractSearchService.SEARCH_HANZI;
+					mSearchType = AbstractSearchService.SEARCH_HANZI;
 					return;
 				}
 			}
@@ -37,9 +36,9 @@ public final class SearchService extends AbstractSearchService {
 			DatabaseHelper db = DatabaseHelper.getInstance();
 			db.open();
 			if (db.isPinyin(search)) {
-				searchType = AbstractSearchService.SEARCH_PINYIN;
+				mSearchType = AbstractSearchService.SEARCH_PINYIN;
 			} else {
-				searchType = AbstractSearchService.SEARCH_FRENCH;
+				mSearchType = AbstractSearchService.SEARCH_FRENCH;
 			}
 			db.close();
 		}

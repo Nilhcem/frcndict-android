@@ -11,34 +11,34 @@ import java.net.URL;
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
 
 public final class HttpDownloader extends AbstractCancellableObservable {
-	private final File output;
-	private final URL url;
+	private final File mOutput;
+	private final URL mUrl;
 
 	public HttpDownloader(String urlStr, File outputFile) throws MalformedURLException {
 		super();
-		this.output = outputFile;
-		this.url = new URL(urlStr);
+		mOutput = outputFile;
+		mUrl = new URL(urlStr);
 	}
 
 	@Override
 	public void start() throws IOException {
-		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		HttpURLConnection connection = (HttpURLConnection) mUrl.openConnection();
 		connection.setRequestMethod("GET");
 		connection.setDoOutput(true);
 		connection.connect();
 
 		int totalSize = connection.getContentLength();
-		FileOutputStream fos = new FileOutputStream(output);
+		FileOutputStream fos = new FileOutputStream(mOutput);
 		InputStream is = connection.getInputStream();
 		byte[] buffer = new byte[1024];
 		long curSize = 0;
 
 		int read;
-		while ((!cancelled && (read = is.read(buffer, 0, buffer.length)) != -1)) {
+		while ((!mCancelled && (read = is.read(buffer, 0, buffer.length)) != -1)) {
 			fos.write(buffer, 0, read);
 
 			// Notify percentage to observers
-			if (this.countObservers() > 0) {
+			if (countObservers() > 0) {
 				curSize += read;
 				updateProgress((int) ((curSize * 100) / totalSize));
 			}

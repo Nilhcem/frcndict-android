@@ -48,13 +48,9 @@ public final class FileHandler {
 	public static boolean isDatabaseInstalledOnSDcard() {
 		File dbPath = DatabaseHelper.getInstance().getDatabasePath();
 
-		try {
-			if (dbPath != null && dbPath.getAbsolutePath().startsWith(
-					Environment.getExternalStorageDirectory().getAbsolutePath() + FileHandler.SD_PATH)) {
-				return true;
-			}
-		} catch (Exception e) {
-			// Do nothing
+		if (dbPath != null && dbPath.getAbsolutePath().startsWith(
+				Environment.getExternalStorageDirectory().getAbsolutePath() + FileHandler.SD_PATH)) {
+			return true;
 		}
 		return false;
 	}

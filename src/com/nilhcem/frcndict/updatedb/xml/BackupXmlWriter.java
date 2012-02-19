@@ -21,16 +21,17 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 	private static final String XML_MAIN_TAG = "starred";
 	private static final String TAG = "BackupXmlWriter";
 
-	private DatabaseHelper db;
+	private final DatabaseHelper db;
 	private FileOutputStream outputStream;
 
 	public BackupXmlWriter(DatabaseHelper db, File xmlFile) {
+		super();
 		this.db = db;
 
 		// Create FileOuputStream for xmlFile
 		try {
 			outputStream = new FileOutputStream(xmlFile);
-		} catch(FileNotFoundException e){
+		} catch (FileNotFoundException e) {
 			Log.e(BackupXmlWriter.TAG, e.getMessage());
 		}
 	}
@@ -40,7 +41,7 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 		db.open();
 		long totalEntries = db.getNbStarred();
 
-		if (totalEntries > 0 && !cancel) {
+		if (totalEntries > 0 && !cancelled) {
 			XmlSerializer serializer = Xml.newSerializer();
 
 			try {
@@ -48,7 +49,7 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 				if (c.moveToFirst()) {
 					serializer.setOutput(outputStream, BackupXmlWriter.XML_ENCODING);
 					serializer.startDocument(BackupXmlWriter.XML_ENCODING, Boolean.TRUE);
-					serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true); 
+					serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
 					serializer.startTag(null, BackupXmlWriter.XML_MAIN_TAG);
 
 					long curEntry = 0;
@@ -65,7 +66,7 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 						if (this.countObservers() > 0) {
 							updateProgress((int) ((++curEntry * 100) / totalEntries));
 						}
-					} while (c.moveToNext() && !cancel);
+					} while (c.moveToNext() && !cancelled);
 
 					c.close();
 			        serializer.endTag(null, BackupXmlWriter.XML_MAIN_TAG);

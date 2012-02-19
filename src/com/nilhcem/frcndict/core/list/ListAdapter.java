@@ -17,10 +17,10 @@ import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class ListAdapter extends ArrayAdapter<Entry> {
 	private boolean searchIsOver; // true if no more result to avoid checking database
-	private Entry loading;
-	private Entry noResults;
-	private LayoutInflater inflater;
-	private SharedPreferences prefs;
+	private final Entry loading;
+	private final Entry noResults;
+	private final LayoutInflater inflater;
+	private final SharedPreferences prefs;
 
 	public ListAdapter(Context context, int textViewResourceId, LayoutInflater inflater, SharedPreferences prefs) {
 		super(context, textViewResourceId);
@@ -37,9 +37,9 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 		Entry entry = getItem(position);
 
 		int resId;
-		if (entry == loading) {
+		if (entry.equals(loading)) {
 			resId = R.layout.search_dict_loading;
-		} else if (entry == noResults) {
+		} else if (entry.equals(noResults)) {
 			resId = R.layout.search_dict_no_results;
 		} else {
 			resId = R.layout.search_dict_list_item;
@@ -47,7 +47,7 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 
 		View view = inflater.inflate(resId, parent, false);
 
-		if (entry == loading || entry == noResults) {
+		if (entry.equals(loading) || entry.equals(noResults)) {
 			// Make entry unclickable
 			view.setId(0);
 			view.setClickable(false);
@@ -59,11 +59,11 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 			TextView pinyin = (TextView) view.findViewById(R.id.slPinyin);
 			TextView desc = (TextView) view.findViewById(R.id.slDesc);
 
-			ChineseCharsHandler chineseCharsHandler = ChineseCharsHandler.getInstance();
+			ChineseCharsHandler charsHandler = ChineseCharsHandler.getInstance();
 			view.setId(entry.getId());
-			chinese.setText(Html.fromHtml(chineseCharsHandler.formatHanzi(entry.getSimplified(),
+			chinese.setText(Html.fromHtml(charsHandler.formatHanzi(entry.getSimplified(),
 					entry.getTraditional(), entry.getPinyin() , prefs)));
-			String pinyinStr = chineseCharsHandler.formatPinyin(entry.getPinyin(), prefs);
+			String pinyinStr = charsHandler.formatPinyin(entry.getPinyin(), prefs);
 			if (pinyinStr.length() > 0) {
 				pinyin.setText(pinyinStr);
 			} else {
@@ -107,7 +107,7 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 		notifyDataSetChanged();
 	}
 
-	public boolean searchIsOver() {
+	public boolean isSearchOver() {
 		return searchIsOver;
 	}
 }

@@ -14,8 +14,8 @@ import java.util.zip.ZipInputStream;
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
 
 public final class Unzip extends AbstractCancellableObservable {
-	private File location;
-	private File zipFile;
+	private final File location;
+	private final File zipFile;
 
 	public Unzip(File zipFile, File location) {
 		super();
@@ -36,7 +36,7 @@ public final class Unzip extends AbstractCancellableObservable {
 
 		ZipFile zf = new ZipFile(zipFile);
 		Enumeration<? extends ZipEntry> e = zf.entries();
-		while (!cancel && e.hasMoreElements()) {
+		while (!cancelled && e.hasMoreElements()) {
 			ZipEntry ze = (ZipEntry) e.nextElement();
 			if (ze.getSize() > 0) {
 				totalSize += ze.getSize();
@@ -61,7 +61,7 @@ public final class Unzip extends AbstractCancellableObservable {
 		BufferedInputStream in = new BufferedInputStream(zip, buffer.length);
 
 		ZipEntry entry;
-		while ((!cancel && (entry = zip.getNextEntry()) != null)) {
+		while ((!cancelled && (entry = zip.getNextEntry()) != null)) {
 			if (entry.isDirectory()) {
 				dirChecker(entry.getName());
 			} else {

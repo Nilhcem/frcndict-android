@@ -177,10 +177,10 @@ public final class ImportUpdateService extends Service {
 		} else { // an error appeared: display error
 			curErrorId = errorId;
 
-			if (sActivity.get() != null) {
-				sActivity.get().displayError(errorId);
-			} else {
+			if (sActivity.get() == null) {
 				displayErrorNotification();
+			} else {
+				sActivity.get().displayError(errorId);
 			}
 		}
 		stopSelf();
@@ -271,6 +271,7 @@ public final class ImportUpdateService extends Service {
 		private BackupXmlWriter xmlWriter = null;
 
 		public BackupAsync() {
+			super();
 			xmlFile = null;
 		}
 
@@ -293,11 +294,9 @@ public final class ImportUpdateService extends Service {
 			}
 
 			// Rename current db to create a backup
-			if (!isCancelled()) {
-				if (dbPath.exists()) {
-					File backup = new File(dbPath.getAbsolutePath() + BackupAsync.BACKUP_EXTENS);
-					dbPath.renameTo(backup);
-				}
+			if (!isCancelled() && dbPath.exists()) {
+				File backup = new File(dbPath.getAbsolutePath() + BackupAsync.BACKUP_EXTENS);
+				dbPath.renameTo(backup);
 			}
 			return null;
 		}
@@ -317,10 +316,8 @@ public final class ImportUpdateService extends Service {
 
 		@Override
 		public void update(Observable observable, Object data) {
-			if (!isCancelled()) {
-				if (observable instanceof BackupXmlWriter) {
-					publishProgress((Integer) data); // will call onProgressUpdate
-				}
+			if (!isCancelled() && observable instanceof BackupXmlWriter) {
+				publishProgress((Integer) data); // will call onProgressUpdate
 			}
 		}
 
@@ -384,10 +381,8 @@ public final class ImportUpdateService extends Service {
 
 		@Override
 		public void update(Observable observable, Object data) {
-			if (!isCancelled()) {
-				if (observable instanceof HttpDownloader) {
-					publishProgress((Integer) data);
-				}
+			if (!isCancelled() && observable instanceof HttpDownloader) {
+				publishProgress((Integer) data);
 			}
 		}
 
@@ -490,10 +485,8 @@ public final class ImportUpdateService extends Service {
 
 		@Override
 		public void update(Observable observable, Object data) {
-			if (!isCancelled()) {
-				if (observable instanceof Unzip) {
-					publishProgress((Integer) data);
-				}
+			if (!isCancelled() && observable instanceof Unzip) {
+				publishProgress((Integer) data);
 			}
 		}
 
@@ -552,10 +545,8 @@ public final class ImportUpdateService extends Service {
 
 		@Override
 		public void update(Observable observable, Object data) {
-			if (!isCancelled()) {
-				if (observable instanceof RestoreXmlReader) {
-					publishProgress((Integer) data);
-				}
+			if (!isCancelled() && observable instanceof RestoreXmlReader) {
+				publishProgress((Integer) data);
 			}
 		}
 

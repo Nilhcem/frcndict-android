@@ -13,8 +13,8 @@ import android.os.Environment;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 
 public final class FileHandler {
-	private static String SD_PATH = "/Android/data/";
-	private static String INTERNAL_PATH = "/data/";
+	private static final String SD_PATH = "/Android/data/";
+	private static final String INTERNAL_PATH = "/data/";
 
 	public static String readFile(File file) throws IOException {
 		FileInputStream stream = new FileInputStream(file);
@@ -49,14 +49,12 @@ public final class FileHandler {
 		File dbPath = DatabaseHelper.getInstance().getDatabasePath();
 
 		try {
-			if (dbPath != null) {
-				if (dbPath.getAbsolutePath().startsWith(
-						Environment.getExternalStorageDirectory().getAbsolutePath() + FileHandler.SD_PATH)) {
-					return true;
-				}
+			if (dbPath != null && dbPath.getAbsolutePath().startsWith(
+					Environment.getExternalStorageDirectory().getAbsolutePath() + FileHandler.SD_PATH)) {
+				return true;
 			}
-		} catch (Throwable e) {
-			// ignore
+		} catch (Exception e) {
+			// Do nothing
 		}
 		return false;
 	}

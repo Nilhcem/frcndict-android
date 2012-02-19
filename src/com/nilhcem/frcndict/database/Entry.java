@@ -8,6 +8,7 @@ public final class Entry {
 	private String desc;
 
 	public Entry() {
+		// Do nothing.
 	}
 
 	public Entry(int id, String simp, String trad, String piny, String desc) {

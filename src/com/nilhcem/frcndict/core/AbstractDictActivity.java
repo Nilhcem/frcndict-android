@@ -56,24 +56,29 @@ public abstract class AbstractDictActivity extends Activity {
 	public static boolean checkForDatabaseImportOrUpdate(Activity activity) {
 		ImportUpdateService service = ImportUpdateService.getInstance();
 
+		boolean isRunning;
 		// If upgrade service is running, redirects to there
-		if (service != null && service.getStatus() != ImportUpdateService.STATUS_UNSTARTED) {
+		if (service == null || service.getStatus() == ImportUpdateService.STATUS_UNSTARTED) {
+			isRunning = false;
+		} else {
 			activity.finish();
 			Intent intent = new Intent(activity, service.isImport() ? ImportActivity.class : UpdateActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			activity.overridePendingTransition(0, 0);
 			activity.startActivity(intent);
-			return true;
+			isRunning = true;
 		}
-		return false;
+		return isRunning;
 	}
 
 	public static void checkForNightModeTheme(Activity activity, SharedPreferences prefs) {
+		SharedPreferences curPrefs = prefs;
+
 		// Display night mode theme if set by user.
-		if (prefs == null) {
-			prefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
+		if (curPrefs == null) {
+			curPrefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
 		}
-		if (prefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false)) {
+		if (curPrefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false)) {
 			activity.setTheme(R.style.DarkTheme);
 		}
 	}

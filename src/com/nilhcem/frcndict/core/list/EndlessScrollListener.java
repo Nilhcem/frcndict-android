@@ -11,19 +11,18 @@ public final class EndlessScrollListener extends Observable implements OnScrollL
 	private boolean loading; // True if we are still waiting for the last set of data to load.
 
 	public EndlessScrollListener() {
+		super();
 		reset();
 	}
 
 	// called every time the list is scrolled to check if the latest element of the list is visible, to run a special operation
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		if (loading) {
+		if (loading && (totalItemCount > previousTotal)) {
 			// If the dataset count has changed, it has finished loading
-			if (totalItemCount > previousTotal) {
-				loading = false;
-				previousTotal = totalItemCount;
-				currentPage++;
-			}
+			loading = false;
+			previousTotal = totalItemCount;
+			currentPage++;
 		}
 		// If it isn't currently loading, we check to see if we need to reload more data.
 		if (!loading && totalItemCount > 0 && ((firstVisibleItem + visibleItemCount) == totalItemCount)) {
@@ -35,6 +34,7 @@ public final class EndlessScrollListener extends Observable implements OnScrollL
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// Do nothing
 	}
 
 	public int getCurrentPage() {

@@ -17,7 +17,7 @@ import com.nilhcem.frcndict.database.Tables;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class WordMeaningActivity extends AbstractDictActivity {
-	public static String ID_INTENT = "id";
+	public static final String ID_INTENT = "id";
 
 	private int mId;
 	private TextView mSimplified;
@@ -47,12 +47,15 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		boolean stopProcessing;
+
 		if (item.getItemId() == R.id.starred_menu_search) {
 			this.finish();
-			return true;
+			stopProcessing = true;
 		} else {
-			return super.onOptionsItemSelected(item);
+			stopProcessing = super.onOptionsItemSelected(item);
 		}
+		return stopProcessing;
 	}
 
 	// Get id from indent
@@ -95,13 +98,9 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 				mSimplified.setText(Html.fromHtml(chineseCharsHandler.formatHanzi(simplified, traditional, pinyin, prefs)));
 				mMeaning.setText(getFormattedMeaning(desc));
 				mStarButton.setStarredDate(starredDate);
-			} else {
-				// TODO
 			}
 			c.close();
 			db.close();
-		} else {
-			// TODO
 		}
 	}
 

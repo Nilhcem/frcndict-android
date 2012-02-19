@@ -10,6 +10,7 @@ public final class SearchService extends AbstractSearchService {
 	private long lastBackPressTime = 0l;
 
 	public SearchService() {
+		super();
 		searchType = AbstractSearchService.SEARCH_UNDEFINED;
 	}
 
@@ -28,7 +29,7 @@ public final class SearchService extends AbstractSearchService {
 			for (char ch : search.toCharArray()) {
 				if (ChineseCharsHandler.getInstance().charIsChinese(ch)) {
 					searchType = AbstractSearchService.SEARCH_HANZI;
-					return ;
+					return;
 				}
 			}
 

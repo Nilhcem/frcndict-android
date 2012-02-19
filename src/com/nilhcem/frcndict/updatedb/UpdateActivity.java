@@ -11,6 +11,7 @@ public final class UpdateActivity extends AbstractImportUpdateActivity {
 	private ProgressBar mRestoreProgress;
 
 	public UpdateActivity() {
+		super();
 		mImport = false;
 
 		mStartServiceListener = new View.OnClickListener() {
@@ -30,11 +31,11 @@ public final class UpdateActivity extends AbstractImportUpdateActivity {
 
 	@Override
 	public void onBackPressed() {
-		if (ImportUpdateService.getInstance() != null
-				&& ImportUpdateService.getInstance().getStatus() != ImportUpdateService.STATUS_UNSTARTED) {
-			moveTaskToBack(true); // act like home button (because we can't use the application when it is updating dictionary)
-		} else {
+		if (ImportUpdateService.getInstance() == null
+				|| ImportUpdateService.getInstance().getStatus() == ImportUpdateService.STATUS_UNSTARTED) {
 			super.onBackPressed();
+		} else {
+			moveTaskToBack(true); // act like home button (because we can't use the application when it is updating dictionary)
 		}
 	}
 

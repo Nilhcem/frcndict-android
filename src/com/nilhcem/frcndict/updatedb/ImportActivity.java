@@ -14,6 +14,7 @@ public final class ImportActivity extends AbstractImportUpdateActivity {
 	private AlertDialog mStorageDialog;
 
 	public ImportActivity() {
+		super();
 		mImport = true;
 
 		mStartServiceListener = new View.OnClickListener() {

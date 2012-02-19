@@ -9,9 +9,7 @@ import com.nilhcem.frcndict.R;
 
 public final class AboutDialog extends Dialog {
 	private static final String ABOUT_URL = "file:///android_asset/about/about.html";
-
-	private Context parentContext;
-	private WebView webView;
+	private final Context parentContext;
 
 	public AboutDialog(Context context, int theme) {
 		super(context, theme);
@@ -28,7 +26,7 @@ public final class AboutDialog extends Dialog {
 		JavascriptInterface jsInterface = new JavascriptInterface(parentContext, this);
 
 		// Get webview and enable JS
-		webView = (WebView) findViewById(R.id.aboutWebView);
+		WebView webView = (WebView) findViewById(R.id.aboutWebView);
 		webView.getSettings().setJavaScriptEnabled(true);
 
 		// Add interface

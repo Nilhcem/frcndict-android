@@ -9,9 +9,9 @@ import android.widget.TextView;
 import com.nilhcem.frcndict.R;
 
 public final class ProgressBar extends RelativeLayout {
-	private TextView mTitle;
-	private TextView mPercent;
-	private android.widget.ProgressBar mProgressBar;
+	private final TextView mTitle;
+	private final TextView mPercent;
+	private final android.widget.ProgressBar mProgressBar;
 
 	private static final String PERCENT_CHAR = "%";
 	private static final Integer MAX_PROGRESS = 100;

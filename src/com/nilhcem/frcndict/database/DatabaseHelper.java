@@ -3,6 +3,7 @@ package com.nilhcem.frcndict.database;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -15,7 +16,7 @@ import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class DatabaseHelper {
 	public static final String DATABASE_NAME = "dictionary.db";
-	private static final DatabaseHelper instance = new DatabaseHelper();
+	private static final DatabaseHelper INSTANCE = new DatabaseHelper();
 
 	private int used = 0;
 	private File dbPath;
@@ -26,7 +27,7 @@ public final class DatabaseHelper {
 	private static final String QUERY_FRENCH;
 	private static final String QUERY_STARRED;
 
-	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
 	static {
 		StringBuilder sb;
@@ -93,7 +94,7 @@ public final class DatabaseHelper {
     }
 
 	public static DatabaseHelper getInstance() {
-		return instance;
+		return INSTANCE;
     }
 
 	public File getDatabasePath() {
@@ -143,37 +144,33 @@ public final class DatabaseHelper {
 	}
 
 	public String getDbVersion() {
-		String dbVersion = null;
-		Cursor c = mDb.query(Tables.METADATA_TABLE_NAME, new String[] { Tables.METADATA_KEY_VERSION },
+		Cursor c = mDb.query(Tables.METADATA_TABLE_NAME, new String[] {Tables.METADATA_KEY_VERSION},
 				null, null, null, null, null);
 
-		if (c.moveToFirst()) {
-			dbVersion = c.getString(c.getColumnIndex(Tables.METADATA_KEY_VERSION));
-		}
-		return dbVersion;
+		return (c.moveToFirst()) ? c.getString(c.getColumnIndex(Tables.METADATA_KEY_VERSION)) : null;
 	}
 
 	public Cursor searchHanzi(String search, Integer curPage) {
 		String criteria = String.format("%%%s%%", search);
 		return mDb.rawQuery(DatabaseHelper.QUERY_HANZI,
-			new String[] { criteria, criteria,
+			new String[] {criteria, criteria,
 				Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
 			});
 	}
 
 	public Cursor searchPinyin(String search, Integer curPage) {
-		search = ChineseCharsHandler.getInstance().pinyinTonesToNb(search);
+		String curSearch = ChineseCharsHandler.getInstance().pinyinTonesToNb(search);
 		return mDb.rawQuery(DatabaseHelper.QUERY_PINYIN,
 			new String[] {
-				String.format("%%%s%%", search.replaceAll("[^a-zA-Z]", "")),
-				convertToQueryReadyPinyin(search),
+				String.format("%%%s%%", curSearch.replaceAll("[^a-zA-Z]", "")),
+				convertToQueryReadyPinyin(curSearch),
 				Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
 			});
 	}
 
 	public Cursor searchFrench(String search, Integer curPage) {
 		return mDb.rawQuery(DatabaseHelper.QUERY_FRENCH,
-			new String[] { String.format("%%/%s%%", search),
+			new String[] {String.format("%%/%s%%", search),
 				Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
 			});
 	}
@@ -189,9 +186,9 @@ public final class DatabaseHelper {
 	public boolean isPinyin(String search) {
 		boolean isPinyin;
 
-		Cursor c = mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] { Tables.ENTRIES_KEY_ROWID },
+		Cursor c = mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] {Tables.ENTRIES_KEY_ROWID},
 				String.format("`%s` like ?", Tables.ENTRIES_KEY_PINYIN2),
-				new String[] { ChineseCharsHandler.getInstance().pinyinTonesToNb(search).replaceAll("[^a-zA-Z]", "") + "%" },
+				new String[] {ChineseCharsHandler.getInstance().pinyinTonesToNb(search).replaceAll("[^a-zA-Z]", "") + "%"},
 				null, null, null);
 		isPinyin = (c.getCount() > 0);
 		c.close();
@@ -199,26 +196,26 @@ public final class DatabaseHelper {
 	}
 
 	private String convertToQueryReadyPinyin(String pinyin) {
-		boolean previousCharWasSpace = false;
-		boolean previousCharWasTone = false;
+		boolean prevCharWasSpace = false;
+		boolean prevCharWasTone = false;
 
 		StringBuilder newPinyin = new StringBuilder();
 
 		for (char ch : pinyin.toCharArray()) {
-			if (ch == ' ' && previousCharWasSpace) {
+			if (ch == ' ' && prevCharWasSpace) {
 				continue;
 			}
 
 			if (ch == ' ') {
-				previousCharWasSpace = true;
-				if (!previousCharWasTone) {
+				prevCharWasSpace = true;
+				if (!prevCharWasTone) {
 					newPinyin.append("%");  // No % for a character before a space (ex "%n%i3 %", not "%n%i3% %")
 				}
 			} else {
 				if (ch != ':' && (ch < '1' || ch > '5')) { // No % for a character before a tone (ex "%h%a%o3%", not "%h%a%o%3%")
 					newPinyin.append("%");
 				}
-				previousCharWasSpace = false;
+				prevCharWasSpace = false;
 			}
 			newPinyin.append(ch);
 		}
@@ -244,7 +241,7 @@ public final class DatabaseHelper {
 
 		mDb.update(Tables.ENTRIES_TABLE_NAME, values,
 				String.format("`%s` like ?", Tables.ENTRIES_KEY_SIMPLIFIED),
-				new String[] { simplified });
+				new String[] {simplified});
 	}
 
 	public long getNbStarred() {

@@ -9,6 +9,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import android.util.Log;
+
 /**
  * Provides classes to compute md5 checksum.
  *
@@ -16,6 +18,8 @@ import java.security.NoSuchAlgorithmException;
  * @since 1.0
  */
 public final class Md5 {
+	private static final String TAG = "Md5";
+
 	/**
 	 * Returns the MD5 checksum of the file passed in parameters.
 	 *
@@ -29,8 +33,7 @@ public final class Md5 {
 		try {
 			digest = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
+			Log.e(Md5.TAG, e.getMessage());
 			return null;
 		}
 
@@ -45,8 +48,7 @@ public final class Md5 {
 			}
 			is.close();
 		} catch (IOException e) {
-			System.err.println(e.getMessage());
-			e.printStackTrace();
+			Log.e(Md5.TAG, e.getMessage());
 			return null;
 		}
 

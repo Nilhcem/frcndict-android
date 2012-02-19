@@ -4,6 +4,7 @@ import com.nilhcem.frcndict.core.list.AbstractSearchService;
 
 public final class StarredService extends AbstractSearchService {
 	public StarredService() {
+		super();
 		searchType = AbstractSearchService.SEARCH_STARRED;
 	}
 

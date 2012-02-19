@@ -19,9 +19,9 @@ import com.nilhcem.frcndict.R;
  * @see http://arunbadole1209.wordpress.com/2011/12/16/how-to-create-edittext-with-crossx-button-at-end-of-it/
  */
 public final class ClearableEditText extends RelativeLayout {
-	private EditText mEditText;
-	private Button mBtnClear;
-	private ClearableTextObservable mObservable;
+	private final EditText mEditText;
+	private final Button mBtnClear;
+	private final ClearableTextObservable mObservable;
 
 	public ClearableEditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -72,10 +72,12 @@ public final class ClearableEditText extends RelativeLayout {
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				// Do nothing
 			}
 
 			@Override
 			public void afterTextChanged(Editable s) {
+				// Do nothing
 			}
 		});
 	}

@@ -66,15 +66,16 @@ public final class StarredActivity extends AbstractListActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		boolean stopProcessing = true;
+
 		if (item.getItemId() == R.id.starred_menu_refresh) {
 			refreshSearch(true);
-			return true;
 		} else if (item.getItemId() == R.id.starred_menu_search) {
 			this.finish();
-			return true;
 		} else {
-			return super.onOptionsItemSelected(item);
+			stopProcessing = super.onOptionsItemSelected(item);
 		}
+		return stopProcessing;
 	}
 
 	private void refreshSearch(boolean clearResults) {
@@ -85,5 +86,10 @@ public final class StarredActivity extends AbstractListActivity {
 		}
 		mListAdapter.addLoading();
 		mService.runSearchThread(null, null, null);
+	}
+
+	@Override
+	protected void initBeforeRestore() {
+		// Do nothing
 	}
 }

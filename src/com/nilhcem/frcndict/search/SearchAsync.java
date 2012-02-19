@@ -15,26 +15,22 @@ import com.nilhcem.frcndict.database.Tables;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 
 public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
-	private ListAdapter refAdapter;
-	private AbstractSearchService refService;
-	private WeakReference<SearchActivity> refActivity;
+	private final ListAdapter refAdapter;
+	private final AbstractSearchService refService;
+	private final WeakReference<SearchActivity> refActivity;
 
 	public SearchAsync(ListAdapter adapter, AbstractSearchService service, SearchActivity activity) {
+		super();
 		this.refAdapter = adapter;
 		this.refService = service;
 		this.refActivity = new WeakReference<SearchActivity>(activity);
 	}
 
 	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-	}
-
-	@Override
 	protected List<Entry> doInBackground(String... params) {
 		List<Entry> entries = new ArrayList<Entry>();
 
-		if (!refAdapter.searchIsOver()) {
+		if (!refAdapter.isSearchOver()) {
 			// Get parameters
 			int currentPage = (params[0] == null) ? 0 : Integer.parseInt(params[0]);
 			String search = params[1];
@@ -79,22 +75,17 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 		}
 	}
 
-	@Override
-	protected void onCancelled() {
-		super.onCancelled();
-	}
-
 	private Cursor search(DatabaseHelper db, String search, int searchType, int currentPage) {
 		if (searchType == AbstractSearchService.SEARCH_STARRED) {
 			return db.searchStarred(currentPage);
 		}
 
-		search = search.trim().toLowerCase();
+		String curSearch = search.trim().toLowerCase();
 		if (searchType == AbstractSearchService.SEARCH_HANZI) {
-			return db.searchHanzi(search, currentPage);
+			return db.searchHanzi(curSearch, currentPage);
 		} else if (searchType == AbstractSearchService.SEARCH_PINYIN) {
-			return db.searchPinyin(search, currentPage);
+			return db.searchPinyin(curSearch, currentPage);
 		}
-		return db.searchFrench(search, currentPage); // by default
+		return db.searchFrench(curSearch, currentPage); // by default
 	}
 }

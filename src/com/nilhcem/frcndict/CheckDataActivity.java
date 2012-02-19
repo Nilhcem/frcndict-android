@@ -36,20 +36,20 @@ public final class CheckDataActivity extends Activity {
 	 */
 	private void checkDatabase() {
 		Intent intent;
-		boolean initDatabase = true;
 
 		// Check if an import/update is currently in progress
 		if (!AbstractDictActivity.checkForDatabaseImportOrUpdate(this)) {
 			SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
 			String dbPath = prefs.getString(SettingsActivity.KEY_DB_PATH, null);
 
+			boolean importDatabase = true;
 			if (dbPath != null) {
 				DatabaseHelper dbHelper = DatabaseHelper.getInstance();
 				dbHelper.setDatabasePath(new File(dbPath));
-				initDatabase = !dbHelper.isInitialized();
+				importDatabase ^= dbHelper.isInitialized();
 			}
 
-			if (initDatabase) {
+			if (importDatabase) {
 				intent = new Intent(this, ImportActivity.class);
 			} else {
 				checkForUpdates(prefs);
@@ -69,14 +69,14 @@ public final class CheckDataActivity extends Activity {
 
 			if (!updatePrefs.equals(SettingsActivity.VAL_DATABASE_UPDATES_NEVER)) {
 				long curDate = getCurDateInMillisWithoutTimeValue();
-				boolean startUpdateService = checkIfUpdateServiceShouldBeStarted(prefs, curDate, updatePrefs);
+				boolean startUpdate = checkIfUpdateServiceShouldBeStarted(prefs, curDate, updatePrefs);
 
 				// Set new last update checked
 				SharedPreferences.Editor editor = prefs.edit();
 				editor.putLong(SettingsActivity.KEY_LAST_UPDATE_CHECKED, curDate);
 				editor.commit();
 
-				if (startUpdateService) {
+				if (startUpdate) {
 					startService(new Intent(CheckDataActivity.this, CheckForUpdatesService.class));
 				}
 			}
@@ -94,20 +94,18 @@ public final class CheckDataActivity extends Activity {
 	}
 
 	private boolean checkIfUpdateServiceShouldBeStarted(SharedPreferences prefs, long curDate, String updatePrefs) {
-		boolean startUpdateService = false;
+		boolean startUpdate;
 		long lastTimeChecked = prefs.getLong(SettingsActivity.KEY_LAST_UPDATE_CHECKED, 0l);
 
-		if (lastTimeChecked == 0l) { // never checked
-			startUpdateService = true;
+		if (lastTimeChecked == 0l) { // database has never been checked
+			startUpdate = true;
 		} else {
 			long daysBetween = (curDate - lastTimeChecked) / CheckDataActivity.NB_MILLISEC_IN_A_DAY;
-			if ((daysBetween > 31) // monthly
+			startUpdate = ((daysBetween > 31) // monthly
 				|| (updatePrefs.equals(SettingsActivity.VAL_DATABASE_UPDATES_WEEKLY) && daysBetween > 7)
-				|| (updatePrefs.equals(SettingsActivity.VAL_DATABASE_UPDATES_DAILY) && daysBetween > 0)) {
-				startUpdateService = true;
-			}
+				|| (updatePrefs.equals(SettingsActivity.VAL_DATABASE_UPDATES_DAILY) && daysBetween > 0));
 		}
 
-		return startUpdateService;
+		return startUpdate;
 	}
 }

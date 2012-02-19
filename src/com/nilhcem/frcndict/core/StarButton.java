@@ -3,6 +3,7 @@ package com.nilhcem.frcndict.core;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -21,8 +22,8 @@ public final class StarButton extends RelativeLayout {
 	private DatabaseHelper mDb;
 	private SimpleDateFormat mDateFormat;
 
-	private TextView mStarredText;
-	private ImageButton mStarredBtn;
+	private final TextView mStarredText;
+	private final ImageButton mStarredBtn;
 	private View.OnClickListener mOnClickListener;
 
 	public StarButton(Context context, AttributeSet attrs) {
@@ -42,13 +43,13 @@ public final class StarButton extends RelativeLayout {
 		mId = id;
 		mDb = db;
 		mParent = parent;
-		mDateFormat = new SimpleDateFormat(mParent.getString(R.string.meaning_starred_date_format));
+		mDateFormat = new SimpleDateFormat(mParent.getString(R.string.meaning_starred_date_format), Locale.US);
 	}
 
 	public void setStarredDate(String starredDate) {
 		if (starredDate != null) {
-			String parsedDate;
 			mStarredBtn.setSelected(true);
+			String parsedDate;
 			try {
 				parsedDate = mDateFormat.format(DatabaseHelper.getInstance().getDateFormat().parse(starredDate));
 			} catch (ParseException e) {
@@ -64,7 +65,7 @@ public final class StarButton extends RelativeLayout {
 			public void onClick(View v) {
 				final Date now;
 
-				if (mStarredBtn.isSelected()){
+				if (mStarredBtn.isSelected()) {
 					now = null;
 					mStarredBtn.setSelected(false);
 					mStarredText.setText(mParent.getString(R.string.meaning_not_starred));
@@ -75,13 +76,14 @@ public final class StarButton extends RelativeLayout {
 				}
 
 				// Run "starred" database modification on a special thread
-				new Thread() {
+				Thread thread = new Thread() {
 					@Override
 					public void run() {
 						super.run();
 						mDb.setStarredDate(mId, now);
 					}
-				}.start();
+				};
+				thread.start();
 			}
 		};
 	}

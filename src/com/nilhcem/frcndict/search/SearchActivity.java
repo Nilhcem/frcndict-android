@@ -71,10 +71,8 @@ public final class SearchActivity extends AbstractListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (savedInstanceState != null) {
-			if (savedInstanceState.getBoolean("about-displayed", false)) {
-				createAboutDialog().show();
-			}
+		if (savedInstanceState != null && (savedInstanceState.getBoolean("about-displayed", false))) {
+			createAboutDialog().show();
 		}
 	}
 
@@ -88,7 +86,7 @@ public final class SearchActivity extends AbstractListActivity {
 		}
 		changeSearchButtonBackground();
 		mPressBackTwiceToast = null;
-		((SearchService)mService).setLastBackPressTime(0l);
+		((SearchService) mService).setLastBackPressTime(0l);
 
 		OnPreferencesChangedListener listener = ((ApplicationController) getApplication())
 				.getOnPreferencesChangedListener();
@@ -164,18 +162,18 @@ public final class SearchActivity extends AbstractListActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		boolean stopProcessing = true;
+
 		if (item.getItemId() == R.id.main_menu_about) {
 			createAboutDialog().show();
-			return true;
 		} else if (item.getItemId() == R.id.main_menu_settings) {
 			startActivity(new Intent(this, SettingsActivity.class));
-			return true;
 		} else if (item.getItemId() == R.id.main_menu_starred) {
 			startActivity(new Intent(this, StarredActivity.class));
-			return true;
 		} else {
-			return super.onOptionsItemSelected(item);
+			stopProcessing = super.onOptionsItemSelected(item);
 		}
+		return stopProcessing;
 	}
 
 	private void initSearchButton() {
@@ -207,14 +205,12 @@ public final class SearchActivity extends AbstractListActivity {
 		mInputText.setOnKeyListener(new View.OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (event.getAction() == KeyEvent.ACTION_DOWN) {
-					if (keyCode == KeyEvent.KEYCODE_ENTER) {
-						runNewSearch(true);
-						// Hide keyboard
-		                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		                in.hideSoftInputFromWindow(mInputText.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-						return true;
-					}
+				if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+					runNewSearch(true);
+					// Hide keyboard
+	                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+	                in.hideSoftInputFromWindow(mInputText.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+					return true;
 				}
 				return false;
 			}
@@ -224,7 +220,7 @@ public final class SearchActivity extends AbstractListActivity {
 		(new Handler()).postDelayed(new Runnable() {
 			public void run() {
 				mInputText.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN , 0, 0, 0));
-				mInputText.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP , 0, 0, 0));                       
+				mInputText.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP , 0, 0, 0));
 			}
 		}, 200);
 	}
@@ -244,7 +240,7 @@ public final class SearchActivity extends AbstractListActivity {
 
 	private void runNewSearch(boolean clearSearchType) {
 		String text = mInputText.getText().toString();
-		if (text.trim().length() == 0) {
+		if (SearchActivity.isStringEmpty(text)) {
 			cancelToastIfNotNull(mSearchEmptyToast);
 			mSearchEmptyToast = Toast.makeText(SearchActivity.this, R.string.search_empty_text, Toast.LENGTH_SHORT);
 			mSearchEmptyToast.show();
@@ -254,6 +250,20 @@ public final class SearchActivity extends AbstractListActivity {
 			mListAdapter.addLoading();
 			mService.runSearchThread(this, null, mInputText.getText().toString());
 		}
+	}
+
+	// Checks if a "trimmed" string is empty
+	private static boolean isStringEmpty(String str) {
+		boolean isEmpty = true;
+		int length = str.length();
+
+		for (int i = 0; i < length; i++) {
+			if (!Character.isWhitespace(str.charAt(i))) {
+				isEmpty = false;
+				break;
+			}
+		}
+		return isEmpty;
 	}
 
 	private void clearResults(boolean clearSearchType) {

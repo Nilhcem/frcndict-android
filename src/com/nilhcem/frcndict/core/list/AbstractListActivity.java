@@ -38,8 +38,7 @@ public abstract class AbstractListActivity extends AbstractDictActivity implemen
 	}
 
 	// initializes some layouts before calling the restore method, nothing by default
-	protected void initBeforeRestore() {
-	}
+	protected abstract void initBeforeRestore();
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -61,10 +60,7 @@ public abstract class AbstractListActivity extends AbstractDictActivity implemen
 	// Saves the search adapter to keep results when application state change
 	@Override
 	public Object onRetainNonConfigurationInstance() {
-		if (mListAdapter != null) {
-			return mListAdapter;
-		}
-		return super.onRetainNonConfigurationInstance();
+		return (mListAdapter == null) ? super.onRetainNonConfigurationInstance() : mListAdapter;
 	}
 
 	protected void initResultList() {
@@ -73,10 +69,10 @@ public abstract class AbstractListActivity extends AbstractDictActivity implemen
 
 		// TODO deprecated
 		// Get the instance of the object that was stored if one exists
-		if (getLastNonConfigurationInstance() != null) {
-			mListAdapter = (ListAdapter) getLastNonConfigurationInstance();
-		} else {
+		if (getLastNonConfigurationInstance() == null) {
 			mListAdapter = new ListAdapter(getPackageContext(), R.layout.search_dict_list_item, getLayoutInflater(), prefs);
+		} else {
+			mListAdapter = (ListAdapter) getLastNonConfigurationInstance();
 		}
 
 		mResultList = (ListView) findViewById(getListResId());

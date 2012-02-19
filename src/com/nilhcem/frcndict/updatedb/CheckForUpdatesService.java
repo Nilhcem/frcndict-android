@@ -23,11 +23,6 @@ public class CheckForUpdatesService extends Service {
 	private static final String VERSION_SEPARATOR = "-";
 
 	@Override
-	public void onCreate() {
-		super.onCreate();
-	}
-
-	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		DatabaseHelper db = DatabaseHelper.getInstance();
 		db.open();
@@ -82,11 +77,9 @@ public class CheckForUpdatesService extends Service {
 					int curVersionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
 					int minVersionCode = Integer.parseInt(splitted[1]);
 
-					if (curVersionCode >= minVersionCode) {
+					if (curVersionCode >= minVersionCode && !params[0].equals(splitted[0])) {
 						// Check if database number differs
-						if (!params[0].equals(splitted[0])) {
-							CheckForUpdatesService.displayUpdateNotification(CheckForUpdatesService.this);
-						}
+						CheckForUpdatesService.displayUpdateNotification(CheckForUpdatesService.this);
 					}
 				}
 			} catch (Exception e) {

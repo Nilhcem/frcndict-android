@@ -7,7 +7,7 @@ import com.nilhcem.frcndict.settings.SettingsActivity;
 
 public final class ChineseCharsHandler {
 	private static final String TAG = "ChineseCharsHandler";
-	private static final ChineseCharsHandler instance = new ChineseCharsHandler();
+	private static final ChineseCharsHandler INSTANCE = new ChineseCharsHandler();
 	private static final String SAME_HANZI_REPLACEMENT = "-";
 	private static final String FORMAT_HANZI_ST = "%s [%s]";
 
@@ -17,11 +17,11 @@ public final class ChineseCharsHandler {
     }
 
 	public static ChineseCharsHandler getInstance() {
-		return instance;
+		return INSTANCE;
     }
 
 	public void setColorsArray(String[] colorsArray) {
-		this.colorsArray = colorsArray;
+		this.colorsArray = colorsArray.clone();
 	}
 
 	// Transform a pin1yin1 with tones number to a pīnyīn with tone marks

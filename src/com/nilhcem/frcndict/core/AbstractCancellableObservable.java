@@ -4,15 +4,16 @@ import java.io.IOException;
 import java.util.Observable;
 
 public abstract class AbstractCancellableObservable extends Observable {
-	protected boolean cancel;
+	protected boolean cancelled;
 	private int prevPercent = 0;
 
 	public AbstractCancellableObservable() {
-		cancel = false;
+		super();
+		cancelled = false;
 	}
 
 	public void cancel() {
-		this.cancel = true;
+		this.cancelled = true;
 	}
 
 	public abstract void start() throws IOException;

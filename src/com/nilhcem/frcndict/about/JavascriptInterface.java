@@ -19,8 +19,8 @@ final class JavascriptInterface {
 	private static final String THEME_DEFAULT = "./theme-default.css";
 	private static final String THEME_DARK = "./theme-dark.css";
 
-	private Context parentContext;
-	private Dialog dialog;
+	private final Context parentContext;
+	private final Dialog dialog;
 
 	JavascriptInterface(Context parent, Dialog dialog) {
 		this.parentContext = parent;
@@ -32,13 +32,15 @@ final class JavascriptInterface {
 	}
 
 	public String getAppVersion() {
-		PackageInfo pInfo = null;
+		String version;
 		try {
-			pInfo = parentContext.getPackageManager().getPackageInfo(parentContext.getPackageName(), 0);
+			PackageInfo pInfo = parentContext.getPackageManager().getPackageInfo(parentContext.getPackageName(), 0);
+			version = pInfo.versionName;
 		} catch (NameNotFoundException e) {
 			Log.e(TAG, "fillVersions() exception", e);
+			version = "";
 		}
-		return (pInfo != null ? pInfo.versionName : "");
+		return version;
 	}
 
 	public String getDbVersion() {
@@ -55,22 +57,19 @@ final class JavascriptInterface {
 
 	public String getTheme() {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(parentContext);
-		if (prefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false)) {
-			return JavascriptInterface.THEME_DARK;
-		}
-		return JavascriptInterface.THEME_DEFAULT;
+		return (prefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false))
+			? JavascriptInterface.THEME_DARK : JavascriptInterface.THEME_DEFAULT;
 	}
 
 	private String convertDbVersionToFormattedDateVersion(String version) {
-		if (version.length() > 8) {
-			return new StringBuilder()
-				.append(version.substring(0, 4))
-				.append(JavascriptInterface.VERSION_SEPARATOR)
-				.append(version.substring(4, 6))
-				.append(JavascriptInterface.VERSION_SEPARATOR)
-				.append(version.substring(6, 8))
-				.toString();
-		}
-		return "";
+		return (version.length() > 8)
+			? new StringBuilder()
+			.append(version.substring(0, 4))
+			.append(JavascriptInterface.VERSION_SEPARATOR)
+			.append(version.substring(4, 6))
+			.append(JavascriptInterface.VERSION_SEPARATOR)
+			.append(version.substring(6, 8))
+			.toString()
+			: "";
 	}
 }

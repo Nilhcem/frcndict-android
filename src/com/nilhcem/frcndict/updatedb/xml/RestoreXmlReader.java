@@ -20,10 +20,11 @@ import com.nilhcem.frcndict.database.Tables;
 
 public final class RestoreXmlReader extends AbstractCancellableObservable {
 	private static final String LOG = "RestoreXmlReader";
-	private File xmlFile;
-	private DatabaseHelper db;
+	private final File xmlFile;
+	private final DatabaseHelper db;
 
 	public RestoreXmlReader(DatabaseHelper db, File xmlFile) {
+		super();
 		this.db = db;
 		this.xmlFile = xmlFile;
 	}
@@ -62,9 +63,10 @@ public final class RestoreXmlReader extends AbstractCancellableObservable {
 				}
 			}
 		} catch (Exception e) {
-			Log.e(RestoreXmlReader.LOG, e.getMessage());
 			// Do nothing
+			Log.e(RestoreXmlReader.LOG, e.getMessage());
 		}
+		updateProgress(100); // Notify that it is finished (even if 0 elements to restore)
 		db.close();
 	}
 }

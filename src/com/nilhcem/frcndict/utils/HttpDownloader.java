@@ -11,8 +11,8 @@ import java.net.URL;
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
 
 public final class HttpDownloader extends AbstractCancellableObservable {
-	private File output;
-	private URL url;
+	private final File output;
+	private final URL url;
 
 	public HttpDownloader(String urlStr, File outputFile) throws MalformedURLException {
 		super();
@@ -34,7 +34,7 @@ public final class HttpDownloader extends AbstractCancellableObservable {
 		long curSize = 0;
 
 		int read;
-		while ((!cancel && (read = is.read(buffer, 0, buffer.length)) != -1)) {
+		while ((!cancelled && (read = is.read(buffer, 0, buffer.length)) != -1)) {
 			fos.write(buffer, 0, read);
 
 			// Notify percentage to observers

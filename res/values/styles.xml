@@ -119,7 +119,7 @@
 	<!-- No Result -->
 	<style name="ListItemNoResults">
 		<item name="android:gravity">center</item>
-		<item name="android:textColor">?fgColor</item>
+		<item name="android:textColor">?loadingNoResultsColor</item>
 		<item name="android:textSize">@dimen/search_no_item_size</item>
 		<item name="android:paddingTop">@dimen/search_no_item_padding_top</item>
 	</style>
@@ -136,7 +136,7 @@
 	</style>
 	<style name="ListItemLoadingText">
 		<item name="android:layout_marginLeft">@dimen/search_loading_text_margin_left</item>
-		<item name="android:textColor">?loadingColor</item>
+		<item name="android:textColor">?loadingNoResultsColor</item>
 		<item name="android:textSize">@dimen/search_no_item_size</item>
 	</style>
 

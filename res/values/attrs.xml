@@ -12,7 +12,7 @@
 	<attr name="searchTopBar" format="reference" />
 	<attr name="searchListDivider" format="reference" />
 	<attr name="searchListItemSelector" format="reference" />
-	<attr name="loadingColor" format="reference|color" />
+	<attr name="loadingNoResultsColor" format="reference|color" />
 
 	<!-- Starred words -->
 	<attr name="starredTopBarSize" format="dimension" />

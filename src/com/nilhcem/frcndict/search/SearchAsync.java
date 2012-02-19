@@ -2,6 +2,7 @@ package com.nilhcem.frcndict.search;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.database.Cursor;
@@ -40,14 +41,16 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 			DatabaseHelper db = DatabaseHelper.getInstance();
 			db.open();
 			Cursor c = search(db, search, mRefService.getSearchType(), currentPage);
+			HashMap<String, Integer> columnsIndexCache = new HashMap<String, Integer>();
 			if (c.moveToFirst()) {
 				do {
+					fillColumnsIndexCache(columnsIndexCache, c);
 					Entry entry = new Entry();
-					entry.setId(c.getInt(c.getColumnIndex(Tables.ENTRIES_KEY_ROWID)));
-					entry.setSimplified(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED)));
-					entry.setTraditional(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRADITIONAL)));
-					entry.setPinyin(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN)));
-					entry.setDesc(c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION)));
+					entry.setId(c.getInt(columnsIndexCache.get(Tables.ENTRIES_KEY_ROWID)));
+					entry.setSimplified(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_SIMPLIFIED)));
+					entry.setTraditional(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_TRADITIONAL)));
+					entry.setPinyin(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_PINYIN)));
+					entry.setDesc(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_TRANSLATION)));
 					entries.add(entry);
 				} while (c.moveToNext() && !isCancelled());
 			}
@@ -72,6 +75,16 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 			if (activity != null) {
 				activity.changeSearchButtonBackground();
 			}
+		}
+	}
+
+	private void fillColumnsIndexCache(HashMap<String, Integer> cache, Cursor c) {
+		if (cache.isEmpty()) {
+			cache.put(Tables.ENTRIES_KEY_ROWID, c.getColumnIndex(Tables.ENTRIES_KEY_ROWID));
+			cache.put(Tables.ENTRIES_KEY_SIMPLIFIED, c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED));
+			cache.put(Tables.ENTRIES_KEY_TRADITIONAL, c.getColumnIndex(Tables.ENTRIES_KEY_TRADITIONAL));
+			cache.put(Tables.ENTRIES_KEY_PINYIN, c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN));
+			cache.put(Tables.ENTRIES_KEY_TRANSLATION, c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION));
 		}
 	}
 

@@ -7,7 +7,7 @@
 	<dimen name="clearable_cross_margin_top">8.0dp</dimen>
 
 	<!-- Import data -->
-	<dimen name="import_welcome_text_size">18.0sp</dimen>
+	<dimen name="import_welcome_text_size">20.0sp</dimen>
 	<dimen name="import_welcome_text_margin_top">12.0dp</dimen>
 	<dimen name="import_text_margin_side">10.0dp</dimen>
 	<dimen name="import_separator_size">16.0dp</dimen>

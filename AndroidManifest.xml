@@ -32,7 +32,8 @@
 		<service android:name=".updatedb.ImportUpdateService" android:label="@string/import_service_label"/>
 		<service android:name=".updatedb.CheckForUpdatesService" android:label="@string/update_service_label"/>
 		<activity
-			android:name=".search.SearchActivity" />
+			android:name=".search.SearchActivity"
+			android:configChanges="keyboardHidden|orientation" />
 		<activity
 			android:name=".meaning.WordMeaningActivity" />
 		<activity

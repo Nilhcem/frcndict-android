@@ -126,7 +126,6 @@ public final class SearchActivity extends AbstractListActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putCharSequence("search", mInputText.getText());
 
 		if (mAboutDialog != null && mAboutDialog.isShowing()) {
 			outState.putBoolean("about-displayed", true);
@@ -138,9 +137,7 @@ public final class SearchActivity extends AbstractListActivity {
 	protected void restore(Bundle savedInstanceState) {
 		super.restore(savedInstanceState);
 
-		if (savedInstanceState != null) {
-			mInputText.setText(savedInstanceState.getCharSequence("search"));
-		} else {
+		if (savedInstanceState == null) {
 			mService.setSearchType(AbstractSearchService.SEARCH_UNDEFINED);
 		}
 	}

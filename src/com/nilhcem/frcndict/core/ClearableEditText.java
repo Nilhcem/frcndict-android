@@ -67,6 +67,7 @@ public final class ClearableEditText extends RelativeLayout {
 				} else {
 					mBtnClear.setVisibility(View.INVISIBLE);
 				}
+				mObservable.notifyObservers(); // clear search results when text changes
 			}
 
 			@Override

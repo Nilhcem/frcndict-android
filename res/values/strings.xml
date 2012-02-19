@@ -6,8 +6,8 @@
 	<!-- Import data -->
 	<string name="import_service_label">Dictionary import / update</string>
 	<string name="import_welcome_title">Welcome</string>
-	<string name="import_welcome_msg">The dictionary needs to be downloaded first.\nPlease make sure your device is connected to the Internet.\n8 MB will be downloaded and about 26 MB will be needed during the installation process.\n\nDo you want to start the download now?</string>
-	<string name="import_processing_msg">Downloading dictionary data (8M).\nPlease wait…</string>
+	<string name="import_welcome_msg">The dictionary needs to be downloaded first.\nPlease make sure your device is connected to the Internet.\n5 MB will be downloaded and about 15 MB will be needed during the installation process.\n\nDo you want to start the download now?</string>
+	<string name="import_processing_msg">Downloading dictionary data (5M).\nPlease wait…</string>
 	<string name="import_start_service_btn">Download</string>
 	<string name="import_quit_activity_btn">Exit</string>
 	<string name="import_done">Done</string>
@@ -36,8 +36,8 @@
 	<!-- Update data -->
 	<string name="update_service_label">Check for updates</string>
 	<string name="update_welcome_title">Update dictionary</string>
-	<string name="update_welcome_msg">A dictionary update is available.\nPlease make sure your device is connected to the Internet.\n8 MB will be downloaded and about 26 MB will be needed during the update process.\n\nDo you want to start the update now?</string>
-	<string name="update_processing_msg">Updating dictionary data (8M).\nPlease wait…</string>
+	<string name="update_welcome_msg">A dictionary update is available.\nPlease make sure your device is connected to the Internet.\n8 MB will be downloaded and about 15 MB will be needed during the update process.\n\nDo you want to start the update now?</string>
+	<string name="update_processing_msg">Updating dictionary data (5M).\nPlease wait…</string>
 	<string name="update_start_service_btn">Update</string>
 	<string name="update_quit_activity_btn">Cancel</string>
 	<string name="update_dialog_msg">Dictionary has been successfully updated!\nThank you for your patience.</string>

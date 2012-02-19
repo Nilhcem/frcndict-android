@@ -31,59 +31,59 @@ public final class DatabaseHelper {
 		StringBuilder sb;
 		// add 1 entry we won't display but which is just to know if there are still some elements after.
 		String nbToDisplay = Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST + 1);
-		String selectAll = "SELECT * FROM ";
+		String selectAll = "SELECT * FROM `";
 
 		// Hanzi query
 		sb = new StringBuilder(selectAll)
 			.append(Tables.ENTRIES_TABLE_NAME)
-			.append(" WHERE (")
+			.append("` WHERE `(")
 			.append(Tables.ENTRIES_KEY_SIMPLIFIED)
-			.append(" LIKE ? OR ")
+			.append("` LIKE ? OR `")
 			.append(Tables.ENTRIES_KEY_TRADITIONAL)
-			.append(" LIKE ?) ORDER BY length(")
+			.append("` LIKE ?) ORDER BY length(`")
 			.append(Tables.ENTRIES_KEY_SIMPLIFIED)
-			.append(") ASC, ")
+			.append("`) ASC, `")
 			.append(Tables.ENTRIES_KEY_SIMPLIFIED)
-			.append(" ASC LIMIT ?,")
+			.append("` ASC LIMIT ?,")
 			.append(nbToDisplay);
 		QUERY_HANZI = sb.toString();
 
 		// Pinyin query
 		sb = new StringBuilder(selectAll)
 			.append(Tables.ENTRIES_TABLE_NAME)
-			.append(" WHERE ")
+			.append("` WHERE `")
 			.append(Tables.ENTRIES_KEY_PINYIN2)
-			.append(" LIKE ? AND lower(")
+			.append("` LIKE ? AND lower(`")
 			.append(Tables.ENTRIES_KEY_PINYIN)
-			.append(") LIKE ? ORDER BY length(")
+			.append("`) LIKE ? ORDER BY length(`")
 			.append(Tables.ENTRIES_KEY_PINYIN)
-			.append(") ASC, ")
+			.append("`) ASC, `")
 			.append(Tables.ENTRIES_KEY_PINYIN2)
-			.append(" ASC LIMIT ?,")
+			.append("` ASC LIMIT ?,")
 			.append(nbToDisplay);
 		QUERY_PINYIN = sb.toString();
 
 		// French query
 		sb = new StringBuilder(selectAll)
 			.append(Tables.ENTRIES_TABLE_NAME)
-			.append(" WHERE '/' || lower(")
+			.append("` WHERE '/' || lower(`")
 			.append(Tables.ENTRIES_KEY_TRANSLATION)
-			.append(") LIKE ? ORDER BY ")
+			.append("`) LIKE ? ORDER BY `")
 			.append(Tables.ENTRIES_KEY_TRANS_AVG_LENGTH)
-			.append(" ASC, ")
+			.append("` ASC, `")
 			.append(Tables.ENTRIES_KEY_ROWID)
-			.append(" ASC LIMIT ?,")
+			.append("` ASC LIMIT ?,")
 			.append(nbToDisplay);
 		QUERY_FRENCH = sb.toString();
 
 		// Starred query
 		sb = new StringBuilder(selectAll)
 			.append(Tables.ENTRIES_TABLE_NAME)
-			.append(" WHERE ")
+			.append("` WHERE `")
 			.append(Tables.ENTRIES_KEY_STARRED_DATE)
-			.append(" IS NOT NULL ORDER BY ")
+			.append("` IS NOT NULL ORDER BY `")
 			.append(Tables.ENTRIES_KEY_STARRED_DATE)
-			.append(" DESC LIMIT ?,")
+			.append("` DESC LIMIT ?,")
 			.append(nbToDisplay);
 		QUERY_STARRED = sb.toString();
 	}
@@ -138,7 +138,7 @@ public final class DatabaseHelper {
 
 	public Cursor findById(int id) {
 		return mDb.query(Tables.ENTRIES_TABLE_NAME, null,
-				String.format("%s=%d", Tables.ENTRIES_KEY_ROWID, id), null, null, null, null);
+				String.format("`%s`=%d", Tables.ENTRIES_KEY_ROWID, id), null, null, null, null);
 	}
 
 	public String getDbVersion() {
@@ -189,7 +189,7 @@ public final class DatabaseHelper {
 		boolean isPinyin;
 
 		Cursor c = mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] { Tables.ENTRIES_KEY_ROWID },
-				String.format("%s like ?", Tables.ENTRIES_KEY_PINYIN2),
+				String.format("`%s` like ?", Tables.ENTRIES_KEY_PINYIN2),
 				new String[] { ChineseCharsHandler.getInstance().pinyinTonesToNb(search).replaceAll("[^a-zA-Z]", "") + "%" },
 				null, null, null);
 		isPinyin = (c.getCount() > 0);
@@ -232,7 +232,7 @@ public final class DatabaseHelper {
 		} else {
 			values.put(Tables.ENTRIES_KEY_STARRED_DATE, DATE_FORMAT.format(starredDate));
 		}
-		String whereClause = String.format("%s=%d", Tables.ENTRIES_KEY_ROWID, id);
+		String whereClause = String.format("`%s`=%d", Tables.ENTRIES_KEY_ROWID, id);
 
 		mDb.update(Tables.ENTRIES_TABLE_NAME, values, whereClause, null);
 	}
@@ -242,16 +242,16 @@ public final class DatabaseHelper {
 		values.put(Tables.ENTRIES_KEY_STARRED_DATE, starredDate);
 
 		mDb.update(Tables.ENTRIES_TABLE_NAME, values,
-				String.format("%s like ?", Tables.ENTRIES_KEY_SIMPLIFIED),
+				String.format("`%s` like ?", Tables.ENTRIES_KEY_SIMPLIFIED),
 				new String[] { simplified });
 	}
 
 	public long getNbStarred() {
 		// Create query
-		StringBuilder query = new StringBuilder("SELECT count(*) FROM ")
+		StringBuilder query = new StringBuilder("SELECT count(*) FROM `")
 			.append(Tables.ENTRIES_TABLE_NAME)
-			.append(" WHERE ").append(Tables.ENTRIES_KEY_STARRED_DATE)
-			.append(" IS NOT NULL");
+			.append("` WHERE `").append(Tables.ENTRIES_KEY_STARRED_DATE)
+			.append("` IS NOT NULL");
 
 		SQLiteStatement statement = mDb.compileStatement(query.toString());
 		return statement.simpleQueryForLong();
@@ -259,6 +259,6 @@ public final class DatabaseHelper {
 
 	public Cursor getAllStarred() {
 		return mDb.query(Tables.ENTRIES_TABLE_NAME, null,
-				String.format("%s IS NOT NULL", Tables.ENTRIES_KEY_STARRED_DATE), null, null, null, null);
+				String.format("`%s` IS NOT NULL", Tables.ENTRIES_KEY_STARRED_DATE), null, null, null, null);
 	}
 }

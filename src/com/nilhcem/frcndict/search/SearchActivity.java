@@ -6,11 +6,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.text.Html;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -216,6 +219,14 @@ public final class SearchActivity extends AbstractListActivity {
 				return false;
 			}
 		});
+
+		// Force keyboard to show up when application starts
+		(new Handler()).postDelayed(new Runnable() {
+			public void run() {
+				mInputText.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN , 0, 0, 0));
+				mInputText.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP , 0, 0, 0));                       
+			}
+		}, 200);
 	}
 
 	private void initIntroText() {

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<!-- Clearable edit text -->
-	<dimen name="clearable_text_padding_right">35.0dp</dimen>
+	<dimen name="clearable_text_paddingRight">35.0dp</dimen>
 	<dimen name="clearable_cross_dimension">30.0dp</dimen>
-	<dimen name="clearable_cross_margin_right">5.0dp</dimen>
-	<dimen name="clearable_cross_margin_top">8.0dp</dimen>
+	<dimen name="clearable_cross_marginRight">5.0dp</dimen>
+	<dimen name="clearable_cross_marginTop">8.0dp</dimen>
 
 	<!-- Import data -->
 	<dimen name="import_welcome_text_size">20.0sp</dimen>
-	<dimen name="import_welcome_text_margin_top">12.0dp</dimen>
-	<dimen name="import_text_margin_side">10.0dp</dimen>
+	<dimen name="import_welcome_text_marginTop">12.0dp</dimen>
+	<dimen name="import_text_marginLeftRight">10.0dp</dimen>
 	<dimen name="import_separator_size">16.0dp</dimen>
-	<dimen name="import_bottom_layout_margin_side">5.0dp</dimen>
+	<dimen name="import_bottom_layout_marginLeftRight">5.0dp</dimen>
 	<dimen name="import_progress_radius">5.0dp</dimen>
 	<dimen name="import_text_frame_radius">8.0dp</dimen>
 	<dimen name="import_text_frame_border">1.5dp</dimen>
@@ -19,30 +19,30 @@
 	<dimen name="import_text_frame_paddingTopBottom">10.0dp</dimen>
 
 	<!-- Search -->
-	<dimen name="search_intro_padding_side">24.0dp</dimen>
-	<dimen name="search_intro_padding_top">18.0dp</dimen>
+	<dimen name="search_intro_paddingLeftRight">24.0dp</dimen>
+	<dimen name="search_intro_paddingTop">18.0dp</dimen>
 	<dimen name="search_intro_size">18.0sp</dimen>
-	<dimen name="search_text_margin_top">2.0dp</dimen>
-	<dimen name="search_button_margin_left">4.0dp</dimen>
-	<dimen name="search_button_margin_right">8.0dp</dimen>
+	<dimen name="search_text_marginTop">2.0dp</dimen>
+	<dimen name="search_button_marginLeft">4.0dp</dimen>
+	<dimen name="search_button_marginRight">8.0dp</dimen>
 	<dimen name="search_list_divider_height">1.0dp</dimen>
 
 	<!-- Search entry -->
 	<dimen name="search_no_item_size">24.0sp</dimen>
-	<dimen name="search_no_item_padding_top_bottom">14.0dp</dimen>
+	<dimen name="search_no_item_paddingTopBottom">14.0dp</dimen>
 	<dimen name="search_loading_layout_size">60.0dp</dimen>
 	<dimen name="search_loading_icon_size">30.0dp</dimen>
-	<dimen name="search_loading_text_margin_left">10.0dp</dimen>
+	<dimen name="search_loading_text_marginLeft">10.0dp</dimen>
 
 	<!-- Search list item -->
-	<dimen name="slitem_side_margin">4.0dp</dimen>
+	<dimen name="slitem_marginLeftRight">4.0dp</dimen>
 	<dimen name="slitem_hanzi_size">28.0sp</dimen>
 	<dimen name="slitem_pinyin_size">16.0sp</dimen>
 	<dimen name="slitem_translation_size">15.0sp</dimen>
 	<dimen name="slitem_margin_before_divider">4.0dp</dimen>
 
 	<!-- Word meaning -->
-	<dimen name="meaning_side_padding">10.0dp</dimen>
+	<dimen name="meaning_paddingLeftRight">10.0dp</dimen>
 	<dimen name="meaning_hanzi_size">38.0sp</dimen>
 	<dimen name="meaning_hanzi_marginTop">16.0dp</dimen>
 	<dimen name="meaning_pinyin_size">18.0sp</dimen>
@@ -50,10 +50,10 @@
 	<dimen name="meaning_separator_size">1.0dp</dimen>
 	<dimen name="meaning_separator_marginTopBottom">24.0dp</dimen>
 	<dimen name="meaning_separator_marginLeftRight">32.0dp</dimen>
-	<dimen name="meaning_star_text_padding_left">10.0dp</dimen>
+	<dimen name="meaning_star_text_paddingLeft">10.0dp</dimen>
 
 	<!-- Starred words -->
-	<dimen name="starred_title_side_padding">10.0dp</dimen>
+	<dimen name="starred_title_paddingTopBottom">10.0dp</dimen>
 	<dimen name="starred_title_size">22.0sp</dimen>
 
 	<!-- About dialog -->

@@ -7,14 +7,14 @@
 
 	<!-- Clearable edit text [core] -->
 	<style name="ClearableEditText">
-		<item name="android:paddingRight">@dimen/clearable_text_padding_right</item>
+		<item name="android:paddingRight">@dimen/clearable_text_paddingRight</item>
 	</style>
 	<style name="ClearableClearCross">
 		<item name="android:background">@drawable/clear_cross_selector</item>
 		<item name="android:layout_height">@dimen/clearable_cross_dimension</item>
 		<item name="android:layout_width">@dimen/clearable_cross_dimension</item>
-		<item name="android:layout_marginRight">@dimen/clearable_cross_margin_right</item>
-		<item name="android:layout_marginTop">@dimen/clearable_cross_margin_top</item>
+		<item name="android:layout_marginRight">@dimen/clearable_cross_marginRight</item>
+		<item name="android:layout_marginTop">@dimen/clearable_cross_marginTop</item>
 	</style>
 
 	<!-- Progress bar [core] -->
@@ -38,7 +38,7 @@
 	</style>
 	<style name="StarButtonText">
 		<item name="android:gravity">center_vertical</item>
-		<item name="android:paddingLeft">@dimen/meaning_star_text_padding_left</item>
+		<item name="android:paddingLeft">@dimen/meaning_star_text_paddingLeft</item>
 		<item name="android:textSize">@dimen/meaning_meaning_size</item>
 	</style>
 
@@ -49,21 +49,21 @@
 	</style>
 	<style name="ImportWelcomeText">
 		<item name="android:gravity">center</item>
-		<item name="android:layout_marginTop">@dimen/import_welcome_text_margin_top</item>
+		<item name="android:layout_marginTop">@dimen/import_welcome_text_marginTop</item>
 		<item name="android:textSize">@dimen/import_welcome_text_size</item>
 	</style>
 	<style name="ImportTextFrame">
 		<item name="android:background">@drawable/import_text_bg</item>
 		<item name="android:gravity">center</item>
-		<item name="android:layout_marginLeft">@dimen/import_text_margin_side</item>
-		<item name="android:layout_marginRight">@dimen/import_text_margin_side</item>
+		<item name="android:layout_marginLeft">@dimen/import_text_marginLeftRight</item>
+		<item name="android:layout_marginRight">@dimen/import_text_marginLeftRight</item>
 		<item name="android:layout_marginTop">@dimen/import_separator_size</item>
 		<item name="android:layout_marginBottom">@dimen/import_separator_size</item>
 		<item name="android:textColor">@color/black</item>
 	</style>
 	<style name="ImportLayoutMargin">
-		<item name="android:layout_marginLeft">@dimen/import_bottom_layout_margin_side</item>
-		<item name="android:layout_marginRight">@dimen/import_bottom_layout_margin_side</item>
+		<item name="android:layout_marginLeft">@dimen/import_bottom_layout_marginLeftRight</item>
+		<item name="android:layout_marginRight">@dimen/import_bottom_layout_marginLeftRight</item>
 	</style>
 
 	<!-- Search -->
@@ -72,19 +72,19 @@
 	</style>
 	<style name="SearchTopBarText">
 		<item name="android:layout_gravity">center</item>
-		<item name="android:layout_marginTop">@dimen/search_text_margin_top</item>
+		<item name="android:layout_marginTop">@dimen/search_text_marginTop</item>
 	</style>
 	<style name="SearchTopBarButton">
 		<item name="android:layout_gravity">center</item>
-		<item name="android:layout_marginLeft">@dimen/search_button_margin_left</item>
-		<item name="android:layout_marginRight">@dimen/search_button_margin_right</item>
+		<item name="android:layout_marginLeft">@dimen/search_button_marginLeft</item>
+		<item name="android:layout_marginRight">@dimen/search_button_marginRight</item>
 	</style>
 	<style name="SearchIntro">
 		<item name="android:background">?bgColor</item>
 		<item name="android:gravity">center_horizontal|top</item>
-		<item name="android:paddingLeft">@dimen/search_intro_padding_side</item>
-		<item name="android:paddingRight">@dimen/search_intro_padding_side</item>
-		<item name="android:paddingTop">@dimen/search_intro_padding_top</item>
+		<item name="android:paddingLeft">@dimen/search_intro_paddingLeftRight</item>
+		<item name="android:paddingRight">@dimen/search_intro_paddingLeftRight</item>
+		<item name="android:paddingTop">@dimen/search_intro_paddingTop</item>
 		<item name="android:textColor">?introColor</item>
 		<item name="android:textSize">@dimen/search_intro_size</item>
 	</style>
@@ -97,8 +97,8 @@
 
     <!-- List item -->
 	<style name="ListItem">
-		<item name="android:layout_marginLeft">@dimen/slitem_side_margin</item>
-		<item name="android:layout_marginRight">@dimen/slitem_side_margin</item>
+		<item name="android:layout_marginLeft">@dimen/slitem_marginLeftRight</item>
+		<item name="android:layout_marginRight">@dimen/slitem_marginLeftRight</item>
 	</style>
 	<style name="ListItem.Hanzi">
 		<item name="android:textColor">?hanziColor</item>
@@ -121,14 +121,14 @@
 		<item name="android:gravity">center</item>
 		<item name="android:textColor">?loadingNoResultsColor</item>
 		<item name="android:textSize">@dimen/search_no_item_size</item>
-		<item name="android:paddingTop">@dimen/search_no_item_padding_top_bottom</item>
+		<item name="android:paddingTop">@dimen/search_no_item_paddingTopBottom</item>
 	</style>
 
 	<!-- Loading -->
 	<style name="ListItemLoadingLayout">
 		<item name="android:layout_height">@dimen/search_loading_layout_size</item>
-		<item name="android:paddingTop">@dimen/search_no_item_padding_top_bottom</item>
-		<item name="android:paddingBottom">@dimen/search_no_item_padding_top_bottom</item>
+		<item name="android:paddingTop">@dimen/search_no_item_paddingTopBottom</item>
+		<item name="android:paddingBottom">@dimen/search_no_item_paddingTopBottom</item>
 		<item name="android:gravity">center</item>
 	</style>
 	<style name="ListItemLoadingIcon">
@@ -136,7 +136,7 @@
 		<item name="android:layout_width">@dimen/search_loading_icon_size</item>
 	</style>
 	<style name="ListItemLoadingText">
-		<item name="android:layout_marginLeft">@dimen/search_loading_text_margin_left</item>
+		<item name="android:layout_marginLeft">@dimen/search_loading_text_marginLeft</item>
 		<item name="android:textColor">?loadingNoResultsColor</item>
 		<item name="android:textSize">@dimen/search_no_item_size</item>
 	</style>
@@ -146,8 +146,8 @@
 		<item name="android:background">?bgColor</item>
 	</style>
 	<style name="WordMeaningLayout">
-		<item name="android:paddingLeft">@dimen/meaning_side_padding</item>
-		<item name="android:paddingRight">@dimen/meaning_side_padding</item>
+		<item name="android:paddingLeft">@dimen/meaning_paddingLeftRight</item>
+		<item name="android:paddingRight">@dimen/meaning_paddingLeftRight</item>
 	</style>
 	<style name="WordMeaningHanzi">
 		<item name="android:gravity">center</item>
@@ -184,8 +184,8 @@
 	<!-- Starred words -->
 	<style name="StarredTopBarText">
 		<item name="android:gravity">center</item>
-		<item name="android:paddingBottom">@dimen/starred_title_side_padding</item>
-		<item name="android:paddingTop">@dimen/starred_title_side_padding</item>
+		<item name="android:paddingBottom">@dimen/starred_title_paddingTopBottom</item>
+		<item name="android:paddingTop">@dimen/starred_title_paddingTopBottom</item>
 		<item name="android:textSize">@dimen/starred_title_size</item>
 	</style>
 	<style name="StarredTopBarSeparator">

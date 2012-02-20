@@ -9,6 +9,7 @@
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+	<!-- Note: Disable 'android:debuggable' while releasing application -->
 	<application
 		android:debuggable="true"
 		android:icon="@drawable/ic_launcher"

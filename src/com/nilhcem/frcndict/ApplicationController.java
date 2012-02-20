@@ -9,9 +9,6 @@ import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 // must stay in the root package. See ImportDataService.getAppRootDir()
 public final class ApplicationController extends Application {
-	// Dictionary URL
-	public static final String DICT_URL = "http://192.168.1.2/cfdict/";
-
 	// Notifications
 	public static final int NOTIF_IMPORTING = 1;
 	public static final int NOTIF_IMPORT_SUCCESS = 2;

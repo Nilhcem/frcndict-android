@@ -15,6 +15,7 @@ import android.os.IBinder;
 
 import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
+import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.utils.FileHandler;
 import com.nilhcem.frcndict.utils.HttpDownloader;
@@ -68,7 +69,7 @@ public class CheckForUpdatesService extends Service {
 			File versionFile = new File(rootDir, CheckForUpdatesService.TEMP_VERSION_FILE);
 
 			try {
-				HttpDownloader downloader = new HttpDownloader(ApplicationController.DICT_URL + CheckForUpdatesAsync.VERSION_URL, versionFile);
+				HttpDownloader downloader = new HttpDownloader(Config.DICT_URL + CheckForUpdatesAsync.VERSION_URL, versionFile);
 				downloader.start();
 
 				// Open file

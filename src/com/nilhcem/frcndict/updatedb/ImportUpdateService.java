@@ -19,6 +19,7 @@ import android.util.Log;
 
 import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
+import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.updatedb.xml.BackupXmlWriter;
@@ -289,7 +290,9 @@ public final class ImportUpdateService extends Service {
 				mXmlWriter.addObserver(this);
 				mXmlWriter.start();
 			} catch (IOException e) {
-				Log.e(BackupAsync.TAG, "doInBackground() exception", e);
+				if (Config.LOGGING) {
+					Log.e(BackupAsync.TAG, "doInBackground() exception", e);
+				}
 				// Do nothing
 			}
 
@@ -345,14 +348,16 @@ public final class ImportUpdateService extends Service {
 			mMd5File = new File(mRootDir, TEMP_MD5_FILE);
 
 			try {
-				mDownloader = new HttpDownloader(ApplicationController.DICT_URL + DownloadFileAsync.ZIP_FILE, mZipFile);
+				mDownloader = new HttpDownloader(Config.DICT_URL + DownloadFileAsync.ZIP_FILE, mZipFile);
 				mDownloader.addObserver(this);
 				mDownloader.start();
 				if (!isCancelled()) {
 					errorCode = checkMd5();
 				}
 			} catch (IOException e) {
-				Log.e(DownloadFileAsync.TAG, "doInBackground() exception", e);
+				if (Config.LOGGING) {
+					Log.e(DownloadFileAsync.TAG, "doInBackground() exception", e);
+				}
 				errorCode = R.string.import_err_cannot_download;
 			}
 			return errorCode;
@@ -397,16 +402,20 @@ public final class ImportUpdateService extends Service {
 
 			try {
 				String md5 = Md5.getMd5Sum(mZipFile);
-				mDownloader = new HttpDownloader(ApplicationController.DICT_URL + DownloadFileAsync.MD5_FILE, mMd5File);
+				mDownloader = new HttpDownloader(Config.DICT_URL + DownloadFileAsync.MD5_FILE, mMd5File);
 				mDownloader.start();
 
 				String remoteMd5 = FileHandler.readFile(mMd5File);
 				if (!md5.equalsIgnoreCase(remoteMd5)) {
-					Log.e(DownloadFileAsync.TAG, "md5 doesn't match");
+					if (Config.LOGGING) {
+						Log.e(DownloadFileAsync.TAG, "md5 doesn't match");
+					}
 					errorCode = R.string.import_err_wrong_dictionary_file;
 				}
 			} catch (IOException e) {
-				Log.e(DownloadFileAsync.TAG, "checkMd5() exception", e);
+				if (Config.LOGGING) {
+					Log.e(DownloadFileAsync.TAG, "checkMd5() exception", e);
+				}
 				errorCode = R.string.import_err_wrong_dictionary_file;
 			} finally {
 				mMd5File.delete();
@@ -445,7 +454,9 @@ public final class ImportUpdateService extends Service {
 					throw new IOException("File cannot be found");
 				}
 			} catch (IOException e) {
-				Log.e(UnzipAsync.TAG, "checkMd5() exception", e);
+				if (Config.LOGGING) {
+					Log.e(UnzipAsync.TAG, "checkMd5() exception", e);
+				}
 				errorCode = R.string.import_err_wrong_dictionary_file;
 			}
 			return errorCode;
@@ -525,7 +536,9 @@ public final class ImportUpdateService extends Service {
 				mXmlReader.addObserver(this);
 				mXmlReader.start();
 			} catch (IOException e) {
-				Log.e(RestoreAsync.TAG, "doInBackground() exception", e);
+				if (Config.LOGGING) {
+					Log.e(RestoreAsync.TAG, "doInBackground() exception", e);
+				}
 				// Do nothing
 			}
 			return null;

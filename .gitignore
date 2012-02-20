@@ -18,3 +18,6 @@ local.properties
 # emacs temp / backup files
 *~
 \#*#
+
+# ant generated config file
+Config.java

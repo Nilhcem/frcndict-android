@@ -9,6 +9,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.nilhcem.frcndict.core.Config;
+
 import android.util.Log;
 
 /**
@@ -33,7 +35,9 @@ public final class Md5 {
 		try {
 			digest = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
-			Log.e(Md5.TAG, e.getMessage());
+			if (Config.LOGGING) {
+				Log.e(Md5.TAG, e.getMessage());
+			}
 			return null;
 		}
 
@@ -48,7 +52,9 @@ public final class Md5 {
 			}
 			is.close();
 		} catch (IOException e) {
-			Log.e(Md5.TAG, e.getMessage());
+			if (Config.LOGGING) {
+				Log.e(Md5.TAG, e.getMessage());
+			}
 			return null;
 		}
 

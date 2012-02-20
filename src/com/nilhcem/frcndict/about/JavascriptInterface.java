@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.nilhcem.frcndict.R;
+import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 
@@ -37,7 +38,9 @@ final class JavascriptInterface {
 			PackageInfo pInfo = mParentContext.getPackageManager().getPackageInfo(mParentContext.getPackageName(), 0);
 			version = pInfo.versionName;
 		} catch (NameNotFoundException e) {
-			Log.e(TAG, "fillVersions() exception", e);
+			if (Config.LOGGING) {
+				Log.e(TAG, "fillVersions() exception", e);
+			}
 			version = "";
 		}
 		return version;

@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import android.util.Log;
 
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
+import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Tables;
 
@@ -68,10 +69,14 @@ public final class RestoreXmlReader extends AbstractCancellableObservable {
 			mDb.setTransactionSuccessfull();
 		} catch (ParserConfigurationException e) {
 			// Do nothing
-			Log.e(RestoreXmlReader.LOG, e.getMessage());
+			if (Config.LOGGING) {
+				Log.e(RestoreXmlReader.LOG, e.getMessage());
+			}
 		} catch (SAXException e) {
 			// Do nothing
-			Log.e(RestoreXmlReader.LOG, e.getMessage());
+			if (Config.LOGGING) {
+				Log.e(RestoreXmlReader.LOG, e.getMessage());
+			}
 		} finally {
 			mDb.endTransaction();
 		}

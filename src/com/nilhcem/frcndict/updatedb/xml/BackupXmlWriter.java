@@ -13,6 +13,7 @@ import android.util.Log;
 import android.util.Xml;
 
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
+import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Tables;
 
@@ -33,7 +34,9 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 		try {
 			mOutputStream = new FileOutputStream(xmlFile);
 		} catch (FileNotFoundException e) {
-			Log.e(BackupXmlWriter.TAG, e.getMessage());
+			if (Config.LOGGING) {
+				Log.e(BackupXmlWriter.TAG, e.getMessage());
+			}
 		}
 	}
 

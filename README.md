@@ -10,6 +10,7 @@ Any feedback is highly appreciated!
 Build project
 -------------
 
+- Go to the project root directory and type `android update project --path .` to specify the sdk directory (only required once).
 - Run the `ant release` command.
 
 

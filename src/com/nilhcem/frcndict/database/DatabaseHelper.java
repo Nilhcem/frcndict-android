@@ -41,7 +41,7 @@ public final class DatabaseHelper {
 		// Hanzi query
 		sb = new StringBuilder(selectAll)
 			.append(Tables.ENTRIES_TABLE_NAME)
-			.append("` WHERE `(")
+			.append("` WHERE (`")
 			.append(Tables.ENTRIES_KEY_SIMPLIFIED)
 			.append("` LIKE ? OR `")
 			.append(Tables.ENTRIES_KEY_TRADITIONAL)

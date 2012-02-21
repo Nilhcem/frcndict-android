@@ -32,6 +32,7 @@ import com.nilhcem.frcndict.core.list.EndlessScrollListener;
 import com.nilhcem.frcndict.settings.OnPreferencesChangedListener;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.starred.StarredActivity;
+import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class SearchActivity extends AbstractListActivity {
 	private TextView mIntroText;
@@ -240,7 +241,7 @@ public final class SearchActivity extends AbstractListActivity {
 
 	private void runNewSearch(boolean clearSearchType) {
 		String text = mInputText.getText().toString();
-		if (SearchActivity.isStringEmpty(text)) {
+		if (ChineseCharsHandler.isStringEmpty(text)) {
 			cancelToastIfNotNull(mSearchEmptyToast);
 			mSearchEmptyToast = Toast.makeText(SearchActivity.this, R.string.search_empty_text, Toast.LENGTH_SHORT);
 			mSearchEmptyToast.show();
@@ -250,20 +251,6 @@ public final class SearchActivity extends AbstractListActivity {
 			mListAdapter.addLoading();
 			mService.runSearchThread(this, null, mInputText.getText().toString());
 		}
-	}
-
-	// Checks if a "trimmed" string is empty
-	private static boolean isStringEmpty(String str) {
-		boolean isEmpty = true;
-		int length = str.length();
-
-		for (int i = 0; i < length; i++) {
-			if (!Character.isWhitespace(str.charAt(i))) {
-				isEmpty = false;
-				break;
-			}
-		}
-		return isEmpty;
 	}
 
 	private void clearResults(boolean clearSearchType) {

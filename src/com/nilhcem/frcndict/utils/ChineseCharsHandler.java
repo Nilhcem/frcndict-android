@@ -286,6 +286,20 @@ public final class ChineseCharsHandler {
 		}
 	}
 
+	// Checks if a "trimmed" string is empty
+	public static boolean isStringEmpty(String str) {
+		boolean isEmpty = true;
+		int length = str.length();
+
+		for (int i = 0; i < length; i++) {
+			if (!Character.isWhitespace(str.charAt(i))) {
+				isEmpty = false;
+				break;
+			}
+		}
+		return isEmpty;
+	}
+
 	private String replaceSameHanziByDash(String base, String toReplace) {
 		int length = base.length();
 		if (length != toReplace.length()) {

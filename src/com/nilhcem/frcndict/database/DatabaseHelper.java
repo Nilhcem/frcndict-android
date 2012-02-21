@@ -189,14 +189,18 @@ public final class DatabaseHelper {
 
 	// Check if search is a pinyin search or a french search
 	public boolean isPinyin(String search) {
-		boolean isPinyin;
+		boolean isPinyin = false;
 
-		Cursor c = mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] {Tables.ENTRIES_KEY_ROWID},
-				String.format("`%s` like ?", Tables.ENTRIES_KEY_PINYIN2),
-				new String[] {ChineseCharsHandler.getInstance().pinyinTonesToNb(search).replaceAll("[^a-zA-Z]", "") + "%"},
-				null, null, null);
-		isPinyin = (c.getCount() > 0);
-		c.close();
+		String formattedSearch = ChineseCharsHandler.getInstance().pinyinTonesToNb(search).replaceAll("[^a-zA-Z]", "");
+		if (!ChineseCharsHandler.isStringEmpty(formattedSearch)) {
+			// Checks if String contains letters
+			Cursor c = mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] {Tables.ENTRIES_KEY_ROWID},
+					String.format("`%s` like ?", Tables.ENTRIES_KEY_PINYIN2),
+					new String[] {formattedSearch + "%"},
+					null, null, null);
+			isPinyin = (c.getCount() > 0);
+			c.close();
+		}
 		return isPinyin;
 	}
 

@@ -28,7 +28,6 @@ public final class SearchService extends AbstractSearchService {
 	@Override
 	public void detectAndSetSearchType(String search) {
 		if (mSearchType == AbstractSearchService.SEARCH_UNDEFINED) {
-
 			// Checks if search is in hanzi
 			boolean isHanzi = false;
 			for (char ch : search.toCharArray()) {

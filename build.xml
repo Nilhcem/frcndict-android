@@ -95,8 +95,8 @@
 		<!-- Copy the configuration file, replacing tokens in the file. -->
 		<copy file="ant.config.java" tofile="${config-target-file}" overwrite="true" encoding="utf-8">
 			<filterset>
-				<filter token="CONFIG.LOGGING" value="${config.logging}" />
 				<filter token="DICT.URL" value="${dict.url}" />
+				<filter token="LOGGING.LEVEL" value="${logging.level}" />
 			</filterset>
 		</copy>
 	</target>

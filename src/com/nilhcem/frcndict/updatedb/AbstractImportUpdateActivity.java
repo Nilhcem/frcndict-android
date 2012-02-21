@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractDictActivity;
-import com.nilhcem.frcndict.core.ProgressBar;
+import com.nilhcem.frcndict.core.layout.ProgressBar;
 
 public abstract class AbstractImportUpdateActivity extends Activity {
 	protected boolean mImport; // true if import, false if update

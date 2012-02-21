@@ -15,7 +15,6 @@ import com.nilhcem.frcndict.settings.SettingsActivity;
 
 /* package-private */
 final class JavascriptInterface {
-	private static final String TAG = "JavascriptInterface";
 	private static final String VERSION_SEPARATOR = "-";
 	private static final String THEME_DEFAULT = "./theme-default.css";
 	private static final String THEME_DARK = "./theme-dark.css";
@@ -37,10 +36,8 @@ final class JavascriptInterface {
 		try {
 			PackageInfo pInfo = mParentContext.getPackageManager().getPackageInfo(mParentContext.getPackageName(), 0);
 			version = pInfo.versionName;
-		} catch (NameNotFoundException e) {
-			if (Config.LOGGING) {
-				Log.e(TAG, "fillVersions() exception", e);
-			}
+		} catch (NameNotFoundException ex) {
+			if (Config.LOG_ERROR) Log.e(JavascriptInterface.class.getSimpleName(), "Failed to get version", ex);
 			version = "";
 		}
 		return version;

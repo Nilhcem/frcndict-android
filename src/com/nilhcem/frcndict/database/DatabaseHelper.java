@@ -10,13 +10,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
+import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class DatabaseHelper {
 	public static final String DATABASE_NAME = "dictionary.db";
 	private static final DatabaseHelper INSTANCE = new DatabaseHelper();
+	private static final String TAG = "DatabaseHelper";
 
 	private int mUsed = 0;
 	private File mDbPath;
@@ -107,6 +110,7 @@ public final class DatabaseHelper {
 
 	// "start using database"
 	public synchronized void open() {
+		if (Config.LOG_INFO) Log.i(DatabaseHelper.TAG, "[Open] Database currently used by " + mUsed + " process[es].");
 		if (++mUsed == 1) {
 			mDb = SQLiteDatabase.openDatabase(mDbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
 		}
@@ -117,6 +121,7 @@ public final class DatabaseHelper {
 		if (--mUsed == 0) {
 			mDb.close();
 		}
+		if (Config.LOG_INFO) Log.i(DatabaseHelper.TAG, "[Close] Database still used by " + mUsed + " process[es].");
 	}
 
 	// returns true if database exists
@@ -265,14 +270,17 @@ public final class DatabaseHelper {
 	}
 
 	public void beginTransaction() {
+		if (Config.LOG_DEBUG) Log.d(DatabaseHelper.TAG, "[Transaction] Begin");
 		mDb.beginTransaction();
 	}
 
 	public void setTransactionSuccessfull() {
+		if (Config.LOG_DEBUG) Log.d(DatabaseHelper.TAG, "[Transaction] Success");
 		mDb.setTransactionSuccessful();
 	}
 
 	public void endTransaction() {
+		if (Config.LOG_DEBUG) Log.d(DatabaseHelper.TAG, "[Transaction] End");
 		mDb.endTransaction();
 	}
 }

@@ -2,8 +2,11 @@ package com.nilhcem.frcndict.core.list;
 
 import java.util.Observable;
 
+import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+
+import com.nilhcem.frcndict.core.Config;
 
 public final class EndlessScrollListener extends Observable implements OnScrollListener {
 	private int mCurrentPage; // Current loaded "page" of data
@@ -26,6 +29,7 @@ public final class EndlessScrollListener extends Observable implements OnScrollL
 		}
 		// If it isn't currently loading, we check to see if we need to reload more data.
 		if (!mLoading && totalItemCount > 0 && ((firstVisibleItem + visibleItemCount) == totalItemCount)) {
+			if (Config.LOG_DEBUG) Log.d(EndlessScrollListener.class.getSimpleName(), "[End of scroll] Load more data");
 			mLoading = true;
 			setChanged();
 			notifyObservers(Integer.toString(mCurrentPage));

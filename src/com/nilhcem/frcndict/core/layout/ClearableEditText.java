@@ -1,4 +1,4 @@
-package com.nilhcem.frcndict.core;
+package com.nilhcem.frcndict.core.layout;
 
 import java.util.Observable;
 import java.util.Observer;

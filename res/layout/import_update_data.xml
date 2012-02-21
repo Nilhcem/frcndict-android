@@ -55,26 +55,26 @@
 			style="@style/ImportLayoutMargin">
 
 			<!-- Backup data -->
-			<com.nilhcem.frcndict.core.ProgressBar
+			<com.nilhcem.frcndict.core.layout.ProgressBar
 				android:id="@+id/importBackupProgress"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"
 				android:visibility="gone" />
 
 		    <!-- Download dictionary -->
-			<com.nilhcem.frcndict.core.ProgressBar
+			<com.nilhcem.frcndict.core.layout.ProgressBar
 				android:id="@+id/importDownloadProgress"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content" />
 
 		    <!-- Install dictionary -->
-			<com.nilhcem.frcndict.core.ProgressBar
+			<com.nilhcem.frcndict.core.layout.ProgressBar
 				android:id="@+id/importInstallProgress"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content" />
 
 		    <!-- Restore data -->
-			<com.nilhcem.frcndict.core.ProgressBar
+			<com.nilhcem.frcndict.core.layout.ProgressBar
 				android:id="@+id/importRestoreProgress"
 				android:layout_height="wrap_content"
 				android:layout_width="wrap_content"

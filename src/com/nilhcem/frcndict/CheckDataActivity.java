@@ -7,8 +7,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.nilhcem.frcndict.core.AbstractDictActivity;
+import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.search.SearchActivity;
 import com.nilhcem.frcndict.settings.SettingsActivity;
@@ -20,7 +22,6 @@ import com.nilhcem.frcndict.updatedb.ImportUpdateService;
  * Checks if database exists.
  * If yes, redirects to the main panel activity
  * If no, launches the import data activity
- * TODO: Can be a service?
  */
 public final class CheckDataActivity extends Activity {
 	private static final long NB_MILLISEC_IN_A_DAY = 86400000l; //24 * 60 * 60 * 1000
@@ -50,8 +51,10 @@ public final class CheckDataActivity extends Activity {
 			}
 
 			if (importDatabase) {
+				if (Config.LOG_DEBUG) Log.d(CheckDataActivity.class.getSimpleName(), "[Check Database] Not available. Redirect to Import.");
 				intent = new Intent(this, ImportActivity.class);
 			} else {
+				if (Config.LOG_DEBUG) Log.d(CheckDataActivity.class.getSimpleName(), "[Check Database] Available. Redirect to Search.");
 				checkForUpdates(prefs);
 				intent = new Intent(this, SearchActivity.class);
 			}

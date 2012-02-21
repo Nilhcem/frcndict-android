@@ -7,7 +7,9 @@ import java.util.List;
 
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.util.Log;
 
+import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.core.list.AbstractSearchService;
 import com.nilhcem.frcndict.core.list.ListAdapter;
 import com.nilhcem.frcndict.database.DatabaseHelper;
@@ -38,9 +40,12 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 
 			// Do the query depending on the searchType
 			mRefService.detectAndSetSearchType(search);
+			if (Config.LOG_DEBUG) Log.d(SearchAsync.class.getSimpleName(), "[Query] Started");
 			DatabaseHelper db = DatabaseHelper.getInstance();
 			db.open();
 			Cursor c = search(db, search, mRefService.getSearchType(), currentPage);
+			if (Config.LOG_DEBUG) Log.d(SearchAsync.class.getSimpleName(), "[Query] Stopped");
+
 			HashMap<String, Integer> columnsIndexCache = new HashMap<String, Integer>();
 			if (c.moveToFirst()) {
 				do {

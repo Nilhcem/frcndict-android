@@ -1,4 +1,4 @@
-package com.nilhcem.frcndict.core;
+package com.nilhcem.frcndict.core.layout;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

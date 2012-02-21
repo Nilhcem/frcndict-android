@@ -1,6 +1,9 @@
 package com.nilhcem.frcndict.settings;
 
 import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.nilhcem.frcndict.core.Config;
 
 public final class OnPreferencesChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener {
 	private boolean mThemeHasChanged;
@@ -9,10 +12,12 @@ public final class OnPreferencesChangedListener implements SharedPreferences.OnS
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		if (key.equals(SettingsActivity.KEY_DARK_THEME)) {
+			if (Config.LOG_DEBUG) Log.d(OnPreferencesChangedListener.class.getSimpleName(), "[Has changed] Theme");
 			setThemeHasChanged(true);
 		} else if (key.equals(SettingsActivity.KEY_CHINESE_CHARS)
 				|| key.equals(SettingsActivity.KEY_PINYIN)
 				|| key.equals(SettingsActivity.KEY_COLOR_HANZI)) {
+			if (Config.LOG_DEBUG) Log.d(OnPreferencesChangedListener.class.getSimpleName(), "[Has changed] Results appearance");
 			setResultListShouldBeUpdated(true);
 		}
 	}

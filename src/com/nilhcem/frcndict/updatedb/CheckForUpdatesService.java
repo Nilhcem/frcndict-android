@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
@@ -27,6 +28,7 @@ public class CheckForUpdatesService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		if (Config.LOG_DEBUG) Log.d(CheckForUpdatesService.class.getSimpleName(), "[Update] Start service");
 		DatabaseHelper db = DatabaseHelper.getInstance();
 		db.open();
 		String curDbVersion = db.getDbVersion();
@@ -86,8 +88,14 @@ public class CheckForUpdatesService extends Service {
 					}
 					int minVersionCode = Integer.parseInt(splitted[1]);
 
+					// Check if database number differs
 					if (curVersionCode >= minVersionCode && !params[0].equals(splitted[0])) {
-						// Check if database number differs
+						if (Config.LOG_DEBUG) {
+							String tag = CheckForUpdatesService.class.getSimpleName();
+							Log.d(tag, "[Update] Update is available");
+							Log.d(tag, "[Update] Current DB version: " + curVersionCode);
+							Log.d(tag, "[Update] Available DB version: " + minVersionCode);
+						}
 						CheckForUpdatesService.displayUpdateNotification(CheckForUpdatesService.this);
 					}
 				}
@@ -101,12 +109,14 @@ public class CheckForUpdatesService extends Service {
 
 		@Override
 		protected void onCancelled() {
+			if (Config.LOG_DEBUG) Log.d(CheckForUpdatesService.class.getSimpleName(), "[Update] Cancelled");
 			super.onCancelled();
 			stopSelf();
 		}
 
 		@Override
 		protected void onPostExecute(Void result) {
+			if (Config.LOG_DEBUG) Log.d(CheckForUpdatesService.class.getSimpleName(), "[Update] Stop service");
 			super.onPostExecute(result);
 			stopSelf();
 		}

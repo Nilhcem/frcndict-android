@@ -11,7 +11,7 @@
 		android:layout_width="fill_parent"
 		android:orientation="horizontal" >
 
-			<com.nilhcem.frcndict.core.ClearableEditText
+			<com.nilhcem.frcndict.core.layout.ClearableEditText
 				android:id="@+id/searchInput"
 				android:layout_height="wrap_content"
 				android:layout_width="0dp"

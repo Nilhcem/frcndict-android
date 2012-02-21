@@ -22,7 +22,6 @@ import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Tables;
 
 public final class RestoreXmlReader extends AbstractCancellableObservable {
-	private static final String LOG = "RestoreXmlReader";
 	private final File mXmlFile;
 	private final DatabaseHelper mDb;
 
@@ -67,16 +66,12 @@ public final class RestoreXmlReader extends AbstractCancellableObservable {
 				}
 			}
 			mDb.setTransactionSuccessfull();
-		} catch (ParserConfigurationException e) {
+		} catch (ParserConfigurationException ex) {
+			if (Config.LOG_ERROR) Log.e(RestoreXmlReader.class.getSimpleName(), "Failed to get DocumentBuilder factory", ex);
 			// Do nothing
-			if (Config.LOGGING) {
-				Log.e(RestoreXmlReader.LOG, e.getMessage());
-			}
-		} catch (SAXException e) {
+		} catch (SAXException ex) {
+			if (Config.LOG_ERROR) Log.e(RestoreXmlReader.class.getSimpleName(), "Error parsing xml file", ex);
 			// Do nothing
-			if (Config.LOGGING) {
-				Log.e(RestoreXmlReader.LOG, e.getMessage());
-			}
 		} finally {
 			mDb.endTransaction();
 		}

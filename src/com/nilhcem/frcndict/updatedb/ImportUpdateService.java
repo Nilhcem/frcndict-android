@@ -289,10 +289,8 @@ public final class ImportUpdateService extends Service {
 				mXmlWriter = new BackupXmlWriter(db, mXmlFile);
 				mXmlWriter.addObserver(this);
 				mXmlWriter.start();
-			} catch (IOException e) {
-				if (Config.LOGGING) {
-					Log.e(BackupAsync.TAG, "doInBackground() exception", e);
-				}
+			} catch (IOException ex) {
+				if (Config.LOG_ERROR) Log.e(BackupAsync.TAG, "Failed backing up starred words", ex);
 				// Do nothing
 			}
 
@@ -354,10 +352,8 @@ public final class ImportUpdateService extends Service {
 				if (!isCancelled()) {
 					errorCode = checkMd5();
 				}
-			} catch (IOException e) {
-				if (Config.LOGGING) {
-					Log.e(DownloadFileAsync.TAG, "doInBackground() exception", e);
-				}
+			} catch (IOException ex) {
+				if (Config.LOG_ERROR) Log.e(DownloadFileAsync.TAG, "Error downloading dictionary", ex);
 				errorCode = R.string.import_err_cannot_download;
 			}
 			return errorCode;
@@ -407,15 +403,11 @@ public final class ImportUpdateService extends Service {
 
 				String remoteMd5 = FileHandler.readFile(mMd5File);
 				if (!md5.equalsIgnoreCase(remoteMd5)) {
-					if (Config.LOGGING) {
-						Log.e(DownloadFileAsync.TAG, "md5 doesn't match");
-					}
+					if (Config.LOG_ERROR) Log.e(DownloadFileAsync.TAG, "MD5 doesn't match");
 					errorCode = R.string.import_err_wrong_dictionary_file;
 				}
-			} catch (IOException e) {
-				if (Config.LOGGING) {
-					Log.e(DownloadFileAsync.TAG, "checkMd5() exception", e);
-				}
+			} catch (IOException ex) {
+				if (Config.LOG_ERROR) Log.e(DownloadFileAsync.TAG, "Failed while checking MD5", ex);
 				errorCode = R.string.import_err_wrong_dictionary_file;
 			} finally {
 				mMd5File.delete();
@@ -453,10 +445,8 @@ public final class ImportUpdateService extends Service {
 				if (!isCancelled() && !mZippedFile.exists()) {
 					throw new IOException("File cannot be found");
 				}
-			} catch (IOException e) {
-				if (Config.LOGGING) {
-					Log.e(UnzipAsync.TAG, "checkMd5() exception", e);
-				}
+			} catch (IOException ex) {
+				if (Config.LOG_ERROR) Log.e(UnzipAsync.TAG, "Failed unzipping dictionary", ex);
 				errorCode = R.string.import_err_wrong_dictionary_file;
 			}
 			return errorCode;
@@ -535,10 +525,8 @@ public final class ImportUpdateService extends Service {
 				mXmlReader = new RestoreXmlReader(DatabaseHelper.getInstance(), mXmlFile);
 				mXmlReader.addObserver(this);
 				mXmlReader.start();
-			} catch (IOException e) {
-				if (Config.LOGGING) {
-					Log.e(RestoreAsync.TAG, "doInBackground() exception", e);
-				}
+			} catch (IOException ex) {
+				if (Config.LOG_ERROR) Log.e(RestoreAsync.TAG, "Failed restoring starred words", ex);
 				// Do nothing
 			}
 			return null;

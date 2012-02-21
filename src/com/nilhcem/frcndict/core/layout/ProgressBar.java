@@ -1,4 +1,4 @@
-package com.nilhcem.frcndict.core;
+package com.nilhcem.frcndict.core.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -4,7 +4,7 @@ import android.content.DialogInterface;
 import android.view.View;
 
 import com.nilhcem.frcndict.R;
-import com.nilhcem.frcndict.core.ProgressBar;
+import com.nilhcem.frcndict.core.layout.ProgressBar;
 
 public final class UpdateActivity extends AbstractImportUpdateActivity {
 	private ProgressBar mBackupProgress;

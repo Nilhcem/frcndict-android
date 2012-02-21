@@ -21,7 +21,6 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 	public static final String XML_SUB_TAG = "entry";
 	public static final String XML_ENCODING = "UTF-8";
 	private static final String XML_MAIN_TAG = "starred";
-	private static final String TAG = "BackupXmlWriter";
 
 	private final DatabaseHelper mDb;
 	private FileOutputStream mOutputStream;
@@ -33,10 +32,8 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 		// Create FileOuputStream for xmlFile
 		try {
 			mOutputStream = new FileOutputStream(xmlFile);
-		} catch (FileNotFoundException e) {
-			if (Config.LOGGING) {
-				Log.e(BackupXmlWriter.TAG, e.getMessage());
-			}
+		} catch (FileNotFoundException ex) {
+			if (Config.LOG_ERROR) Log.e(BackupXmlWriter.class.getSimpleName(), "Can't get output stream", ex);
 		}
 	}
 

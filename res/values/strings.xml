@@ -31,7 +31,7 @@
 	<string name="import_notification_success_title">CN/FR dictionary data successfully imported</string>
 	<string name="import_notification_success_msg">Click to start using the application</string>
 	<string name="import_notification_failed_title">Failed to import CN/FR dictionary data</string>
-	<string name="import_notification_failed_msg">Click to see reason and try again</string>
+	<string name="import_notification_failed_msg">Click to see the reason and try again</string>
 
 	<!-- Update data -->
 	<string name="update_service_label">Check for updates</string>

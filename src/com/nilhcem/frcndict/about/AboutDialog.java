@@ -61,6 +61,9 @@ public final class AboutDialog extends Dialog {
 			if (assets.contains(localeUrl)) {
 				found = true;
 			}
+			if (locale.getCountry().equals("CN")) {
+				localeUrl = localeUrl.replace("zh", "zh-simplified");
+			}
 		} catch (IOException e) {
 			if (Config.LOG_ERROR) Log.e(AboutDialog.class.getSimpleName(), "Can't find about asset");
 			// found = false;

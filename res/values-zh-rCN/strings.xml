@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Application -->
+	<string name="app_name">法汉双语词典</string>
+
+	<!-- Import data -->
+	<string name="import_service_label">词典导入/更新</string>
+	<string name="import_welcome_title">欢迎使用</string>
+	<string name="import_welcome_msg">首先请下载本词典.\n同时确保您的设备已联网.\n它将占用5MB的空间，此安装过程需要15MB的空间.\n\n立即下载?</string>
+	<string name="import_processing_msg">正在下载词典数据(5M).\n请稍候…</string>
+	<string name="import_start_service_btn">下载</string>
+	<string name="import_quit_activity_btn">退出</string>
+	<string name="import_done">完成</string>
+	<string name="import_download_text">正在下载…</string>
+	<string name="import_install_text">正在安装…</string>
+	<string name="import_dialog_title">安装完成</string>
+	<string name="import_dialog_msg">感谢您的耐心等候.\n您现在可以使用本产品了!</string>
+	<string name="import_dialog_btn">确认</string>
+	<string name="import_storage_dialog_title">正在安装数据</string>
+	<string name="import_storage_dialog_msg">请选择安装数据的位置?</string>
+	<string name="import_storage_dialog_sdcard">储存卡 (推荐)</string>
+	<string name="import_storage_dialog_device">随机内存</string>
+	<string name="import_err_dialog_title">出错</string>
+	<string name="import_err_cannot_download">无法下载词典.\n请确保您的设备已联网并重试.</string>
+	<string name="import_err_wrong_dictionary_file">词典没有被正确下载.\n请重试.</string>
+	<string name="import_err_retry">重试</string>
+	<string name="import_err_cancel">取消</string>
+	<string name="import_cancel_btn">取消</string>
+	<string name="import_notification_import_title">正在导入</string>
+	<string name="import_notification_import_msg">点击此处查看进展</string>
+	<string name="import_notification_success_title">法汉双语词典导入成功</string>
+	<string name="import_notification_success_msg">点击此处开始使用本产品</string>
+	<string name="import_notification_failed_title">法汉双语词典导入失败</string>
+	<string name="import_notification_failed_msg">点击此处查看原因并重试</string>
+
+	<!-- Update data -->
+	<string name="update_service_label">查看更新</string>
+	<string name="update_welcome_title">更新词典</string>
+	<string name="update_welcome_msg">词典更新可用.\n请确保您的设备已联网.\n它将占用5MB的空间，此安装过程需要15MB的空间.\n\n立即下载?</string>
+	<string name="update_processing_msg">正在更新数据(5M).\n请稍候…</string>
+	<string name="update_start_service_btn">更新</string>
+	<string name="update_quit_activity_btn">取消</string>
+	<string name="update_dialog_msg">词典更新成功!\n感谢您的耐心等候.</string>
+	<string name="update_notification_import_title">正在更新词典数据</string>
+	<string name="update_notification_success_title">法汉双语词典更新成功</string>
+	<string name="update_notification_success_msg">点击此处使用</string>
+	<string name="update_notification_title">词典更新可用</string>
+	<string name="update_notification_msg">点击此处开始更新</string>
+	<string name="update_backup_text">正在备份个人数据…</string>
+	<string name="update_restore_text">正在恢复个人数据…</string>
+
+	<!-- Search entry -->
+	<string name="search_intro">轻点以上空格开始查找单词.</string>
+	<string name="search_press_back_twice_exit">请再次单击返回以退出</string>
+	<string name="search_hint_text">查找法语,汉字,拼音</string>
+	<string name="search_empty_text">搜索不能为空</string>
+	<string name="search_no_results">没有结果</string>
+	<string name="search_loading">正在载入…</string>
+	<string name="search_btn_french">法语</string>
+	<string name="search_btn_pinyin">拼音</string>
+
+	<!-- Word meaning -->
+	<string name="meaning_title_singular">词义:</string>
+	<string name="meaning_title_plural">词义:</string>
+	<string name="meaning_title_bullet">•</string>
+	<string name="meaning_star_desc">标记</string>
+	<string name="meaning_starred_date_format">yyyy年MM月dd日</string>
+	<string name="meaning_starred_on">标记于%s</string>
+	<string name="meaning_not_starred">未标记</string>
+
+	<!-- Menus -->
+	<string name="main_menu_about">关于</string>
+	<string name="main_menu_settings">设置</string>
+	<string name="main_menu_starred">已标记</string>
+	<string name="starred_menu_refresh">刷新</string>
+	<string name="starred_menu_search">返回查找</string>
+
+	<!-- About dialog (see also ~/assets/about/about.html) -->
+	<string name="about_title">关于</string>
+
+	<!-- Starred words -->
+	<string name="starred_words_title">已标记的单词</string>
+
+	<!-- Settings -->
+	<string name="settings_cat_general">一般</string>
+	<string name="settings_chinese_chars">简体/繁体</string>
+	<string name="settings_chinese_chars_sum">显示简体或繁体</string>
+	<string name="settings_chinese_chars_simp">简体</string>
+	<string name="settings_chinese_chars_trad">繁体</string>
+	<string name="settings_chinese_chars_both_st">简体 [繁体]</string>
+	<string name="settings_chinese_chars_both_ts">繁体 [简体]</string>
+	<string name="settings_pinyin">拼音声调显示</string>
+	<string name="settings_pinyin_sum">请选择 pīnyīn, pin1yin1 或者 pinyin</string>
+	<string name="settings_hanzi_coloring">汉字颜色显示</string>
+	<string name="settings_hanzi_coloring_sum">以汉字的声调颜色显示</string>
+	<string name="settings_cat_display">外观</string>
+	<string name="settings_dark_theme">夜间模式</string>
+	<string name="settings_dark_theme_sum">改变为暗色主题</string>
+	<string name="settings_cat_advanced">其它</string>
+	<string name="settings_db_updates">查找更新</string>
+	<string name="settings_db_updates_sum">指定查找更新的时间</string>
+	<string name="settings_db_updates_daily">每天</string>
+	<string name="settings_db_updates_weekly">每周</string>
+	<string name="settings_db_updates_monthly">每月</string>
+	<string name="settings_db_updates_never">从不</string>
+</resources>

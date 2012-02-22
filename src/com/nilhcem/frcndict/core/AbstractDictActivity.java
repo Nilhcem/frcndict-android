@@ -44,8 +44,9 @@ public abstract class AbstractDictActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mDb.open();
-		AbstractDictActivity.checkForDatabaseImportOrUpdate(this);
+		if (!AbstractDictActivity.checkForDatabaseImportOrUpdate(this)) {
+			mDb.open();
+		}
 	}
 
 	@Override

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Application -->
+	<string name="app_name">Dictionnaire Français Chinois</string>
+
+	<!-- Import data -->
+	<string name="import_service_label">Import / Mise à jour des données</string>
+	<string name="import_welcome_title">Bienvenue</string>
+	<string name="import_welcome_msg">Les données de l\'application ont besoin d\'être téléchargées.\nVotre appareil doit être connecté à Internet.\n5 MO vont être téléchargés et environ 15 MO seront nécessaires pendant le processus d\'installation.\n\nVoulez-vous commencer le téléchargement maintenant ?</string>
+	<string name="import_processing_msg">Téléchargement des données du dictionnaire (5M).\nVeuillez patienter…</string>
+	<string name="import_start_service_btn">Télécharger</string>
+	<string name="import_quit_activity_btn">Quitter</string>
+	<string name="import_done">Terminé</string>
+	<string name="import_download_text">Téléchargement du dictionnaire…</string>
+	<string name="import_install_text">Installation du dictionnaire…</string>
+	<string name="import_dialog_title">Terminé</string>
+	<string name="import_dialog_msg">Merci d\'avoir patienté.\nVous pouvez dès à présent commencer à utiliser l\'application !</string>
+	<string name="import_dialog_btn">OK</string>
+	<string name="import_storage_dialog_title">Emplacement des données</string>
+	<string name="import_storage_dialog_msg">Où souhaitez-vous installer le dictionnaire ?</string>
+	<string name="import_storage_dialog_sdcard">Carte SD (recommandé)</string>
+	<string name="import_storage_dialog_device">Mémoire interne de l\'appareil</string>
+	<string name="import_err_dialog_title">Erreur</string>
+	<string name="import_err_cannot_download">Impossible de télécharger le dictionnaire.\nAssurez-vous que votre appareil est bien connecté à Internet et réessayez.</string>
+	<string name="import_err_wrong_dictionary_file">Le dictionnaire n\'a pas été correctement téléchargé.\nVeuillez recommencer.</string>
+	<string name="import_err_retry">Réessayer</string>
+	<string name="import_err_cancel">Annuler</string>
+	<string name="import_cancel_btn">Annuler</string>
+	<string name="import_notification_import_title">Importation du dictionnaire CN/FR</string>
+	<string name="import_notification_import_msg">Voir la progression</string>
+	<string name="import_notification_success_title">Dictionnaire CN/FR correctement importé</string>
+	<string name="import_notification_success_msg">Commencer à utiliser l\'application</string>
+	<string name="import_notification_failed_title">Échec lors de l\'importation du dictionnaire CN/FR</string>
+	<string name="import_notification_failed_msg">Veuillez réessayer</string>
+
+	<!-- Update data -->
+	<string name="update_service_label">Vérification des mises à jour</string>
+	<string name="update_welcome_title">Mise à jour du dictionnaire</string>
+	<string name="update_welcome_msg">Une mise à jour du dictionnaire est disponible.\nVeuillez vous assurer que le périphérique est bien connecté à Internet.\n5 MO vont être téléchargés et environ 15 MO seront nécessaires pendant le processus d\'installation.\n\nVoulez-vous commencer la mise à jour maintenant ?</string>
+	<string name="update_processing_msg">Mise à jour du dictionnaire (5M).\nVeuillez patienter…</string>
+	<string name="update_start_service_btn">Mettre à jour</string>
+	<string name="update_quit_activity_btn">Annuler</string>
+	<string name="update_dialog_msg">Le dictionnaire a été mis à jour avec succès !\nMerci d\'avoir patienté.</string>
+	<string name="update_notification_import_title">Mise à jour du dictionnaire CN/FR</string>
+	<string name="update_notification_success_title">Le dictionnaire CN/FR a été mis à jour avec succès</string>
+	<string name="update_notification_success_msg">Cliquez pour utiliser l\'application</string>
+	<string name="update_notification_title">Une mise à jour du dictionnaire est disponible</string>
+	<string name="update_notification_msg">Cliquez pour commencer la mise à jour</string>
+	<string name="update_backup_text">Copie des données personnelles…</string>
+	<string name="update_restore_text">Restoration des données personnelles…</string>
+
+	<!-- Search entry -->
+	<string name="search_intro">Utilisez l\'espace de recherche ci-dessus pour consulter le dictionnaire.</string>
+	<string name="search_press_back_twice_exit">Appuyez sur \"retour\" une nouvelle fois pour quitter l\'application</string>
+	<string name="search_hint_text">Rechercher en français, 汉字, pinyin</string>
+	<string name="search_empty_text">La recherche ne doit pas être vide</string>
+	<string name="search_no_results">Aucun résultat</string>
+	<string name="search_loading">Chargement…</string>
+	<string name="search_btn_french">Français</string>
+	<string name="search_btn_pinyin">Pinyin</string>
+
+	<!-- Word meaning -->
+	<string name="meaning_title_singular">Signification :</string>
+	<string name="meaning_title_plural">Significations :</string>
+	<string name="meaning_title_bullet">•</string>
+	<string name="meaning_star_desc">favoris</string>
+	<string name="meaning_starred_date_format">dd/MM/yyyy</string>
+	<string name="meaning_starred_on">Mis en favoris le %s</string>
+	<string name="meaning_not_starred">Ajouter aux favoris</string>
+
+	<!-- Menus -->
+	<string name="main_menu_about">À propos</string>
+	<string name="main_menu_settings">Paramètres</string>
+	<string name="main_menu_starred">Favoris</string>
+	<string name="starred_menu_refresh">Rafraîchir</string>
+	<string name="starred_menu_search">Retour à la recherche</string>
+
+	<!-- About dialog (see also ~/assets/about/about-fr.html) -->
+	<string name="about_title">À propos</string>
+
+	<!-- Starred words -->
+	<string name="starred_words_title">Favoris</string>
+
+	<!-- Settings -->
+	<string name="settings_cat_general">Général</string>
+	<string name="settings_chinese_chars">Simplifié/Traditionnel</string>
+	<string name="settings_chinese_chars_sum">Affiche les caractères chinois simplifiés ou traditionnels</string>
+	<string name="settings_chinese_chars_simp">Simplifié</string>
+	<string name="settings_chinese_chars_trad">Traditionnel</string>
+	<string name="settings_chinese_chars_both_st">Simpl. [Trad.]</string>
+	<string name="settings_chinese_chars_both_ts">Trad. [Simpl.]</string>
+	<string name="settings_pinyin">Tons des pinyins</string>
+	<string name="settings_pinyin_sum">Choisir entre pīnyīn, pin1yin1 ou pinyin</string>
+	<string name="settings_hanzi_coloring">Coloration des Hanzi</string>
+	<string name="settings_hanzi_coloring_sum">Colorer les sinogrammes selon leurs tons</string>
+	<string name="settings_cat_display">Apparence</string>
+	<string name="settings_dark_theme">Mode nuit</string>
+	<string name="settings_dark_theme_sum">Utiliser un thème plus adapté à une utilisation la nuit</string>
+	<string name="settings_cat_advanced">Avancé</string>
+	<string name="settings_db_updates">Mises à jour</string>
+	<string name="settings_db_updates_sum">Modifier la fréquence de mise à jour du dictionnaire</string>
+	<string name="settings_db_updates_daily">Une fois par jour</string>
+	<string name="settings_db_updates_weekly">Une fois par semaine</string>
+	<string name="settings_db_updates_monthly">Une fois par mois</string>
+	<string name="settings_db_updates_never">Jamais</string>
+</resources>

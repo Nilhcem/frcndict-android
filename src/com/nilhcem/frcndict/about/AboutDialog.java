@@ -1,14 +1,25 @@
 package com.nilhcem.frcndict.about;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
 
 import com.nilhcem.frcndict.R;
+import com.nilhcem.frcndict.core.Config;
 
 public final class AboutDialog extends Dialog {
-	private static final String ABOUT_URL = "file:///android_asset/about/about.html";
+	private static final String ABOUT_ASSET_DIR = "about";
+	private static final String ABOUT_ASSET_FILE = "about";
+	private static final String ABOUT_ASSET_FILE_SEPARATOR = "-";
+	private static final String ABOUT_URL_EXTENSION = ".html";
+	private static final String ABOUT_URL = "file:///android_asset/" + AboutDialog.ABOUT_ASSET_DIR + "/";
 	private final Context mParentContext;
 
 	public AboutDialog(Context context, int theme) {
@@ -33,6 +44,31 @@ public final class AboutDialog extends Dialog {
 		webView.addJavascriptInterface(jsInterface, "android"); // "android" is the keyword that will be exposed in js
 
 		// Load file
-		webView.loadUrl(AboutDialog.ABOUT_URL);
+		webView.loadUrl(getLocaleUrl());
+	}
+
+	private String getLocaleUrl() {
+		boolean found = false;
+		String localeUrl = null;
+
+		try {
+			Locale locale = Locale.getDefault();
+			List<String> assets = Arrays.asList(mParentContext.getResources().getAssets().list(AboutDialog.ABOUT_ASSET_DIR));
+
+			localeUrl = String.format("%s%s%s%s", AboutDialog.ABOUT_ASSET_FILE,
+					AboutDialog.ABOUT_ASSET_FILE_SEPARATOR, locale.getLanguage(),
+					AboutDialog.ABOUT_URL_EXTENSION);
+			if (assets.contains(localeUrl)) {
+				found = true;
+			}
+		} catch (IOException e) {
+			if (Config.LOG_ERROR) Log.e(AboutDialog.class.getSimpleName(), "Can't find about asset");
+			// found = false;
+		}
+
+		if (!found) {
+			localeUrl = String.format("%s%s", AboutDialog.ABOUT_ASSET_FILE, AboutDialog.ABOUT_URL_EXTENSION);
+		}
+		return AboutDialog.ABOUT_URL + localeUrl;
 	}
 }

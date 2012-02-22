@@ -42,7 +42,7 @@ public final class ImportActivity extends AbstractImportUpdateActivity {
 		mStorageDialog = new AlertDialog.Builder(this)
 			.setTitle(R.string.import_storage_dialog_title)
 			.setMessage(R.string.import_storage_dialog_msg)
-			.setIcon(android.R.drawable.ic_menu_help)
+			.setIcon(R.drawable.ic_menu_help)
 			.setPositiveButton(R.string.import_storage_dialog_sdcard, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

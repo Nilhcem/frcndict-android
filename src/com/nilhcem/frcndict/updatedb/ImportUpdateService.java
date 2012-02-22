@@ -192,7 +192,7 @@ public final class ImportUpdateService extends Service {
 		String message = getString(R.string.import_notification_import_msg);
 
 		// Instantiate the notification
-		Notification notification = new Notification(android.R.drawable.stat_notify_sync_noanim, title, 0l);
+		Notification notification = new Notification(R.drawable.stat_notify_sync, title, 0l);
 		notification.flags |= Notification.FLAG_ONGOING_EVENT;
 		notification.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
 		notification.when = System.currentTimeMillis();
@@ -211,7 +211,7 @@ public final class ImportUpdateService extends Service {
 		String message = getString(mImport ? R.string.import_notification_success_msg : R.string.update_notification_success_msg);
 
 		// Instantiate the notification
-		Notification notification = new Notification(android.R.drawable.presence_online, title, 0l);
+		Notification notification = new Notification(R.drawable.presence_online, title, 0l);
 		notification.when = System.currentTimeMillis();
 
 		// Define the notification message and pending intent
@@ -228,7 +228,7 @@ public final class ImportUpdateService extends Service {
 		String message = getString(R.string.import_notification_failed_msg);
 
 		// Instantiate the notification
-		Notification notification = new Notification(android.R.drawable.ic_delete, title, 0l);
+		Notification notification = new Notification(R.drawable.ic_delete, title, 0l);
 		notification.when = System.currentTimeMillis();
 
 		// Define the notification message and pending intent

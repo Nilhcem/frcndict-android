@@ -3,5 +3,5 @@
 	<item
 		android:id="@+id/starred_menu_search"
 		android:title="@string/starred_menu_search"
-		android:icon="@android:drawable/ic_menu_search"></item>
+		android:icon="@drawable/ic_menu_search"></item>
 </menu>

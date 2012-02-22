@@ -122,7 +122,7 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 		mCompletedDialog = new AlertDialog.Builder(this)
 			.setTitle(R.string.import_dialog_title)
 			.setMessage(mImport ? R.string.import_dialog_msg : R.string.update_dialog_msg)
-			.setIcon(android.R.drawable.checkbox_on_background)
+			.setIcon(R.drawable.checkbox_on_background)
 			.setPositiveButton(R.string.import_dialog_btn, mCompletedListener)
 			.create();
 		// Disable back button
@@ -135,7 +135,7 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 
 		mErrorDialog = new AlertDialog.Builder(this)
 			.setTitle(R.string.import_err_dialog_title)
-			.setIcon(android.R.drawable.ic_delete)
+			.setIcon(R.drawable.ic_delete)
 			.setPositiveButton(R.string.import_err_retry, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

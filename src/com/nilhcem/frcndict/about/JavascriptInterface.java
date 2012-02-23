@@ -13,11 +13,14 @@ import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 
+/**
+ * Note: if some changes are made to this class, please modify proguard.cfg
+ */
 /* package-private */
 final class JavascriptInterface {
 	private static final String VERSION_SEPARATOR = "-";
-	private static final String THEME_DEFAULT = "./theme-default.css";
-	private static final String THEME_DARK = "./theme-dark.css";
+	private static final String THEME_DEFAULT = "./res/theme-default.css";
+	private static final String THEME_DARK = "./res/theme-dark.css";
 
 	private final Context mParentContext;
 	private final Dialog mDialog;

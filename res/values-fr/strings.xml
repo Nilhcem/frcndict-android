@@ -89,8 +89,8 @@
 	<string name="settings_chinese_chars_trad">Traditionnel</string>
 	<string name="settings_chinese_chars_both_st">Simpl. [Trad.]</string>
 	<string name="settings_chinese_chars_both_ts">Trad. [Simpl.]</string>
-	<string name="settings_pinyin">Tons des pinyins</string>
-	<string name="settings_pinyin_sum">Choisir entre pīnyīn, pin1yin1 ou pinyin</string>
+	<string name="settings_pinyin">Transcription phonétique</string>
+	<string name="settings_pinyin_sum">Choisir entre pīnyīn, pin1yin1, pinyin ou bopomofo</string>
 	<string name="settings_hanzi_coloring">Coloration des Hanzi</string>
 	<string name="settings_hanzi_coloring_sum">Colorer les sinogrammes selon leurs tons</string>
 	<string name="settings_cat_display">Apparence</string>

@@ -11,9 +11,116 @@ public final class ChineseCharsHandler {
 	private static final ChineseCharsHandler INSTANCE = new ChineseCharsHandler();
 	private static final String SAME_HANZI_REPLACEMENT = "-";
 	private static final String FORMAT_HANZI_ST = "%s [%s]";
-
 	private String[] mColorsArray;
 
+	private static final String[] PINYIN_NB2TONE_SRC = new String[] {
+		"a1", "a2", "a3", "a4", "a5", "e1", "e2", "e3", "e4", "e5", "i1", "i2", "i3", "i4", "i5",
+		"o1", "o2", "o3", "o4", "o5", "u1", "u2", "u3", "u4", "u5", "v", "u:", "ü1", "ü2", "ü3",
+		"ü4", "ü5", "an1", "an2", "an3", "an4", "an5", "ang1", "ang2", "ang3", "ang4", "ang5", "en1",
+		"en2", "en3", "en4", "en5", "eng1", "eng2", "eng3", "eng4", "eng5", "in1", "in2", "in3",
+		"in4", "in5", "ing1", "ing2", "ing3", "ing4", "ing5", "ong1", "ong2", "ong3", "ong4", "ong5",
+		"un1", "un2", "un3", "un4", "un5", "er1", "er2", "er3", "er4", "er5", "aō", "aó", "aǒ", "aò",
+		"oū", "oú", "oǔ", "où", "aī", "aí", "aǐ", "aì", "eī", "eí", "eǐ", "eì"
+	};
+	private static final String[] PINYIN_NB2TONE_DST = new String[] {
+		"ā", "á", "ǎ", "à", "a", "ē", "é", "ě", "è", "e", "ī", "í", "ǐ", "ì", "i",
+		"ō", "ó", "ǒ", "ò", "o", "ū", "ú", "ǔ", "ù", "u", "ü", "ü", "ǖ", "ǘ", "ǚ",
+		"ǜ", "ü", "ān", "án", "ǎn", "àn", "an", "āng", "áng", "ǎng", "àng", "ang", "ēn",
+		"én", "ěn", "èn", "en", "ēng", "éng", "ěng", "èng", "eng", "īn", "ín", "ǐn",
+		"ìn", "in", "īng", "íng", "ǐng", "ìng", "ing", "ōng", "óng", "ǒng", "òng", "ong",
+		"ūn", "ún", "ǔn", "ùn", "un", "ēr", "ér", "ěr", "èr", "er", "āo", "áo", "ǎo", "ào",
+		"ōu", "óu", "ǒu", "òu", "āi", "ái", "ǎi", "ài", "ēi", "éi", "ěi", "èi"
+	};
+	private static final String[] PINYIN_TONE2TB_SRC = new String[] {
+		"āng", "áng", "ǎng", "àng", "ēng", "éng", "ěng", "èng", "īng", "íng", "ǐng", "ìng",
+		"ōng", "óng", "ǒng", "òng", "ān", "án", "ǎn", "àn", "ēn", "én", "ěn", "èn",
+		"īn", "ín", "ǐn", "ìn", "ūn", "ún", "ǔn", "ùn", "ēr", "ér", "ěr", "èr", "āo", "áo", "ǎo", "ào",
+		"ōu", "óu", "ǒu", "òu", "āi", "ái", "ǎi", "ài", "ēi", "éi", "ěi", "èi", "ā", "á", "ǎ", "à",
+		"ē", "é", "ě", "è", "ī", "í", "ǐ", "ì", "ō", "ó", "ǒ", "ò", "ū", "ú", "ǔ", "ù", "ǖ", "ǘ", "ǚ", "ǜ", "ü", "v"
+	};
+	private static final String[] PINYIN_TONE2TB_DST = new String[] {
+		"ang1", "ang2", "ang3", "ang4", "eng1", "eng2", "eng3", "eng4", "ing1", "ing2", "ing3", "ing4",
+		"ong1", "ong2", "ong3", "ong4", "an1", "an2", "an3", "an4", "en1", "en2", "en3", "en4",
+		"in1", "in2", "in3", "in4", "un1", "un2", "un3", "un4", "er1", "er2", "er3", "er4", "aō", "aó", "aǒ", "aò",
+		"oū", "oú", "oǔ", "où", "aī", "aí", "aǐ", "aì", "eī", "eí", "eǐ", "eì", "a1", "a2", "a3", "a4",
+		"e1", "e2", "e3", "e4", "i1", "i2", "i3", "i4", "o1", "o2", "o3", "o4", "u1", "u2", "u3", "u4", "ü1", "ü2", "ü3", "ü4", "u:", "u:"
+	};
+	private static final String[] PINYIN_NB2RAW_SRC = new String[] {
+		"a[1-5]", "e[1-5]", "i[1-5]", "o[1-5]", "u[1-5]", "u:[1-5]?", "an[1-5]", "ang[1-5]",
+		"en[1-5]", "eng[1-5]", "in[1-5]", "ing[1-5]", "ong[1-5]", "un[1-5]", "er[1-5]"
+	};
+	private static final String[] PINYIN_NB2RAW_DST = new String[] {
+		"a", "e", "i", "o", "u", "v", "an", "ang",
+		"en", "eng", "in", "ing", "ong", "un", "er"
+	};
+	public static final String[] PINYIN_PIN2ZHU_SRC = new String[] {
+		"chuang", "shuang", "zhuang", "chang", "cheng", "chong", "chuai", "chuan", "diang",
+		"guang", "huang", "jiang", "jiong", "kuang", "liang", "niang", "qiang", "qiong",
+		"shang", "sheng", "shuai", "shuan", "xiang", "xiong", "zhang", "zheng", "zhong",
+		"zhuai", "zhuan", "bang", "beng", "bian", "biao", "bing", "cang", "ceng",
+		"chai", "chan", "chao", "chen", "chou", "chua", "chui", "chun", "chuo", "cong", "cuan",
+		"dang", "deng", "dian", "diao", "ding", "dong", "duan", "fang", "feng", "gang", "geng",
+		"gong", "guai", "guan", "hang", "heng", "hong", "huai", "huan", "jian", "jiao", "jing", "juan",
+		"kang", "keng", "kong", "kuai", "kuan", "lang", "leng", "lian", "liao", "ling", "long", "luan", "lu:an",
+		"mang", "meng", "mian", "miao", "ming", "nang", "neng", "nian", "niao", "ning", "nong", "nuan",
+		"pang", "peng", "pian", "piao", "ping", "qian", "qiao", "qing", "quan", "rang", "reng", "rong", "ruan",
+		"sang", "seng", "shai", "shan", "shao", "shei", "shen", "shou", "shua", "shui", "shun", "shuo", "song", "suan",
+		"tang", "teng", "tian", "tiao", "ting", "tong", "tuan", "wang", "weng", "xian", "xiao", "xing", "xuan",
+		"yang", "ying", "yong", "yuan", "zang", "zeng", "zhai", "zhan", "zhao", "zhei", "zhen", "zhou", "zhua",
+		"zhui", "zhun", "zhuo", "zong", "zuan", "ang", "bai", "ban", "bao", "bei", "ben", "bie", "bin",
+		"cai", "can", "cao", "cen", "cha", "che", "chi", "chu", "cou", "cui", "cun", "cuo",
+		"dai", "dan", "dao", "dei", "die", "diu", "dou", "dui", "dun", "duo", "eng", "fan", "fei", "fen", "fou",
+		"gai", "gan", "gao", "gei", "gen", "gou", "gua", "gui", "gun", "guo", "hai", "han", "hao", "hei", "hen",
+		"hou", "hua", "hui", "hun", "huo", "jia", "jie", "jin", "jiu", "jue", "jun",
+		"kai", "kan", "kao", "ken", "kou", "kua", "kui", "kun", "kuo", "lai", "lan", "lao", "lei", "lia", "lie",
+		"lin", "liu", "lou", "lu:e", "lun", "lu:n", "luo", "mai", "man", "mao", "mei", "men", "mie", "min", "miu", "mou",
+		"nai", "nan", "nao", "nei", "nen", "nia", "nie", "nin", "niu", "nou", "nu:e", "nun", "nuo",
+		"pai", "pan", "pao", "pei", "pen", "pie", "pin", "pou", "qia", "qie", "qin", "qiu", "que", "qun",
+		"ran", "rao", "ren", "rou", "rui", "run", "ruo", "sai", "san", "sao", "sen",
+		"sha", "she", "shi", "shu", "sou", "sui", "sun", "suo", "tai", "tan", "tao", "tie", "tou", "tui", "tun", "tuo",
+		"wai", "wan", "wei", "wen", "xia", "xie", "xin", "xiu", "xue", "xun", "yan", "yao", "yin", "you", "yue", "yun",
+		"zai", "zan", "zao", "zei", "zen", "zha", "zhe", "zhi", "zhu", "zou", "zui", "zun", "zuo",
+		"ai", "an", "ao", "ba", "bi", "bo", "bu", "ca", "ce", "ci", "cu", "da", "de", "di", "du",
+		"ei", "en", "er", "fa", "fo", "fu", "ga", "ge", "gu", "ha", "he", "hu", "ji", "ju",
+		"ka", "ke", "ku", "la", "le", "li", "lo", "lu", "lu:", "ma", "me", "mi", "mo", "mu",
+		"na", "ne", "ni", "nu", "nu:", "ou", "pa", "pi", "po", "pu", "qi", "qu", "re", "ri", "ru",
+		"sa", "se", "si", "su", "ta", "te", "ti", "tu", "wa", "wo", "wu", "xi", "xu", "ya", "ye", "yi", "yu",
+		"za", "ze", "zi", "zu", "a", "e", "o", "1", "2", "3", "4", "5"
+	};
+	public static final String[] PINYIN_PIN2ZHU_DST = new String[] {
+		"ㄔㄨㄤ", "ㄕㄨㄤ", "ㄓㄨㄤ", "ㄔㄤ", "ㄔㄥ", "ㄔㄨㄥ", "ㄔㄨㄞ", "ㄔㄨㄢ", "ㄉㄧㄤ",
+		"ㄍㄨㄤ", "ㄏㄨㄤ", "ㄐㄧㄤ", "ㄐㄩㄥ", "ㄎㄨㄤ", "ㄌㄧㄤ", "ㄋㄧㄤ", "ㄑㄧㄤ", "ㄑㄩㄥ",
+		"ㄕㄤ", "ㄕㄥ", "ㄕㄨㄞ", "ㄕㄨㄢ", "ㄒㄧㄤ", "ㄒㄩㄥ", "ㄓㄤ", "ㄓㄥ", "ㄓㄨㄥ",
+		"ㄓㄨㄞ", "ㄓㄨㄢ", "ㄅㄤ", "ㄅㄥ", "ㄅㄧㄢ", "ㄅㄧㄠ", "ㄅㄧㄥ", "ㄘㄤ", "ㄘㄥ",
+		"ㄔㄞ", "ㄔㄢ", "ㄔㄠ", "ㄔㄣ", "ㄔㄡ", "ㄔㄨㄚ", "ㄔㄨㄟ", "ㄔㄨㄣ", "ㄔㄨㄛ", "ㄘㄨㄥ", "ㄘㄨㄢ",
+		"ㄉㄤ", "ㄉㄥ", "ㄉㄧㄢ", "ㄉㄧㄠ", "ㄉㄧㄥ", "ㄉㄨㄥ", "ㄉㄨㄢ", "ㄈㄤ", "ㄈㄥ", "ㄍㄤ", "ㄍㄥ",
+		"ㄍㄨㄥ", "ㄍㄨㄞ", "ㄍㄨㄢ", "ㄏㄤ", "ㄏㄥ", "ㄏㄨㄥ", "ㄏㄨㄞ", "ㄏㄨㄢ", "ㄐㄧㄢ", "ㄐㄧㄠ", "ㄐㄧㄥ", "ㄐㄩㄢ",
+		"ㄎㄤ", "ㄎㄥ", "ㄎㄨㄥ", "ㄎㄨㄞ", "ㄎㄨㄢ", "ㄌㄤ", "ㄌㄥ", "ㄌㄧㄢ", "ㄌㄧㄠ", "ㄌㄧㄥ", "ㄌㄨㄥ", "ㄌㄨㄢ", "ㄌㄩㄢ",
+		"ㄇㄤ", "ㄇㄥ", "ㄇㄧㄢ", "ㄇㄧㄠ", "ㄇㄧㄥ", "ㄋㄤ", "ㄋㄥ", "ㄋㄧㄢ", "ㄋㄧㄠ", "ㄋㄧㄥ", "ㄋㄨㄥ", "ㄋㄨㄢ",
+		"ㄆㄤ", "ㄆㄥ", "ㄆㄧㄢ", "ㄆㄧㄠ", "ㄆㄧㄥ", "ㄑㄧㄢ", "ㄑㄧㄠ", "ㄑㄧㄥ", "ㄑㄩㄢ", "ㄖㄤ", "ㄖㄥ", "ㄖㄨㄥ", "ㄖㄨㄢ",
+		"ㄙㄤ", "ㄙㄥ", "ㄕㄞ", "ㄕㄢ", "ㄕㄠ", "ㄕㄟ", "ㄕㄣ", "ㄕㄡ", "ㄕㄨㄚ", "ㄕㄨㄟ", "ㄕㄨㄣ", "ㄕㄨㄛ", "ㄙㄨㄥ", "ㄙㄨㄢ",
+		"ㄊㄤ", "ㄊㄥ", "ㄊㄧㄢ", "ㄊㄧㄠ", "ㄊㄧㄥ", "ㄊㄨㄥ", "ㄊㄨㄢ", "ㄨㄤ", "ㄨㄥ", "ㄒㄧㄢ", "ㄒㄧㄠ", "ㄒㄧㄥ", "ㄒㄩㄢ",
+		"ㄧㄤ", "ㄧㄥ", "ㄩㄥ", "ㄩㄢ", "ㄗㄤ", "ㄗㄥ", "ㄓㄞ", "ㄓㄢ", "ㄓㄠ", "ㄓㄟ", "ㄓㄣ", "ㄓㄡ", "ㄓㄨㄚ",
+		"ㄓㄨㄟ", "ㄓㄨㄣ", "ㄓㄨㄛ", "ㄗㄨㄥ", "ㄗㄨㄢ", "ㄤ", "ㄅㄞ", "ㄅㄢ", "ㄅㄠ", "ㄅㄟ", "ㄅㄣ", "ㄅㄧㄝ", "ㄅㄧㄣ",
+		"ㄘㄞ", "ㄘㄢ", "ㄘㄠ", "ㄘㄣ", "ㄔㄚ", "ㄔㄜ", "ㄔ", "ㄔㄨ", "ㄘㄡ", "ㄘㄨㄟ", "ㄘㄨㄣ", "ㄘㄨㄛ",
+		"ㄉㄞ", "ㄉㄢ", "ㄉㄠ", "ㄉㄟ", "ㄉㄧㄝ", "ㄉㄧㄡ", "ㄉㄡ", "ㄉㄨㄟ", "ㄉㄨㄣ", "ㄉㄨㄛ", "ㄥ", "ㄈㄢ", "ㄈㄟ", "ㄈㄣ", "ㄈㄡ",
+		"ㄍㄞ", "ㄍㄢ", "ㄍㄠ", "ㄍㄟ", "ㄍㄣ", "ㄍㄡ", "ㄍㄨㄚ", "ㄍㄨㄟ", "ㄍㄨㄣ", "ㄍㄨㄛ", "ㄏㄞ", "ㄏㄢ", "ㄏㄠ", "ㄏㄟ", "ㄏㄣ",
+		"ㄏㄡ", "ㄏㄨㄚ", "ㄏㄨㄟ", "ㄏㄨㄣ", "ㄏㄨㄛ", "ㄐㄧㄚ", "ㄐㄧㄝ", "ㄐㄧㄣ", "ㄐㄧㄡ", "ㄐㄩㄝ", "ㄐㄩㄣ",
+		"ㄎㄞ", "ㄎㄢ", "ㄎㄠ", "ㄎㄣ", "ㄎㄡ", "ㄎㄨㄚ", "ㄎㄨㄟ", "ㄎㄨㄣ", "ㄎㄨㄛ", "ㄌㄞ", "ㄌㄢ", "ㄌㄠ", "ㄌㄟ", "ㄌㄧㄚ", "ㄌㄧㄝ",
+		"ㄌㄧㄣ", "ㄌㄧㄡ", "ㄌㄡ", "ㄌㄩㄝ", "ㄌㄨㄣ", "ㄌㄩㄣ", "ㄌㄨㄛ", "ㄇㄞ", "ㄇㄢ", "ㄇㄠ", "ㄇㄟ", "ㄇㄣ", "ㄇㄧㄝ", "ㄇㄧㄣ", "ㄇㄧㄡ", "ㄇㄡ",
+		"ㄋㄞ", "ㄋㄢ", "ㄋㄠ", "ㄋㄟ", "ㄋㄣ", "ㄋㄧㄚ", "ㄋㄧㄝ", "ㄋㄧㄣ", "ㄋㄧㄡ", "ㄋㄡ", "ㄋㄩㄝ", "ㄋㄨㄣ", "ㄋㄨㄛ",
+		"ㄆㄞ", "ㄆㄢ", "ㄆㄠ", "ㄆㄟ", "ㄆㄣ", "ㄆㄧㄝ", "ㄆㄧㄣ", "ㄆㄡ", "ㄑㄧㄚ", "ㄑㄧㄝ", "ㄑㄧㄣ", "ㄑㄧㄡ", "ㄑㄩㄝ", "ㄑㄩㄣ",
+		"ㄖㄢ", "ㄖㄠ", "ㄖㄣ", "ㄖㄡ", "ㄖㄨㄟ", "ㄖㄨㄣ", "ㄖㄨㄛ", "ㄙㄞ", "ㄙㄢ", "ㄙㄠ", "ㄙㄣ",
+		"ㄕㄚ", "ㄕㄜ", "ㄕ", "ㄕㄨ", "ㄙㄡ", "ㄙㄨㄟ", "ㄙㄨㄣ", "ㄙㄨㄛ", "ㄊㄞ", "ㄊㄢ", "ㄊㄠ", "ㄊㄧㄝ", "ㄊㄡ", "ㄊㄨㄟ", "ㄊㄨㄣ", "ㄊㄨㄛ",
+		"ㄨㄞ", "ㄨㄢ", "ㄨㄟ", "ㄨㄣ", "ㄒㄧㄚ", "ㄒㄧㄝ", "ㄒㄧㄣ", "ㄒㄧㄡ", "ㄒㄩㄝ", "ㄒㄩㄣ", "ㄧㄢ", "ㄧㄠ", "ㄧㄣ", "ㄧㄡ", "ㄩㄝ", "ㄩㄣ",
+		"ㄗㄞ", "ㄗㄢ", "ㄗㄠ", "ㄗㄟ", "ㄗㄣ", "ㄓㄚ", "ㄓㄜ", "ㄓ", "ㄓㄨ", "ㄗㄡ", "ㄗㄨㄟ", "ㄗㄨㄣ", "ㄗㄨㄛ",
+		"ㄞ", "ㄢ", "ㄠ", "ㄅㄚ", "ㄅㄧ", "ㄅㄛ", "ㄅㄨ", "ㄘㄚ", "ㄘㄜ", "ㄘ", "ㄘㄨ", "ㄉㄚ", "ㄉㄜ", "ㄉㄧ", "ㄉㄨ",
+		"ㄟ", "ㄣ", "ㄦ", "ㄈㄚ", "ㄈㄛ", "ㄈㄨ", "ㄍㄚ", "ㄍㄜ", "ㄍㄨ", "ㄏㄚ", "ㄏㄜ", "ㄏㄨ", "ㄐㄧ", "ㄐㄩ",
+		"ㄎㄚ", "ㄎㄜ", "ㄎㄨ", "ㄌㄚ", "ㄌㄜ", "ㄌㄧ", "ㄌㄛ", "ㄌㄨ", "ㄌㄩ", "ㄇㄚ", "ㄇㄜ", "ㄇㄧ", "ㄇㄛ", "ㄇㄨ",
+		"ㄋㄚ", "ㄋㄜ", "ㄋㄧ", "ㄋㄨ", "ㄋㄩ", "ㄡ", "ㄆㄚ", "ㄆㄧ", "ㄆㄛ", "ㄆㄨ", "ㄑㄧ", "ㄑㄩ", "ㄖㄜ", "ㄖ", "ㄖㄨ",
+		"ㄙㄚ", "ㄙㄜ", "ㄙ", "ㄙㄨ", "ㄊㄚ", "ㄊㄜ", "ㄊㄧ", "ㄊㄨ", "ㄨㄚ", "ㄨㄛ", "ㄨ", "ㄒㄧ", "ㄒㄩ", "ㄧㄚ", "ㄧㄝ", "ㄧ", "ㄩ",
+		"ㄗㄚ", "ㄗㄜ", "ㄗ", "ㄗㄨ", "ㄚ", "ㄜ", "ㄛ", "", "ˊ", "ˇ", "ˋ", "˙"
+	};
 	private ChineseCharsHandler() {
     }
 
@@ -25,209 +132,25 @@ public final class ChineseCharsHandler {
 		mColorsArray = colorsArray.clone();
 	}
 
-	// Transform a pin1yin1 with tones number to a pīnyīn with tone marks
-	// Ugly, rewrite better if possible
-	public String pinyinNbToTones(String src) {
-		String dest = src
-				.replaceAll("a1", "ā")
-				.replaceAll("a2", "á")
-				.replaceAll("a3", "ǎ")
-				.replaceAll("a4", "à")
-				.replaceAll("a5", "a")
-				.replaceAll("e1", "ē")
-				.replaceAll("e2", "é")
-				.replaceAll("e3", "ě")
-				.replaceAll("e4", "è")
-				.replaceAll("e5", "e")
-				.replaceAll("i1", "ī")
-				.replaceAll("i2", "í")
-				.replaceAll("i3", "ǐ")
-				.replaceAll("i4", "ì")
-				.replaceAll("i5", "i")
-				.replaceAll("o1", "ō")
-				.replaceAll("o2", "ó")
-				.replaceAll("o3", "ǒ")
-				.replaceAll("o4", "ò")
-				.replaceAll("o5", "o")
-				.replaceAll("u1", "ū")
-				.replaceAll("u2", "ú")
-				.replaceAll("u3", "ǔ")
-				.replaceAll("u4", "ù")
-				.replaceAll("u5", "u")
-				.replaceAll("v", "ü")
-				.replaceAll("u:", "ü")
-				.replaceAll("ü1", "ǖ")
-				.replaceAll("ü2", "ǘ")
-				.replaceAll("ü3", "ǚ")
-				.replaceAll("ü4", "ǜ")
-				.replaceAll("ü5", "ü")
-				.replaceAll("an1", "ān")
-				.replaceAll("an2", "án")
-				.replaceAll("an3", "ǎn")
-				.replaceAll("an4", "àn")
-				.replaceAll("an5", "an")
-				.replaceAll("ang1", "āng")
-				.replaceAll("ang2", "áng")
-				.replaceAll("ang3", "ǎng")
-				.replaceAll("ang4", "àng")
-				.replaceAll("ang5", "ang")
-				.replaceAll("en1", "ēn")
-				.replaceAll("en2", "én")
-				.replaceAll("en3", "ěn")
-				.replaceAll("en4", "èn")
-				.replaceAll("en5", "en")
-				.replaceAll("eng1", "ēng")
-				.replaceAll("eng2", "éng")
-				.replaceAll("eng3", "ěng")
-				.replaceAll("eng4", "èng")
-				.replaceAll("eng5", "eng")
-				.replaceAll("in1", "īn")
-				.replaceAll("in2", "ín")
-				.replaceAll("in3", "ǐn")
-				.replaceAll("in4", "ìn")
-				.replaceAll("in5", "in")
-				.replaceAll("ing1", "īng")
-				.replaceAll("ing2", "íng")
-				.replaceAll("ing3", "ǐng")
-				.replaceAll("ing4", "ìng")
-				.replaceAll("ing5", "ing")
-				.replaceAll("ong1", "ōng")
-				.replaceAll("ong2", "óng")
-				.replaceAll("ong3", "ǒng")
-				.replaceAll("ong4", "òng")
-				.replaceAll("ong5", "ong")
-				.replaceAll("un1", "ūn")
-				.replaceAll("un2", "ún")
-				.replaceAll("un3", "ǔn")
-				.replaceAll("un4", "ùn")
-				.replaceAll("un5", "un")
-				.replaceAll("er1", "ēr")
-				.replaceAll("er2", "ér")
-				.replaceAll("er3", "ěr")
-				.replaceAll("er4", "èr")
-				.replaceAll("er5", "er")
-				.replaceAll("aō", "āo")
-				.replaceAll("aó", "áo")
-				.replaceAll("aǒ", "ǎo")
-				.replaceAll("aò", "ào")
-				.replaceAll("oū", "ōu")
-				.replaceAll("oú", "óu")
-				.replaceAll("oǔ", "ǒu")
-				.replaceAll("où", "òu")
-				.replaceAll("aī", "āi")
-				.replaceAll("aí", "ái")
-				.replaceAll("aǐ", "ǎi")
-				.replaceAll("aì", "ài")
-				.replaceAll("eī", "ēi")
-				.replaceAll("eí", "éi")
-				.replaceAll("eǐ", "ěi")
-				.replaceAll("eì", "èi");
-		return dest;
+	// Transforms a pin1yin1 with tone numbers to a pīnyīn with tone marks
+	private String pinyinNbToTones(String src) {
+		return replaceStrWithArraysValues(src, ChineseCharsHandler.PINYIN_NB2TONE_SRC, ChineseCharsHandler.PINYIN_NB2TONE_DST);
 	}
 
+	// Transforms a pīnyīn with tone marks to a pin1yin1 with tone numbers
 	public String pinyinTonesToNb(String src) {
-		String dest = src
-				.replaceAll("āng", "ang1")
-				.replaceAll("áng", "ang2")
-				.replaceAll("ǎng", "ang3")
-				.replaceAll("àng", "ang4")
-				.replaceAll("ēng", "eng1")
-				.replaceAll("éng", "eng2")
-				.replaceAll("ěng", "eng3")
-				.replaceAll("èng", "eng4")
-				.replaceAll("īng", "ing1")
-				.replaceAll("íng", "ing2")
-				.replaceAll("ǐng", "ing3")
-				.replaceAll("ìng", "ing4")
-				.replaceAll("ōng", "ong1")
-				.replaceAll("óng", "ong2")
-				.replaceAll("ǒng", "ong3")
-				.replaceAll("òng", "ong4")
-				.replaceAll("ān", "an1")
-				.replaceAll("án", "an2")
-				.replaceAll("ǎn", "an3")
-				.replaceAll("àn", "an4")
-				.replaceAll("ēn", "en1")
-				.replaceAll("én", "en2")
-				.replaceAll("ěn", "en3")
-				.replaceAll("èn", "en4")
-				.replaceAll("īn", "in1")
-				.replaceAll("ín", "in2")
-				.replaceAll("ǐn", "in3")
-				.replaceAll("ìn", "in4")
-				.replaceAll("ūn", "un1")
-				.replaceAll("ún", "un2")
-				.replaceAll("ǔn", "un3")
-				.replaceAll("ùn", "un4")
-				.replaceAll("ēr", "er1")
-				.replaceAll("ér", "er2")
-				.replaceAll("ěr", "er3")
-				.replaceAll("èr", "er4")
-				.replaceAll("āo", "aō")
-				.replaceAll("áo", "aó")
-				.replaceAll("ǎo", "aǒ")
-				.replaceAll("ào", "aò")
-				.replaceAll("ōu", "oū")
-				.replaceAll("óu", "oú")
-				.replaceAll("ǒu", "oǔ")
-				.replaceAll("òu", "où")
-				.replaceAll("āi", "aī")
-				.replaceAll("ái", "aí")
-				.replaceAll("ǎi", "aǐ")
-				.replaceAll("ài", "aì")
-				.replaceAll("ēi", "eī")
-				.replaceAll("éi", "eí")
-				.replaceAll("ěi", "eǐ")
-				.replaceAll("èi", "eì")
-				.replaceAll("ā", "a1")
-				.replaceAll("á", "a2")
-				.replaceAll("ǎ", "a3")
-				.replaceAll("à", "a4")
-				.replaceAll("ē", "e1")
-				.replaceAll("é", "e2")
-				.replaceAll("ě", "e3")
-				.replaceAll("è", "e4")
-				.replaceAll("ī", "i1")
-				.replaceAll("í", "i2")
-				.replaceAll("ǐ", "i3")
-				.replaceAll("ì", "i4")
-				.replaceAll("ō", "o1")
-				.replaceAll("ó", "o2")
-				.replaceAll("ǒ", "o3")
-				.replaceAll("ò", "o4")
-				.replaceAll("ū", "u1")
-				.replaceAll("ú", "u2")
-				.replaceAll("ǔ", "u3")
-				.replaceAll("ù", "u4")
-				.replaceAll("ǖ", "ü1")
-				.replaceAll("ǘ", "ü2")
-				.replaceAll("ǚ", "ü3")
-				.replaceAll("ǜ", "ü4")
-				.replaceAll("ü", "u:")
-				.replaceAll("v", "u:");
-		return dest;
+		return replaceStrWithArraysValues(src, ChineseCharsHandler.PINYIN_TONE2TB_SRC, ChineseCharsHandler.PINYIN_TONE2TB_DST);
 	}
 
-	// Transform a pin1yin1 with tones number to a pinyin without tone mark.
-	// Ugly, rewrite better if possible. Can't do regex to replace [1-5] because some pinyin contains numbers which are not tones
-	public String pinyinNbToRaw(String src) {
-		String dest = src
-				.replaceAll("a[1-5]", "a")
-				.replaceAll("e[1-5]", "e")
-				.replaceAll("i[1-5]", "i")
-				.replaceAll("o[1-5]", "o")
-				.replaceAll("u[1-5]", "u")
-				.replaceAll("u:[1-5]?", "v")
-				.replaceAll("an[1-5]", "an")
-				.replaceAll("ang[1-5]", "ang")
-				.replaceAll("en[1-5]", "en")
-				.replaceAll("eng[1-5]", "eng")
-				.replaceAll("in[1-5]", "in")
-				.replaceAll("ing[1-5]", "ing")
-				.replaceAll("ong[1-5]", "ong")
-				.replaceAll("un[1-5]", "un")
-				.replaceAll("er[1-5]", "er");
-		return dest;
+	// Transforms a pin1yin1 with tone numbers to a pinyin without tone mark.
+	private String pinyinNbToRaw(String src) {
+		return replaceStrWithArraysValues(src, ChineseCharsHandler.PINYIN_NB2RAW_SRC, ChineseCharsHandler.PINYIN_NB2RAW_DST);
+	}
+
+	// Transforms a pin1yin1 with tone numbers to Zhuyin (Bopomofo)
+	// http://zh.wikipedia.org/wiki/%E4%B8%AD%E6%96%87%E6%8B%BC%E9%9F%B3%E5%B0%8D%E7%85%A7%E8%A1%A8
+	private String pinyinNbToZhuyin(String src) {
+		return replaceStrWithArraysValues(src.toLowerCase(), ChineseCharsHandler.PINYIN_PIN2ZHU_SRC, ChineseCharsHandler.PINYIN_PIN2ZHU_DST);
 	}
 
 	public boolean charIsChinese(char ch) {
@@ -244,6 +167,8 @@ public final class ChineseCharsHandler {
 			return pinyinNbToRaw(pinyin);
 		} else if (prefsPinyin.equals(SettingsActivity.VAL_PINYIN_NUMBER)) {
 			return pinyin;
+		} else if (prefsPinyin.equals(SettingsActivity.VAL_PINYIN_ZHUYIN)) {
+			return pinyinNbToZhuyin(pinyin);
 		} else { // KEY_PINYIN_TONES
 			return pinyinNbToTones(pinyin);
 		}
@@ -362,5 +287,13 @@ public final class ChineseCharsHandler {
 		}
 
 		return hanzi;
+	}
+
+	private String replaceStrWithArraysValues(String str, String[] src, String[] dst) {
+		int length = src.length;
+		for (int i = 0; i < length; i++) {
+			str = str.replaceAll(src[i], dst[i]);
+		}
+		return str;
 	}
 }

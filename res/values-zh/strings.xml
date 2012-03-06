@@ -90,7 +90,7 @@
 	<string name="settings_chinese_chars_both_st">簡體 [繁體]</string>
 	<string name="settings_chinese_chars_both_ts">繁體 [簡體]</string>
 	<string name="settings_pinyin">拼音聲調顯示</string>
-	<string name="settings_pinyin_sum">請選擇 pīnyīn, pin1yin1 或者 pinyin</string>
+	<string name="settings_pinyin_sum">請選擇 pīnyīn, pin1yin1, pinyin 或者 注音符號</string>
 	<string name="settings_hanzi_coloring">漢字顏色顯示</string>
 	<string name="settings_hanzi_coloring_sum">以漢字的聲調顏色顯示</string>
 	<string name="settings_cat_display">外觀</string>

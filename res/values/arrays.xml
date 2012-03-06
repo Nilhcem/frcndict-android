@@ -35,11 +35,13 @@
 		<item>pinyin</item>
 		<item>pīnyīn</item>
 		<item>pin1yin1</item>
+		<item>ㄅㄆㄇㄈ (zhuyin)</item>
 	</string-array>
 	<string-array name="pinyinValues">
 		<item>1</item>
 		<item>2</item>
 		<item>3</item>
+		<item>4</item>
 	</string-array>
 
 	<!-- Settings - Check for database updates -->

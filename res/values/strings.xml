@@ -89,8 +89,8 @@
 	<string name="settings_chinese_chars_trad">Traditional</string>
 	<string name="settings_chinese_chars_both_st">Simpl. [Trad.]</string>
 	<string name="settings_chinese_chars_both_ts">Trad. [Simpl.]</string>
-	<string name="settings_pinyin">Pinyin Tone Marks</string>
-	<string name="settings_pinyin_sum">Choose between pīnyīn, pin1yin1 or pinyin</string>
+	<string name="settings_pinyin">Phonetic System</string>
+	<string name="settings_pinyin_sum">Choose between pīnyīn, pin1yin1, pinyin or zhuyin</string>
 	<string name="settings_hanzi_coloring">Hanzi Coloring</string>
 	<string name="settings_hanzi_coloring_sum">Color Chinese characters depending on their tones</string>
 	<string name="settings_cat_display">Appearance</string>

@@ -37,6 +37,12 @@ Steps to do before releasing the application
 - Sign application and run `zipalign` (See Android Developers Documentation)
 
 
+Screenshots
+-----------
+
+<img src="http://nilhcem.github.com/screenshots/cfdict.png" width="640" height="480" />
+
+
 Contact me
 ----------
 

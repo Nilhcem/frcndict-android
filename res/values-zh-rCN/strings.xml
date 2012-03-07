@@ -67,6 +67,9 @@
 	<string name="meaning_starred_date_format">yyyy年MM月dd日</string>
 	<string name="meaning_starred_on">标记于%s</string>
 	<string name="meaning_not_starred">未标记</string>
+	<string name="meaning_copy_title">复制…</string>
+	<string name="meaning_copy_text">复制 %s</string>
+	<string name="meaning_copied">复制到剪贴板</string>
 
 	<!-- Menus -->
 	<string name="main_menu_about">关于</string>

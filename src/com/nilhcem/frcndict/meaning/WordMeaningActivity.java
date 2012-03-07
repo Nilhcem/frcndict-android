@@ -1,14 +1,18 @@
 package com.nilhcem.frcndict.meaning;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.ClipboardManager;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractDictActivity;
@@ -20,7 +24,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 	public static final String ID_INTENT = "id";
 
 	private int mId;
-	private TextView mSimplified;
+	private TextView mHanzi;
 	private TextView mPinyin;
 	private TextView mMeaning;
 	private TextView mMeaningTitle;
@@ -35,6 +39,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 			initTextViews();
 			initStarButton();
 			loadData();
+			initCopyDialog();
 		}
 	}
 
@@ -65,7 +70,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 	}
 
 	private void initTextViews() {
-		mSimplified = (TextView) findViewById(R.id.wmChinese);
+		mHanzi = (TextView) findViewById(R.id.wmChinese);
 		mPinyin = (TextView) findViewById(R.id.wmPinyin);
 		mMeaning = (TextView) findViewById(R.id.wmMeaning);
 		mMeaningTitle = (TextView) findViewById(R.id.wmMeaningTitle);
@@ -95,7 +100,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 					mPinyin.setVisibility(View.GONE); // hide pinyin if empty
 				}
 
-				mSimplified.setText(Html.fromHtml(chineseCharsHandler.formatHanzi(simplified, traditional, pinyin, mPrefs)));
+				mHanzi.setText(Html.fromHtml(chineseCharsHandler.formatHanzi(simplified, traditional, pinyin, mPrefs)));
 				mMeaning.setText(getFormattedMeaning(desc));
 				mStarButton.setStarredDate(starredDate);
 			}
@@ -127,5 +132,29 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 			mMeaningTitle.setText(R.string.meaning_title_plural);
 		}
 		return sb.toString();
+	}
+
+	private void initCopyDialog() {
+		mHanzi.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final String text = android.text.Html.fromHtml(mHanzi.getText().toString()).toString();
+				final CharSequence[] items = {String.format(getString(R.string.meaning_copy_text), text)};
+				AlertDialog.Builder builder = new AlertDialog.Builder(WordMeaningActivity.this);
+
+				builder.setTitle(R.string.meaning_copy_title);
+				builder.setItems(items, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// Copy to clipboard
+						ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+						clipboard.setText(text);
+						Toast.makeText(WordMeaningActivity.this, R.string.meaning_copied, Toast.LENGTH_SHORT).show();
+					}
+				});
+				AlertDialog alert = builder.create();
+				alert.show();
+			}
+		});
 	}
 }

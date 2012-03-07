@@ -39,7 +39,8 @@
 			android:name=".search.SearchActivity"
 			android:configChanges="keyboardHidden|orientation" />
 		<activity
-			android:name=".meaning.WordMeaningActivity" />
+			android:name=".meaning.WordMeaningActivity"
+			android:configChanges="keyboardHidden|orientation" />
 		<activity
 			android:name=".starred.StarredActivity" />
 		<activity

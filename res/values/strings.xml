@@ -67,6 +67,9 @@
 	<string name="meaning_starred_date_format">yyyy-MM-dd</string>
 	<string name="meaning_starred_on">Starred on %s</string>
 	<string name="meaning_not_starred">Not starred yet</string>
+	<string name="meaning_copy_title">Copy…</string>
+	<string name="meaning_copy_text">Copy %s</string>
+	<string name="meaning_copied">copied to clipboard</string>
 
 	<!-- Menus -->
 	<string name="main_menu_about">About</string>

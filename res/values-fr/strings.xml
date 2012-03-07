@@ -67,6 +67,9 @@
 	<string name="meaning_starred_date_format">dd/MM/yyyy</string>
 	<string name="meaning_starred_on">Mis en favoris le %s</string>
 	<string name="meaning_not_starred">Ajouter aux favoris</string>
+	<string name="meaning_copy_title">Copier…</string>
+	<string name="meaning_copy_text">Copier %s</string>
+	<string name="meaning_copied">copié dans le presse papier</string>
 
 	<!-- Menus -->
 	<string name="main_menu_about">À propos</string>

@@ -74,6 +74,7 @@ public abstract class AbstractListActivity extends AbstractDictActivity implemen
 		} else {
 			mListAdapter = (ListAdapter) getLastNonConfigurationInstance();
 		}
+		mListAdapter.setTextSizesFromParent(this);
 
 		mResultList = (ListView) findViewById(getListResId());
 		mResultList.setAdapter(mListAdapter);

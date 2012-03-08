@@ -39,7 +39,6 @@
 	<style name="StarButtonText">
 		<item name="android:gravity">center_vertical</item>
 		<item name="android:paddingLeft">@dimen/meaning_star_text_paddingLeft</item>
-		<item name="android:textSize">@dimen/meaning_meaning_size</item>
 	</style>
 
 	<!-- Import database -->
@@ -102,18 +101,15 @@
 	</style>
 	<style name="ListItem.Hanzi">
 		<item name="android:textColor">?hanziColor</item>
-		<item name="android:textSize">@dimen/slitem_hanzi_size</item>
 	</style>
 	<style name="ListItem.Pinyin">
 		<item name="android:textColor">?pinyinColor</item>
 		<item name="android:textStyle">italic</item>
-		<item name="android:textSize">@dimen/slitem_pinyin_size</item>
 		<item name="android:typeface">serif</item>
 	</style>
 	<style name="ListItem.Translation">
 		<item name="android:textColor">?translationColor</item>
 		<item name="android:layout_marginBottom">@dimen/slitem_margin_before_divider</item>
-		<item name="android:textSize">@dimen/slitem_translation_size</item>
 	</style>
 
 	<!-- No Result -->
@@ -152,13 +148,11 @@
 	<style name="WordMeaningHanzi">
 		<item name="android:gravity">center</item>
 		<item name="android:layout_marginTop">@dimen/meaning_hanzi_marginTop</item>
-		<item name="android:textSize">@dimen/meaning_hanzi_size</item>
 	</style>
 	<style name="WordMeaningPinyin">
 		<item name="android:gravity">center</item>
 		<item name="android:textStyle">italic</item>
 		<item name="android:typeface">serif</item>
-		<item name="android:textSize">@dimen/meaning_pinyin_size</item>
 	</style>
 	<style name="WordMeaningSeparator">
 		<item name="android:layout_height">@dimen/meaning_separator_size</item>
@@ -174,11 +168,7 @@
 	</style>
 	<style name="WordMeaningMeaningTitle">
 		<item name="android:textColor">?meaningTitleColor</item>
-		<item name="android:textSize">@dimen/meaning_meaning_size</item>
 		<item name="android:textStyle">bold</item>
-	</style>
-	<style name="WordMeaningMeaning">
-		<item name="android:textSize">@dimen/meaning_meaning_size</item>
 	</style>
 
 	<!-- Starred words -->

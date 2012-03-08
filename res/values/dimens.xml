@@ -36,17 +36,11 @@
 
 	<!-- Search list item -->
 	<dimen name="slitem_marginLeftRight">4.0dp</dimen>
-	<dimen name="slitem_hanzi_size">28.0sp</dimen>
-	<dimen name="slitem_pinyin_size">16.0sp</dimen>
-	<dimen name="slitem_translation_size">15.0sp</dimen>
 	<dimen name="slitem_margin_before_divider">4.0dp</dimen>
 
 	<!-- Word meaning -->
 	<dimen name="meaning_paddingLeftRight">10.0dp</dimen>
-	<dimen name="meaning_hanzi_size">38.0sp</dimen>
 	<dimen name="meaning_hanzi_marginTop">16.0dp</dimen>
-	<dimen name="meaning_pinyin_size">18.0sp</dimen>
-	<dimen name="meaning_meaning_size">18.0sp</dimen>
 	<dimen name="meaning_separator_size">1.0dp</dimen>
 	<dimen name="meaning_separator_marginTopBottom">24.0dp</dimen>
 	<dimen name="meaning_separator_marginLeftRight">32.0dp</dimen>

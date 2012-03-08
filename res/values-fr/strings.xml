@@ -97,6 +97,11 @@
 	<string name="settings_hanzi_coloring">Coloration des Hanzi</string>
 	<string name="settings_hanzi_coloring_sum">Colorer les sinogrammes selon leurs tons</string>
 	<string name="settings_cat_display">Apparence</string>
+	<string name="settings_text_size">Taille des textes</string>
+	<string name="settings_text_size_sum">Choisir entre \"petit\", \"moyen\" ou \"grand\"</string>
+	<string name="settings_text_size_small">Petit</string>
+	<string name="settings_text_size_medium">Moyen</string>
+	<string name="settings_text_size_big">Grand</string>
 	<string name="settings_dark_theme">Mode nuit</string>
 	<string name="settings_dark_theme_sum">Utiliser un thème plus adapté à une utilisation la nuit</string>
 	<string name="settings_cat_advanced">Avancé</string>

@@ -97,6 +97,11 @@
 	<string name="settings_hanzi_coloring">Hanzi Coloring</string>
 	<string name="settings_hanzi_coloring_sum">Color Chinese characters depending on their tones</string>
 	<string name="settings_cat_display">Appearance</string>
+	<string name="settings_text_size">Text size</string>
+	<string name="settings_text_size_sum">Choose between small, medium or big</string>
+	<string name="settings_text_size_small">Small</string>
+	<string name="settings_text_size_medium">Medium</string>
+	<string name="settings_text_size_big">Big</string>
 	<string name="settings_dark_theme">Night Mode</string>
 	<string name="settings_dark_theme_sum">Change the display to a dark theme</string>
 	<string name="settings_cat_advanced">Advanced</string>

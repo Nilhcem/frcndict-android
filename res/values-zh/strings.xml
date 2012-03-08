@@ -97,6 +97,11 @@
 	<string name="settings_hanzi_coloring">漢字顏色顯示</string>
 	<string name="settings_hanzi_coloring_sum">以漢字的聲調顏色顯示</string>
 	<string name="settings_cat_display">外觀</string>
+	<string name="settings_text_size">字體大小</string>
+	<string name="settings_text_size_sum">請選擇: 小字, 中字, 或大字</string>
+	<string name="settings_text_size_small">小</string>
+	<string name="settings_text_size_medium">中</string>
+	<string name="settings_text_size_big">大</string>
 	<string name="settings_dark_theme">夜間模式</string>
 	<string name="settings_dark_theme_sum">改變為暗色主題</string>
 	<string name="settings_cat_advanced">其它</string>

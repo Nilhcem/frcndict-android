@@ -59,6 +59,10 @@ public final class StarButton extends RelativeLayout {
 		}
 	}
 
+	public TextView getStarredText() {
+		return mStarredText;
+	}
+
 	private void initOnClickListener() {
 		mOnClickListener = new View.OnClickListener() {
 			@Override

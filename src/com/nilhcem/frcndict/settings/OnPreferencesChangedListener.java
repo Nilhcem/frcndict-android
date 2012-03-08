@@ -16,7 +16,8 @@ public final class OnPreferencesChangedListener implements SharedPreferences.OnS
 			setThemeHasChanged(true);
 		} else if (key.equals(SettingsActivity.KEY_CHINESE_CHARS)
 				|| key.equals(SettingsActivity.KEY_PINYIN)
-				|| key.equals(SettingsActivity.KEY_COLOR_HANZI)) {
+				|| key.equals(SettingsActivity.KEY_COLOR_HANZI)
+				|| key.equals(SettingsActivity.KEY_TEXT_SIZE)) {
 			if (Config.LOG_DEBUG) Log.d(OnPreferencesChangedListener.class.getSimpleName(), "[Has changed] Results appearance");
 			setResultListShouldBeUpdated(true);
 		}

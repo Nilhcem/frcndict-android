@@ -18,6 +18,10 @@
 
 	<!-- Appearance (Night mode) -->
 	<PreferenceCategory android:title="@string/settings_cat_display">
+		<ListPreference android:title="@string/settings_text_size"
+			android:summary="@string/settings_text_size_sum"
+			android:key="textSize" android:defaultValue="2"
+			android:entries="@array/textSizeEntries" android:entryValues="@array/textSizeValues" />
 		<CheckBoxPreference android:title="@string/settings_dark_theme"
 			android:defaultValue="false"
 			android:summary="@string/settings_dark_theme_sum"

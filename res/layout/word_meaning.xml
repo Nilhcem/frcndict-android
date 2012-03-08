@@ -41,8 +41,7 @@
 		<TextView
 			android:id="@+id/wmMeaning"
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			style="@style/WordMeaningMeaning" />
+			android:layout_height="wrap_content" />
 
 		<!-- Separator -->
 		<View

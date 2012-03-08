@@ -30,6 +30,11 @@ public final class SettingsActivity extends PreferenceActivity {
 	public static final String KEY_COLOR_HANZI = "hanziColoring";
 	public static final String KEY_DARK_THEME = "darkTheme";
 
+	public static final String KEY_TEXT_SIZE = "textSize";
+	public static final String VAL_TEXT_SIZE_SMALL = "1";
+	public static final String VAL_TEXT_SIZE_MEDIUM = "2";
+	public static final String VAL_TEXT_SIZE_BIG = "3";
+
 	public static final String KEY_DATABASE_UPDATES = "dbUpdates";
 	public static final String VAL_DATABASE_UPDATES_DAILY = "1";
 	public static final String VAL_DATABASE_UPDATES_WEEKLY = "2";
@@ -54,5 +59,20 @@ public final class SettingsActivity extends PreferenceActivity {
 	protected void onResume() {
 		super.onResume();
 		AbstractDictActivity.checkForDatabaseImportOrUpdate(this);
+	}
+
+	// returns the array index depending on the user's prefs font sizes (small: 0, medium: 1, big: 2)
+	public static int getArrayIdxFontSizes(SharedPreferences prefs) {
+		int index;
+
+		String sizePref = prefs.getString(SettingsActivity.KEY_TEXT_SIZE, SettingsActivity.VAL_TEXT_SIZE_MEDIUM);
+		if (sizePref.equals(SettingsActivity.VAL_TEXT_SIZE_SMALL)) {
+			index = 0;
+		} else if (sizePref.equals(SettingsActivity.VAL_TEXT_SIZE_MEDIUM)) {
+			index = 1;
+		} else { // VAL_TEXT_SIZE_BIG
+			index = 2;
+		}
+		return index;
 	}
 }

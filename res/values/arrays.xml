@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- Hanzi colors -->
+	<!-- Hanzi colors (1 color for each tone) -->
 	<string-array name="hanziColors">
 		<item></item>
 		<item>#ff4444</item>
@@ -10,10 +10,42 @@
 		<item>#777777</item>
 	</string-array>
 
-	<!-- Intro title colors -->
+	<!-- Intro title colors (white theme / dark theme) -->
 	<string-array name="introTitleColors">
 		<item>#545454</item>
 		<item>#bababa</item>
+	</string-array>
+
+	<!-- List item font sizes (in sp, small-medium-big) -->
+	<string-array name="listItemSizes">
+		<!-- Hanzi -->
+		<item>28</item>
+		<item>30</item>
+		<item>34</item>
+		<!-- Pinyin -->
+		<item>16</item>
+		<item>18</item>
+		<item>22</item>
+		<!-- Desc -->
+		<item>15</item>
+		<item>17</item>
+		<item>21</item>
+	</string-array>
+
+	<!-- Word meaning font sizes (in sp, small-medium-big) -->
+	<string-array name="wordMeaningSizes">
+		<!-- Hanzi -->
+		<item>38</item>
+		<item>40</item>
+		<item>44</item>
+		<!-- Hanzi (if <= 3 characters) -->
+		<item>44</item>
+		<item>46</item>
+		<item>50</item>
+		<!-- Pinyin - Meaning - Starred -->
+		<item>18</item>
+		<item>20</item>
+		<item>24</item>
 	</string-array>
 
 	<!-- Settings - Simplified/Traditional -->
@@ -42,6 +74,18 @@
 		<item>2</item>
 		<item>3</item>
 		<item>4</item>
+	</string-array>
+
+	<!-- Settings - Text size -->
+	<string-array name="textSizeEntries">
+		<item>@string/settings_text_size_small</item>
+		<item>@string/settings_text_size_medium</item>
+		<item>@string/settings_text_size_big</item>
+	</string-array>
+	<string-array name="textSizeValues">
+		<item>1</item>
+		<item>2</item>
+		<item>3</item>
 	</string-array>
 
 	<!-- Settings - Check for database updates -->

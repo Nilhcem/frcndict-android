@@ -2,9 +2,11 @@ package com.nilhcem.frcndict.core.list;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +15,12 @@ import android.widget.TextView;
 
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.Entry;
+import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class ListAdapter extends ArrayAdapter<Entry> {
 	private boolean mSearchIsOver; // true if no more result to avoid checking database
+	private float[] mListItemSizes;
 	private final Entry mLoading;
 	private final Entry mNoResults;
 	private final LayoutInflater mInflater;
@@ -58,6 +62,12 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 			TextView chinese = (TextView) view.findViewById(R.id.slChinese);
 			TextView pinyin = (TextView) view.findViewById(R.id.slPinyin);
 			TextView desc = (TextView) view.findViewById(R.id.slDesc);
+
+			// Set sizes
+			int arrayIdx = SettingsActivity.getArrayIdxFontSizes(mPrefs);
+			chinese.setTextSize(TypedValue.COMPLEX_UNIT_SP, mListItemSizes[arrayIdx]);
+			pinyin.setTextSize(TypedValue.COMPLEX_UNIT_SP, mListItemSizes[3 + arrayIdx]);
+			desc.setTextSize(TypedValue.COMPLEX_UNIT_SP, mListItemSizes[6 + arrayIdx]);
 
 			ChineseCharsHandler charsHandler = ChineseCharsHandler.getInstance();
 			view.setId(entry.getId());
@@ -109,5 +119,15 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 
 	public boolean isSearchOver() {
 		return mSearchIsOver;
+	}
+
+	public void setTextSizesFromParent(Activity parent) {
+		String[] listItemSizesStr = parent.getResources().getStringArray(R.array.listItemSizes);
+		int length = listItemSizesStr.length;
+
+		mListItemSizes = new float[length];
+		for (int i = 0; i < length; i++) {
+			mListItemSizes[i] = Float.parseFloat(listItemSizesStr[i]);
+		}
 	}
 }

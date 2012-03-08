@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractDictActivity;
 import com.nilhcem.frcndict.core.layout.StarButton;
 import com.nilhcem.frcndict.database.Tables;
+import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class WordMeaningActivity extends AbstractDictActivity {
@@ -39,6 +41,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 			initTextViews();
 			initStarButton();
 			loadData();
+			initFontSizes();
 			initCopyDialog();
 		}
 	}
@@ -107,6 +110,26 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 			c.close();
 			mDb.close();
 		}
+	}
+
+	private void initFontSizes() {
+		int arrayIdx = SettingsActivity.getArrayIdxFontSizes(mPrefs);
+		String[] sizes = getResources().getStringArray(R.array.wordMeaningSizes);
+
+		float hanziSize;
+		if (mHanzi.getText().length() > 3) {
+			hanziSize = Float.parseFloat(sizes[arrayIdx]);
+		} else {
+			// if Hanzi < 3 characters, increase size
+			hanziSize = Float.parseFloat(sizes[3 + arrayIdx]);
+		}
+		float otherSize = Float.parseFloat(sizes[6 + arrayIdx]);
+
+		mHanzi.setTextSize(TypedValue.COMPLEX_UNIT_SP, hanziSize);
+		mPinyin.setTextSize(TypedValue.COMPLEX_UNIT_SP, otherSize);
+		mMeaning.setTextSize(TypedValue.COMPLEX_UNIT_SP, otherSize);
+		mMeaningTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, otherSize);
+		mStarButton.getStarredText().setTextSize(TypedValue.COMPLEX_UNIT_SP, otherSize);
 	}
 
 	private String getFormattedMeaning(String meaning) {

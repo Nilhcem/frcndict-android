@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -28,9 +29,11 @@ public final class DatabaseHelper {
 	private static final String QUERY_HANZI;
 	private static final String QUERY_PINYIN;
 	private static final String QUERY_FRENCH;
+	private static final String QUERY_FRENCH_NO_ACCENT;
 	private static final String QUERY_STARRED;
 
 	private final SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+	private static final String REGEX_ACCENT = ".*[àâäçéèêëîïôöùûüæœÀÂÄÇÉÈÊËÎÏÔÖÙÛÜÆŒ].*";
 
 	static {
 		StringBuilder sb;
@@ -80,6 +83,7 @@ public final class DatabaseHelper {
 			.append("` ASC LIMIT ?,")
 			.append(nbToDisplay);
 		QUERY_FRENCH = sb.toString();
+		QUERY_FRENCH_NO_ACCENT = QUERY_FRENCH.replaceAll(Tables.ENTRIES_KEY_TRANSLATION, Tables.ENTRIES_KEY_TRANS_NO_ACCENT);
 
 		// Starred query
 		sb = new StringBuilder(selectAll)
@@ -174,10 +178,17 @@ public final class DatabaseHelper {
 	}
 
 	public Cursor searchFrench(String search, Integer curPage) {
-		return mDb.rawQuery(DatabaseHelper.QUERY_FRENCH,
-			new String[] {String.format("%%/%s%%", search),
-				Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
-			});
+		// Detect query (with or without accents)
+		String query;
+		if (Pattern.matches(DatabaseHelper.REGEX_ACCENT, search)) {
+			query = DatabaseHelper.QUERY_FRENCH;
+		} else {
+			query = DatabaseHelper.QUERY_FRENCH_NO_ACCENT;
+		}
+
+		return mDb.rawQuery(query, new String[] {String.format("%%/%s%%", search),
+			Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
+		});
 	}
 
 	public Cursor searchStarred(Integer curPage) {

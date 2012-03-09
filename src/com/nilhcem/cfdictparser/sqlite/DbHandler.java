@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.Normalizer;
 
 import com.nilhcem.cfdictparser.core.Configuration;
 import com.nilhcem.cfdictparser.core.VersionGenerator;
@@ -35,7 +36,8 @@ public final class DbHandler {
 					+ Tables.ENTRIES_KEY_PINYIN + ", "
 					+ Tables.ENTRIES_KEY_PINYIN2 + ", "
 					+ Tables.ENTRIES_KEY_TRANSLATION + ", "
-					+ Tables.ENTRIES_KEY_TRANS_AVG_LENGTH + ") VALUES (?, ?, ?, ?, ?, ?);");
+					+ Tables.ENTRIES_KEY_TRANS_NO_ACCENT + ", "
+					+ Tables.ENTRIES_KEY_TRANS_AVG_LENGTH + ") VALUES (?, ?, ?, ?, ?, ?, ?);");
 		} catch (ClassNotFoundException | SQLException e) {
 			System.err.println(e.getMessage());
 			e.printStackTrace();
@@ -73,6 +75,7 @@ public final class DbHandler {
 				+ Tables.ENTRIES_KEY_PINYIN + " text, "
 				+ Tables.ENTRIES_KEY_PINYIN2 + " text, "
 				+ Tables.ENTRIES_KEY_TRANSLATION + " text not null,"
+				+ Tables.ENTRIES_KEY_TRANS_NO_ACCENT + " text not null,"
 				+ Tables.ENTRIES_KEY_TRANS_AVG_LENGTH + " integer,"
 				+ Tables.ENTRIES_KEY_STARRED_DATE + " text);");
 
@@ -100,7 +103,7 @@ public final class DbHandler {
 	}
 
 	/**
-	 * Add an entry in the database.
+	 * Adds an entry in the database.
 	 *
 	 * @param simplified Simplified Chinese characters.
 	 * @param traditional Traditional Chinese characters.
@@ -114,7 +117,8 @@ public final class DbHandler {
 			prep.setString(3, pinyin);
 			prep.setString(4, pinyin.replaceAll("[^a-zA-Z]", "").toLowerCase()); // pinyin lower case without tones nor space
 			prep.setString(5, translation);
-			prep.setInt(6, getAverageLengthForEachWord(translation));
+			prep.setString(6, removeAccents(translation));
+			prep.setInt(7, getAverageLengthForEachWord(translation));
 			prep.addBatch();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
@@ -123,7 +127,7 @@ public final class DbHandler {
 	}
 
 	/**
-	 * Commit all the pending inserted entries.
+	 * Commits all the pending inserted entries.
 	 */
 	public void flush() {
 	    try {
@@ -137,7 +141,7 @@ public final class DbHandler {
 	}
 
 	/**
-	 * Get a representation of the average length (*100) of each words of the translation.
+	 * Gets a representation of the average length (*100) of each words of the translation.
 	 * <p>
 	 * This is a trick used to get more accurate results, we order each results by their length.<br />
 	 * However, the translation contains many words on one column (yeah... this is not good...) and this can't work.<br />
@@ -161,5 +165,15 @@ public final class DbHandler {
 			total = (int)((double)total * 100 / nbWords);
 		}
 		return total;
+	}
+
+	/**
+	 * Returns a modified String of the one sent in parameters, without accents.
+	 *
+	 * @param str the String we should remove accents from.
+	 * @return a new String without accents.
+	 */
+	private String removeAccents(String str) {
+		return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 	}
 }

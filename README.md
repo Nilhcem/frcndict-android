@@ -8,3 +8,6 @@ Database parser for FR/CN Dict (BSD License)
 This project uses the following library:
 
 - [sqlitejdbc](http://www.zentus.com/sqlitejdbc/)
+
+
+Note: If you modify the database structure, please update `app.min.version` in the `configuration.properties` file.

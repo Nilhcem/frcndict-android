@@ -15,6 +15,7 @@ public interface Tables {
 	String ENTRIES_KEY_PINYIN = "pinyin";
 	String ENTRIES_KEY_PINYIN2 = "pinyin2";
 	String ENTRIES_KEY_TRANSLATION = "translation";
+	String ENTRIES_KEY_TRANS_NO_ACCENT = "trans_no_accent";
 	String ENTRIES_KEY_TRANS_AVG_LENGTH = "trans_avg_length"; // see DbHandler.getAverageLengthForEachWord
 	String ENTRIES_KEY_STARRED_DATE = "starred_date";
 

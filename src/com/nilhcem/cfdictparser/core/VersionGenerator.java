@@ -3,6 +3,8 @@ package com.nilhcem.cfdictparser.core;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.nilhcem.cfdictparser.sqlite.Tables;
+
 /**
  * Generates a version number for the database.
  * @author Nilhcem
@@ -10,7 +12,7 @@ import java.util.Date;
  */
 public final class VersionGenerator {
 	private static String version = null;
-	private static final String VERSION_FORMAT = "%s-%s";
+	private static final String VERSION_FORMAT = "%s-%d";
 
 	/**
 	 * Returns a version number for the database.
@@ -31,7 +33,7 @@ public final class VersionGenerator {
 			Configuration conf = Configuration.getInstance();
 			version = String.format(VersionGenerator.VERSION_FORMAT,
 					new SimpleDateFormat(conf.get("version.format")).format(new Date()),
-					conf.get("app.min.version"));
+					Tables.DATABASE_VERSION);
 		}
 		return version;
 	}

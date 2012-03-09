@@ -10,4 +10,6 @@ This project uses the following library:
 - [sqlitejdbc](http://www.zentus.com/sqlitejdbc/)
 
 
-Note: If you modify the database structure, please update `app.min.version` in the `configuration.properties` file.
+Note: If you modify the database structure:
+- Increment `com.nilhcem.cfdictparser.sqlite.Tables.DATABASE_VERSION`.
+- Copy `Tables.java` (`com.nilhcem.cfdictparser.sqlite`) into the `master` branch (`com.nilhcem.frcndict.database`).

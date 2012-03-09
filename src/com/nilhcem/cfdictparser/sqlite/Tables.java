@@ -7,6 +7,8 @@ package com.nilhcem.cfdictparser.sqlite;
  * @since 1.0
  */
 public interface Tables {
+	int DATABASE_VERSION = 2; // Increment this when structure changes
+
 	// Entries table
 	String ENTRIES_TABLE_NAME = "entries";
 	String ENTRIES_KEY_ROWID = "_id";

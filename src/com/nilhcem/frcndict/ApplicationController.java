@@ -7,7 +7,7 @@ import com.nilhcem.frcndict.settings.OnPreferencesChangedListener;
 import com.nilhcem.frcndict.starred.StarredService;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
-// must stay in the root package. See ImportDataService.getAppRootDir()
+// must stay in the root package. See FileHandler.getAppRootDir()
 public final class ApplicationController extends Application {
 	// Notifications
 	public static final int NOTIF_IMPORTING = 1;

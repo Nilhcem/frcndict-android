@@ -7,6 +7,8 @@ package com.nilhcem.frcndict.database;
  * @since 1.0
  */
 public interface Tables {
+	int DATABASE_VERSION = 2;
+
 	// Entries table
 	String ENTRIES_TABLE_NAME = "entries";
 	String ENTRIES_KEY_ROWID = "_id";

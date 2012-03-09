@@ -21,6 +21,7 @@ import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.database.Tables;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.updatedb.xml.BackupXmlWriter;
 import com.nilhcem.frcndict.updatedb.xml.RestoreXmlReader;
@@ -346,11 +347,14 @@ public final class ImportUpdateService extends Service {
 			mMd5File = new File(mRootDir, TEMP_MD5_FILE);
 
 			try {
-				mDownloader = new HttpDownloader(Config.DICT_URL + DownloadFileAsync.ZIP_FILE, mZipFile);
-				mDownloader.addObserver(this);
-				mDownloader.start();
-				if (!isCancelled()) {
-					errorCode = checkMd5();
+				errorCode = checkVersion();
+				if (errorCode == null) {
+					mDownloader = new HttpDownloader(Config.DICT_URL + DownloadFileAsync.ZIP_FILE, mZipFile);
+					mDownloader.addObserver(this);
+					mDownloader.start();
+					if (!isCancelled()) {
+						errorCode = checkMd5();
+					}
 				}
 			} catch (IOException ex) {
 				if (Config.LOG_ERROR) Log.e(DownloadFileAsync.TAG, "Error downloading dictionary", ex);
@@ -423,6 +427,38 @@ public final class ImportUpdateService extends Service {
 			if (mMd5File != null && mMd5File.exists()) {
 				mMd5File.delete();
 			}
+		}
+
+		private Integer checkVersion() throws IOException {
+			Integer errorCode = null;
+
+			// If import, check if database we are going to download is compatible with current version
+			if (mImport) {
+				File versionFile = new File(mRootDir, CheckForUpdatesService.VERSION_FILE);
+				try {
+					HttpDownloader downloader = new HttpDownloader(Config.DICT_URL + CheckForUpdatesService.VERSION_FILE, versionFile);
+					downloader.start();
+
+					// Open file
+					String versionStr = FileHandler.readFile(versionFile);
+					String[] splitted = versionStr.split(DatabaseHelper.VERSION_SEPARATOR);
+
+					if (splitted.length > 1 && splitted[1] != null && splitted[1].length() > 0) {
+						int onlineVersion = Integer.parseInt(splitted[1]);
+						if (Tables.DATABASE_VERSION != onlineVersion) {
+							if (Config.LOG_ERROR) {
+								Log.e(DownloadFileAsync.TAG, "Program is too old for this database");
+								Log.e(DownloadFileAsync.TAG, "Database version required: " + Tables.DATABASE_VERSION);
+								Log.e(DownloadFileAsync.TAG, "Database version online: " + onlineVersion);
+							}
+							errorCode = R.string.import_err_too_old;
+						}
+					}
+				} finally {
+					versionFile.delete();
+				}
+			}
+			return errorCode;
 		}
 	}
 

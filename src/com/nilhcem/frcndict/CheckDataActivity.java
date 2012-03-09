@@ -12,11 +12,13 @@ import android.util.Log;
 import com.nilhcem.frcndict.core.AbstractDictActivity;
 import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.database.Tables;
 import com.nilhcem.frcndict.search.SearchActivity;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.updatedb.CheckForUpdatesService;
 import com.nilhcem.frcndict.updatedb.ImportActivity;
 import com.nilhcem.frcndict.updatedb.ImportUpdateService;
+import com.nilhcem.frcndict.updatedb.UpdateActivity;
 
 /**
  * Checks if database exists.
@@ -55,12 +57,33 @@ public final class CheckDataActivity extends Activity {
 				intent = new Intent(this, ImportActivity.class);
 			} else {
 				if (Config.LOG_DEBUG) Log.d(CheckDataActivity.class.getSimpleName(), "[Check Database] Available. Redirect to Search.");
-				checkForUpdates(prefs);
-				intent = new Intent(this, SearchActivity.class);
+				if (isDatabaseCompatible()) {
+					checkForUpdates(prefs);
+					intent = new Intent(this, SearchActivity.class);
+				} else {
+					intent = new Intent(this, UpdateActivity.class);
+				}
 			}
 			intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(intent);
 		}
+	}
+
+	// Checks if current program version is compatible with installed database
+	private boolean isDatabaseCompatible() {
+		boolean isCompatible = true;
+
+		DatabaseHelper db = DatabaseHelper.getInstance();
+		db.open();
+		int installedDbVersion = Integer.parseInt(db.getDbVersion().split(DatabaseHelper.VERSION_SEPARATOR)[1]);
+		db.close();
+
+		// Force a mandatory update if previous database is not compatible with this program version
+		if (installedDbVersion != Tables.DATABASE_VERSION) {
+			if (Config.LOG_INFO) Log.i(CheckDataActivity.class.getSimpleName(), "[Check Database] Database is not compatible. Redirect to Import.");
+			isCompatible = false;
+		}
+		return isCompatible;
 	}
 
 	private void checkForUpdates(SharedPreferences prefs) {

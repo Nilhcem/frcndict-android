@@ -21,6 +21,8 @@
 	<string name="import_storage_dialog_sdcard">Carte SD (recommandé)</string>
 	<string name="import_storage_dialog_device">Mémoire interne de l\'appareil</string>
 	<string name="import_err_dialog_title">Erreur</string>
+	<string name="import_err_too_old">La version du programme que vous utilisez actuellement est obsolète et ne peut plus fonctionner.\nVeuillez mettre à jour le programme et recommencer.</string>
+	<string name="import_err_too_old_update">Ouvrir \"Google Play Store\" et mettre à jour</string>
 	<string name="import_err_cannot_download">Impossible de télécharger le dictionnaire.\nAssurez-vous que votre appareil est bien connecté à Internet et réessayez.</string>
 	<string name="import_err_wrong_dictionary_file">Le dictionnaire n\'a pas été correctement téléchargé.\nVeuillez recommencer.</string>
 	<string name="import_err_retry">Réessayer</string>

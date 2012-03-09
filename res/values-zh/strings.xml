@@ -21,6 +21,8 @@
 	<string name="import_storage_dialog_sdcard">儲存卡 (推薦)</string>
 	<string name="import_storage_dialog_device">隨機內存</string>
 	<string name="import_err_dialog_title">出錯</string>
+	<string name="import_err_too_old">您目前使用的版本太舊已被淘汰.\n請更新程序並重試.</string>
+	<string name="import_err_too_old_update">打開 \"Google Play Store\" 更新</string>
 	<string name="import_err_cannot_download">無法下載詞典.\n請確保您的設備已聯網並重試.</string>
 	<string name="import_err_wrong_dictionary_file">詞典沒有被正確下載.\n請重試.</string>
 	<string name="import_err_retry">重試</string>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -34,6 +35,7 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 
 	private AlertDialog mCompletedDialog;
 	private AlertDialog mErrorDialog;
+	private AlertDialog mUpdateDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 
 		mCompletedDialog.dismiss();
 		mErrorDialog.dismiss();
+		mUpdateDialog.dismiss();
 	}
 
 	protected void restore(Bundle savedInstanceState) {
@@ -80,8 +83,12 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 
 	public void displayError(int errorId) {
 		if (errorId != 0) {
-			mErrorDialog.setMessage(getString(errorId));
-			mErrorDialog.show();
+			if (errorId == R.string.import_err_too_old) {
+				mUpdateDialog.show();
+			} else {
+				mErrorDialog.setMessage(getString(errorId));
+				mErrorDialog.show();
+			}
 		}
 	}
 
@@ -119,19 +126,28 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 	}
 
 	protected void initDialogs() {
+		// Disable back button
+		DialogInterface.OnKeyListener disableBackButton = new DialogInterface.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+				return (keyCode == KeyEvent.KEYCODE_BACK);
+			}
+		};
+		// Exit
+		DialogInterface.OnClickListener exitClickListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				stopActivityAndStartIntent(null); // exit
+			}
+		};
+
 		mCompletedDialog = new AlertDialog.Builder(this)
 			.setTitle(R.string.import_dialog_title)
 			.setMessage(mImport ? R.string.import_dialog_msg : R.string.update_dialog_msg)
 			.setIcon(R.drawable.checkbox_on_background)
 			.setPositiveButton(R.string.import_dialog_btn, mCompletedListener)
 			.create();
-		// Disable back button
-		mCompletedDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-			@Override
-			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-				return (keyCode == KeyEvent.KEYCODE_BACK);
-			}
-		});
+		mCompletedDialog.setOnKeyListener(disableBackButton);
 
 		mErrorDialog = new AlertDialog.Builder(this)
 			.setTitle(R.string.import_err_dialog_title)
@@ -142,20 +158,26 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 					stopActivityAndStartIntent(getIntent()); //reload activity
 				}
 			})
-			.setNegativeButton(R.string.import_err_cancel, new DialogInterface.OnClickListener() {
+			.setNegativeButton(R.string.import_err_cancel, exitClickListener)
+			.create();
+		mErrorDialog.setOnKeyListener(disableBackButton);
+
+		mUpdateDialog = new AlertDialog.Builder(this)
+			.setTitle(R.string.import_err_dialog_title)
+			.setMessage(R.string.import_err_too_old)
+			.setIcon(R.drawable.ic_delete)
+			.setPositiveButton(R.string.import_err_too_old_update, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					stopActivityAndStartIntent(null); // exit
+					// Redirect to market
+					Uri marketUri = Uri.parse("market://details?id=" + getApplication().getClass().getPackage().getName());
+					Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+					stopActivityAndStartIntent(marketIntent);
 				}
 			})
+			.setNegativeButton(R.string.import_quit_activity_btn, exitClickListener)
 			.create();
-		// Disable back button
-		mErrorDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-			@Override
-			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-				return (keyCode == KeyEvent.KEYCODE_BACK);
-			}
-		});
+		mUpdateDialog.setOnKeyListener(disableBackButton);
 	}
 
 	private void initButtons() {

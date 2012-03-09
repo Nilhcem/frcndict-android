@@ -19,6 +19,7 @@ import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class DatabaseHelper {
 	public static final String DATABASE_NAME = "dictionary.db";
+	public static final String VERSION_SEPARATOR = "-";
 	private static final DatabaseHelper INSTANCE = new DatabaseHelper();
 	private static final String TAG = "DatabaseHelper";
 

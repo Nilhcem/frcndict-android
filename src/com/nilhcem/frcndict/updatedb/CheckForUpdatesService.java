@@ -23,8 +23,7 @@ import com.nilhcem.frcndict.utils.HttpDownloader;
 
 // Check if database should be updated
 public class CheckForUpdatesService extends Service {
-	private static final String TEMP_VERSION_FILE = "version";
-	private static final String VERSION_SEPARATOR = "-";
+	public static final String VERSION_FILE = "version";
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -62,21 +61,19 @@ public class CheckForUpdatesService extends Service {
 	}
 
 	private class CheckForUpdatesAsync extends AsyncTask<String, Void, Void> {
-		private static final String VERSION_URL = "version";
-
 		@Override
 		protected Void doInBackground(String... params) {
 			// Download version file
 			File rootDir = FileHandler.getAppRootDir(getApplication(), FileHandler.isDatabaseInstalledOnSDcard());
-			File versionFile = new File(rootDir, CheckForUpdatesService.TEMP_VERSION_FILE);
+			File versionFile = new File(rootDir, CheckForUpdatesService.VERSION_FILE);
 
 			try {
-				HttpDownloader downloader = new HttpDownloader(Config.DICT_URL + CheckForUpdatesAsync.VERSION_URL, versionFile);
+				HttpDownloader downloader = new HttpDownloader(Config.DICT_URL + CheckForUpdatesService.VERSION_FILE, versionFile);
 				downloader.start();
 
 				// Open file
 				String versionStr = FileHandler.readFile(versionFile);
-				String[] splitted = versionStr.split(CheckForUpdatesService.VERSION_SEPARATOR);
+				String[] splitted = versionStr.split(DatabaseHelper.VERSION_SEPARATOR);
 				if (splitted.length > 1 && splitted[1] != null && splitted[0].length() > 0 && splitted[1].length() > 0) {
 					// Check App version code
 					int curVersionCode;

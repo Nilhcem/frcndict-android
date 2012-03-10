@@ -154,10 +154,15 @@ public final class DatabaseHelper {
 	}
 
 	public String getDbVersion() {
+		String dbVersion = null;
+
 		Cursor c = mDb.query(Tables.METADATA_TABLE_NAME, new String[] {Tables.METADATA_KEY_VERSION},
 				null, null, null, null, null);
-
-		return (c.moveToFirst()) ? c.getString(c.getColumnIndex(Tables.METADATA_KEY_VERSION)) : null;
+		if (c.moveToFirst()) {
+			dbVersion = c.getString(c.getColumnIndex(Tables.METADATA_KEY_VERSION));
+		}
+		c.close();
+		return dbVersion;
 	}
 
 	public Cursor searchHanzi(String search, Integer curPage) {

@@ -48,8 +48,8 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 
 			HashMap<String, Integer> columnsIndexCache = new HashMap<String, Integer>();
 			if (c.moveToFirst()) {
+				fillColumnsIndexCache(columnsIndexCache, c);
 				do {
-					fillColumnsIndexCache(columnsIndexCache, c);
 					Entry entry = new Entry();
 					entry.setId(c.getInt(columnsIndexCache.get(Tables.ENTRIES_KEY_ROWID)));
 					entry.setSimplified(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_SIMPLIFIED)));

@@ -87,6 +87,21 @@ public final class DbHandler {
 	}
 
 	/**
+	 * Creates indexes to speed up queries.
+	 */
+	public void createIndexes() {
+		Statement stat;
+		try {
+			stat = conn.createStatement();
+			stat.executeUpdate("CREATE INDEX '" + Tables.ENTRIES_TABLE_NAME + "_" + Tables.ENTRIES_KEY_PINYIN2 + "_idx' ON '"
+					+ Tables.ENTRIES_TABLE_NAME + "'('" + Tables.ENTRIES_KEY_PINYIN2 + "');");
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * Closes the database.
 	 */
 	public void close() {

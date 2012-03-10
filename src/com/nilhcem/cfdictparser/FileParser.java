@@ -49,6 +49,7 @@ public final class FileParser {
 				parseLine(line.trim(), db);
 			}
 			db.flush();
+			db.createIndexes();
 			in.close();
 			db.close();
 		} catch (IOException e) {

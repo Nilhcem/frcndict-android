@@ -6,8 +6,8 @@
 	<!-- Import data -->
 	<string name="import_service_label">词典导入/更新</string>
 	<string name="import_welcome_title">欢迎使用</string>
-	<string name="import_welcome_msg">首先请下载本词典.\n同时确保您的设备已联网.\n它将占用5.5MB的空间，此安装过程需要20MB的空间.\n\n立即下载?</string>
-	<string name="import_processing_msg">正在下载词典数据(5.5M).\n请稍候…</string>
+	<string name="import_welcome_msg">首先请下载本词典.\n同时确保您的设备已联网.\n它将占用6.6MB的空间，此安装过程需要25MB的空间.\n\n立即下载?</string>
+	<string name="import_processing_msg">正在下载词典数据(6.6M).\n请稍候…</string>
 	<string name="import_start_service_btn">下载</string>
 	<string name="import_quit_activity_btn">退出</string>
 	<string name="import_done">完成</string>
@@ -38,8 +38,8 @@
 	<!-- Update data -->
 	<string name="update_service_label">查看更新</string>
 	<string name="update_welcome_title">更新词典</string>
-	<string name="update_welcome_msg">词典更新可用.\n请确保您的设备已联网.\n它将占用5.5MB的空间，此安装过程需要20MB的空间.\n\n立即下载?</string>
-	<string name="update_processing_msg">正在更新数据(5.5M).\n请稍候…</string>
+	<string name="update_welcome_msg">词典更新可用.\n请确保您的设备已联网.\n它将占用6.6MB的空间，此安装过程需要25MB的空间.\n\n立即下载?</string>
+	<string name="update_processing_msg">正在更新数据(6.6M).\n请稍候…</string>
 	<string name="update_start_service_btn">更新</string>
 	<string name="update_quit_activity_btn">取消</string>
 	<string name="update_dialog_msg">词典更新成功!\n感谢您的耐心等候.</string>

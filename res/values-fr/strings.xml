@@ -6,8 +6,8 @@
 	<!-- Import data -->
 	<string name="import_service_label">Import / Mise à jour des données</string>
 	<string name="import_welcome_title">Bienvenue</string>
-	<string name="import_welcome_msg">Les données de l\'application ont besoin d\'être téléchargées.\nVotre appareil doit être connecté à Internet.\n5,5 MO vont être téléchargés et environ 20 MO seront nécessaires pendant le processus d\'installation.\n\nVoulez-vous commencer le téléchargement maintenant ?</string>
-	<string name="import_processing_msg">Téléchargement des données du dictionnaire (5,5M).\nVeuillez patienter…</string>
+	<string name="import_welcome_msg">Les données de l\'application ont besoin d\'être téléchargées.\nVotre appareil doit être connecté à Internet.\n6,6 MO vont être téléchargés et environ 25 MO seront nécessaires pendant le processus d\'installation.\n\nVoulez-vous commencer le téléchargement maintenant ?</string>
+	<string name="import_processing_msg">Téléchargement des données du dictionnaire (6,6M).\nVeuillez patienter…</string>
 	<string name="import_start_service_btn">Télécharger</string>
 	<string name="import_quit_activity_btn">Quitter</string>
 	<string name="import_done">Terminé</string>
@@ -38,8 +38,8 @@
 	<!-- Update data -->
 	<string name="update_service_label">Vérification des mises à jour</string>
 	<string name="update_welcome_title">Mise à jour du dictionnaire</string>
-	<string name="update_welcome_msg">Une mise à jour du dictionnaire est disponible.\nVeuillez vous assurer que le périphérique est bien connecté à Internet.\n5,5 MO vont être téléchargés et environ 20 MO seront nécessaires pendant le processus d\'installation.\n\nVoulez-vous commencer la mise à jour maintenant ?</string>
-	<string name="update_processing_msg">Mise à jour du dictionnaire (5,5M).\nVeuillez patienter…</string>
+	<string name="update_welcome_msg">Une mise à jour du dictionnaire est disponible.\nVeuillez vous assurer que le périphérique est bien connecté à Internet.\n6,6 MO vont être téléchargés et environ 25 MO seront nécessaires pendant le processus d\'installation.\n\nVoulez-vous commencer la mise à jour maintenant ?</string>
+	<string name="update_processing_msg">Mise à jour du dictionnaire (6,6M).\nVeuillez patienter…</string>
 	<string name="update_start_service_btn">Mettre à jour</string>
 	<string name="update_quit_activity_btn">Annuler</string>
 	<string name="update_dialog_msg">Le dictionnaire a été mis à jour avec succès !\nMerci d\'avoir patienté.</string>

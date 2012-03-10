@@ -27,6 +27,7 @@ public final class DatabaseHelper {
 	private File mDbPath;
 	private SQLiteDatabase mDb;
 
+	private static final String QUERY_IS_PINYIN;
 	private static final String QUERY_HANZI;
 	private static final String QUERY_PINYIN;
 	private static final String QUERY_FRENCH;
@@ -41,6 +42,17 @@ public final class DatabaseHelper {
 
 	static {
 		StringBuilder sb;
+
+		// Query for detecting if input is pinyin or french
+		sb = new StringBuilder("SELECT `")
+			.append(Tables.ENTRIES_KEY_ROWID)
+			.append("` FROM `")
+			.append(Tables.ENTRIES_TABLE_NAME)
+			.append("` WHERE `")
+			.append(Tables.ENTRIES_KEY_PINYIN2)
+			.append("` GLOB '%s*'");
+		QUERY_IS_PINYIN = sb.toString();
+
 		// add 1 entry we won't display but which is just to know if there are still some elements after.
 		String nbToDisplay = Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST + 1);
 		StringBuilder selectAllFromWhere = new StringBuilder("SELECT `")
@@ -81,8 +93,7 @@ public final class DatabaseHelper {
 		QUERY_PINYIN = sb.toString();
 
 		// French query
-		//sb = new StringBuilder(selectAllFromWhere)
-		StringBuilder frenchQueryCondition = new StringBuilder("'/' || lower(`")
+		sb = new StringBuilder("'/' || lower(`")
 			.append(Tables.ENTRIES_KEY_TRANSLATION)
 			.append("`) LIKE ? ORDER BY `")
 			.append(Tables.ENTRIES_KEY_TRANS_AVG_LENGTH)
@@ -90,9 +101,9 @@ public final class DatabaseHelper {
 			.append(Tables.ENTRIES_KEY_ROWID)
 			.append("` ASC LIMIT ?,")
 			.append(nbToDisplay);
-		QUERY_FRENCH = new StringBuilder(selectAllFromWhere).append(frenchQueryCondition).toString();
+		QUERY_FRENCH = new StringBuilder(selectAllFromWhere).append(sb).toString();
 		QUERY_FRENCH_NO_ACCENT = new StringBuilder(selectAllFromWhere)
-			.append(frenchQueryCondition.toString().replaceAll(Tables.ENTRIES_KEY_TRANSLATION,
+			.append(sb.toString().replaceAll(Tables.ENTRIES_KEY_TRANSLATION,
 					Tables.ENTRIES_KEY_TRANS_NO_ACCENT)).toString();
 
 		// Starred query
@@ -229,17 +240,13 @@ public final class DatabaseHelper {
 			});
 	}
 
-	// Check if search is a pinyin search or a french search
+	// Checks if search is a pinyin or a french search
 	public boolean isPinyin(String search) {
 		boolean isPinyin = false;
 
 		String formattedSearch = ChineseCharsHandler.getInstance().pinyinTonesToNb(search).replaceAll("[^a-zA-Z]", "");
 		if (!ChineseCharsHandler.isStringEmpty(formattedSearch)) {
-			// Checks if String contains letters
-			Cursor c = mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] {Tables.ENTRIES_KEY_ROWID},
-					String.format("`%s` like ?", Tables.ENTRIES_KEY_PINYIN2),
-					new String[] {formattedSearch + "%"},
-					null, null, null, DatabaseHelper.LIMIT_1);
+			Cursor c = mDb.rawQuery(String.format(DatabaseHelper.QUERY_IS_PINYIN, formattedSearch), null);
 			isPinyin = (c.getCount() > 0);
 			c.close();
 		}

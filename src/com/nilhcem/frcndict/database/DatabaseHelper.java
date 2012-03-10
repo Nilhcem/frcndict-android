@@ -32,6 +32,9 @@ public final class DatabaseHelper {
 	private static final String QUERY_FRENCH;
 	private static final String QUERY_FRENCH_NO_ACCENT;
 	private static final String QUERY_STARRED;
+	private static final String[] COLUMNS_FIND_BY_ID;
+	private static final String[] COLUMNS_GET_ALL_STARRED;
+	private static final String LIMIT_1;
 
 	private final SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 	private static final String REGEX_ACCENT = ".*[àâäçéèêëîïôöùûüæœÀÂÄÇÉÈÊËÎÏÔÖÙÛÜÆŒ].*";
@@ -40,12 +43,18 @@ public final class DatabaseHelper {
 		StringBuilder sb;
 		// add 1 entry we won't display but which is just to know if there are still some elements after.
 		String nbToDisplay = Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST + 1);
-		String selectAll = "SELECT * FROM `";
+		StringBuilder selectAllFromWhere = new StringBuilder("SELECT `")
+			.append(Tables.ENTRIES_KEY_ROWID).append("`, `")
+			.append(Tables.ENTRIES_KEY_SIMPLIFIED).append("`, `")
+			.append(Tables.ENTRIES_KEY_TRADITIONAL).append("`, `")
+			.append(Tables.ENTRIES_KEY_PINYIN).append("`, `")
+			.append(Tables.ENTRIES_KEY_TRANSLATION).append("` FROM `")
+			.append(Tables.ENTRIES_TABLE_NAME)
+			.append("` WHERE ");
 
 		// Hanzi query
-		sb = new StringBuilder(selectAll)
-			.append(Tables.ENTRIES_TABLE_NAME)
-			.append("` WHERE (`")
+		sb = new StringBuilder(selectAllFromWhere)
+			.append("(`")
 			.append(Tables.ENTRIES_KEY_SIMPLIFIED)
 			.append("` LIKE ? OR `")
 			.append(Tables.ENTRIES_KEY_TRADITIONAL)
@@ -58,9 +67,8 @@ public final class DatabaseHelper {
 		QUERY_HANZI = sb.toString();
 
 		// Pinyin query
-		sb = new StringBuilder(selectAll)
-			.append(Tables.ENTRIES_TABLE_NAME)
-			.append("` WHERE `")
+		sb = new StringBuilder(selectAllFromWhere)
+			.append("`")
 			.append(Tables.ENTRIES_KEY_PINYIN2)
 			.append("` LIKE ? AND lower(`")
 			.append(Tables.ENTRIES_KEY_PINYIN)
@@ -73,9 +81,8 @@ public final class DatabaseHelper {
 		QUERY_PINYIN = sb.toString();
 
 		// French query
-		sb = new StringBuilder(selectAll)
-			.append(Tables.ENTRIES_TABLE_NAME)
-			.append("` WHERE '/' || lower(`")
+		//sb = new StringBuilder(selectAllFromWhere)
+		StringBuilder frenchQueryCondition = new StringBuilder("'/' || lower(`")
 			.append(Tables.ENTRIES_KEY_TRANSLATION)
 			.append("`) LIKE ? ORDER BY `")
 			.append(Tables.ENTRIES_KEY_TRANS_AVG_LENGTH)
@@ -83,19 +90,37 @@ public final class DatabaseHelper {
 			.append(Tables.ENTRIES_KEY_ROWID)
 			.append("` ASC LIMIT ?,")
 			.append(nbToDisplay);
-		QUERY_FRENCH = sb.toString();
-		QUERY_FRENCH_NO_ACCENT = QUERY_FRENCH.replaceAll(Tables.ENTRIES_KEY_TRANSLATION, Tables.ENTRIES_KEY_TRANS_NO_ACCENT);
+		QUERY_FRENCH = new StringBuilder(selectAllFromWhere).append(frenchQueryCondition).toString();
+		QUERY_FRENCH_NO_ACCENT = new StringBuilder(selectAllFromWhere)
+			.append(frenchQueryCondition.toString().replaceAll(Tables.ENTRIES_KEY_TRANSLATION,
+					Tables.ENTRIES_KEY_TRANS_NO_ACCENT)).toString();
 
 		// Starred query
-		sb = new StringBuilder(selectAll)
-			.append(Tables.ENTRIES_TABLE_NAME)
-			.append("` WHERE `")
+		sb = new StringBuilder(selectAllFromWhere)
+			.append("`")
 			.append(Tables.ENTRIES_KEY_STARRED_DATE)
 			.append("` IS NOT NULL ORDER BY `")
 			.append(Tables.ENTRIES_KEY_STARRED_DATE)
 			.append("` DESC LIMIT ?,")
 			.append(nbToDisplay);
 		QUERY_STARRED = sb.toString();
+
+		// Columns for query "Find by id"
+		COLUMNS_FIND_BY_ID = new String[] {
+			Tables.ENTRIES_KEY_SIMPLIFIED,
+			Tables.ENTRIES_KEY_TRADITIONAL,
+			Tables.ENTRIES_KEY_PINYIN,
+			Tables.ENTRIES_KEY_TRANSLATION,
+			Tables.ENTRIES_KEY_STARRED_DATE
+		};
+
+		// Columns for query "Get All Starred"
+		COLUMNS_GET_ALL_STARRED = new String[] {
+			Tables.ENTRIES_KEY_SIMPLIFIED,
+			Tables.ENTRIES_KEY_STARRED_DATE
+		};
+
+		LIMIT_1 = "1";
 	}
 
 	private DatabaseHelper() {
@@ -149,15 +174,15 @@ public final class DatabaseHelper {
 	}
 
 	public Cursor findById(int id) {
-		return mDb.query(Tables.ENTRIES_TABLE_NAME, null,
-				String.format("`%s`=%d", Tables.ENTRIES_KEY_ROWID, id), null, null, null, null);
+		return mDb.query(Tables.ENTRIES_TABLE_NAME, DatabaseHelper.COLUMNS_FIND_BY_ID,
+				String.format("`%s`=%d", Tables.ENTRIES_KEY_ROWID, id), null, null, null, null, DatabaseHelper.LIMIT_1);
 	}
 
 	public String getDbVersion() {
 		String dbVersion = null;
 
 		Cursor c = mDb.query(Tables.METADATA_TABLE_NAME, new String[] {Tables.METADATA_KEY_VERSION},
-				null, null, null, null, null);
+				null, null, null, null, null, DatabaseHelper.LIMIT_1);
 		if (c.moveToFirst()) {
 			dbVersion = c.getString(c.getColumnIndex(Tables.METADATA_KEY_VERSION));
 		}
@@ -214,7 +239,7 @@ public final class DatabaseHelper {
 			Cursor c = mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] {Tables.ENTRIES_KEY_ROWID},
 					String.format("`%s` like ?", Tables.ENTRIES_KEY_PINYIN2),
 					new String[] {formattedSearch + "%"},
-					null, null, null);
+					null, null, null, DatabaseHelper.LIMIT_1);
 			isPinyin = (c.getCount() > 0);
 			c.close();
 		}
@@ -272,7 +297,9 @@ public final class DatabaseHelper {
 
 	public long getNbStarred() {
 		// Create query
-		StringBuilder query = new StringBuilder("SELECT count(*) FROM `")
+		StringBuilder query = new StringBuilder("SELECT count(`")
+			.append(Tables.ENTRIES_KEY_ROWID)
+			.append("`) FROM `")
 			.append(Tables.ENTRIES_TABLE_NAME)
 			.append("` WHERE `").append(Tables.ENTRIES_KEY_STARRED_DATE)
 			.append("` IS NOT NULL");
@@ -282,7 +309,7 @@ public final class DatabaseHelper {
 	}
 
 	public Cursor getAllStarred() {
-		return mDb.query(Tables.ENTRIES_TABLE_NAME, null,
+		return mDb.query(Tables.ENTRIES_TABLE_NAME, DatabaseHelper.COLUMNS_GET_ALL_STARRED,
 				String.format("`%s` IS NOT NULL", Tables.ENTRIES_KEY_STARRED_DATE), null, null, null, null);
 	}
 

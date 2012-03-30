@@ -32,7 +32,7 @@ import com.nilhcem.frcndict.utils.Unzip;
 
 public final class ImportUpdateService extends Service {
 	private static ImportUpdateService sInstance = null; // singleton
-	private static WeakReference<AbstractImportUpdateActivity> sActivity;
+	private static WeakReference<AbstractImportUpdateActivity> sActivity = null;
 
 	private BackupAsync mBackupTask;
 	private DownloadFileAsync mDownloadTask;
@@ -126,9 +126,11 @@ public final class ImportUpdateService extends Service {
 
 	public void changeStatus(int newStatus) {
 		mCurStatus = newStatus;
-		AbstractImportUpdateActivity activity = sActivity.get();
-		if (activity != null) {
-			activity.updateDisplay();
+		if (sActivity != null) {
+			AbstractImportUpdateActivity activity = sActivity.get();
+			if (activity != null) {
+				activity.updateDisplay();
+			}
 		}
 	}
 
@@ -173,15 +175,15 @@ public final class ImportUpdateService extends Service {
 	private void stopService(int errorId) {
 		if (errorId == 0) { // no error: finish service properly
 			changeStatus(ImportUpdateService.STATUS_COMPLETED);
-			if (sActivity.get() == null) {
+			if (sActivity == null || sActivity.get() == null) {
 				displaySuccessNotification();
 			}
 		} else { // an error appeared: display error
 			mCurErrorId = errorId;
 
-			if (sActivity.get() == null) {
+			if (sActivity == null || sActivity.get() == null) {
 				displayErrorNotification();
-			} else {
+			} else if (sActivity != null) {
 				sActivity.get().displayError(errorId);
 			}
 		}
@@ -244,9 +246,11 @@ public final class ImportUpdateService extends Service {
 	// Saves progress percent, useful if activity resume from pause, get the progress data directly.
 	private void updateProgressData(int progressBarId, Integer value) {
 		mProgressPercents[progressBarId] = value;
-		AbstractImportUpdateActivity activity = sActivity.get();
-		if (activity != null) {
-			activity.updateProgressData(progressBarId, value);
+		if (sActivity != null) {
+			AbstractImportUpdateActivity activity = sActivity.get();
+			if (activity != null) {
+				activity.updateProgressData(progressBarId, value);
+			}
 		}
 	}
 

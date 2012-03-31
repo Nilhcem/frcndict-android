@@ -69,16 +69,19 @@
 	<string name="meaning_starred_date_format">yyyy年MM月dd日</string>
 	<string name="meaning_starred_on">標記於%s</string>
 	<string name="meaning_not_starred">未標記</string>
-	<string name="meaning_copy_title">復制…</string>
+	<string name="meaning_copy_title">請選擇…</string>
 	<string name="meaning_copy_text">復制 %s</string>
+	<string name="meaning_see_text">看%s的釋義</string>
 	<string name="meaning_copied">復制到剪貼板</string>
+	<string name="meaning_no_result">未找到結果.</string>
+	<string name="meaning_no_result_press_back">\n請按返回鍵退出並查找新單詞.</string>
 
 	<!-- Menus -->
 	<string name="main_menu_about">關於</string>
 	<string name="main_menu_settings">設置</string>
 	<string name="main_menu_starred">已標記</string>
 	<string name="starred_menu_refresh">刷新</string>
-	<string name="starred_menu_search">返回查找</string>
+	<string name="starred_menu_back">返回</string>
 
 	<!-- About dialog (see also ~/assets/about/about.html) -->
 	<string name="about_title">關於</string>

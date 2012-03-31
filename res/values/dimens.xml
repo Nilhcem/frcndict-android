@@ -28,6 +28,7 @@
 	<dimen name="search_list_divider_height">1.0dp</dimen>
 
 	<!-- Search entry -->
+	<dimen name="search_no_item_size_small">14.0sp</dimen>
 	<dimen name="search_no_item_size">24.0sp</dimen>
 	<dimen name="search_no_item_paddingTopBottom">14.0dp</dimen>
 	<dimen name="search_loading_layout_size">60.0dp</dimen>

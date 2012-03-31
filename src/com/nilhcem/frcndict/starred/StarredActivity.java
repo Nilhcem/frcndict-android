@@ -70,7 +70,7 @@ public final class StarredActivity extends AbstractListActivity {
 
 		if (item.getItemId() == R.id.starred_menu_refresh) {
 			refreshSearch(true);
-		} else if (item.getItemId() == R.id.starred_menu_search) {
+		} else if (item.getItemId() == R.id.starred_menu_back) {
 			finish();
 		} else {
 			stopProcessing = super.onOptionsItemSelected(item);

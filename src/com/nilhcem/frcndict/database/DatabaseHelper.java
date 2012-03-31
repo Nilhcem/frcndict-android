@@ -28,6 +28,7 @@ public final class DatabaseHelper {
 	private SQLiteDatabase mDb;
 
 	private static final String QUERY_IS_PINYIN;
+	private static final String QUERY_GET_ID_BY_HANZI;
 	private static final String QUERY_HANZI;
 	private static final String QUERY_PINYIN;
 	private static final String QUERY_FRENCH;
@@ -52,6 +53,20 @@ public final class DatabaseHelper {
 			.append(Tables.ENTRIES_KEY_PINYIN2)
 			.append("` GLOB '%s*'");
 		QUERY_IS_PINYIN = sb.toString();
+
+		// Query for getting id by Hanzi
+		sb = new StringBuilder("SELECT `")
+			.append(Tables.ENTRIES_KEY_ROWID)
+			.append("` FROM `")
+			.append(Tables.ENTRIES_TABLE_NAME)
+			.append("` WHERE `")
+			.append(Tables.ENTRIES_KEY_SIMPLIFIED)
+			.append("` = '%s' OR `")
+			.append(Tables.ENTRIES_KEY_TRADITIONAL)
+			.append("` = '%s' ORDER BY `")
+			.append(Tables.ENTRIES_KEY_ROWID)
+			.append("` ASC LIMIT 1");
+		QUERY_GET_ID_BY_HANZI = sb.toString();
 
 		// add 1 entry we won't display but which is just to know if there are still some elements after.
 		String nbToDisplay = Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST + 1);
@@ -187,6 +202,16 @@ public final class DatabaseHelper {
 	public Cursor findById(int id) {
 		return mDb.query(Tables.ENTRIES_TABLE_NAME, DatabaseHelper.COLUMNS_FIND_BY_ID,
 				String.format("`%s`=%d", Tables.ENTRIES_KEY_ROWID, id), null, null, null, null, DatabaseHelper.LIMIT_1);
+	}
+
+	public int getIdByHanzi(String hanzi) {
+		int id = 0;
+		Cursor c = mDb.rawQuery(String.format(DatabaseHelper.QUERY_GET_ID_BY_HANZI, hanzi, hanzi), null);
+		if (c.moveToFirst()) {
+			id = c.getInt(c.getColumnIndex(Tables.ENTRIES_KEY_ROWID));
+		}
+		c.close();
+		return id;
 	}
 
 	public String getDbVersion() {

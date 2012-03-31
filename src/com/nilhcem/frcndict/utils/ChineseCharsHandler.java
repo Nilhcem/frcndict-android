@@ -11,6 +11,8 @@ public final class ChineseCharsHandler {
 	private static final ChineseCharsHandler INSTANCE = new ChineseCharsHandler();
 	private static final String SAME_HANZI_REPLACEMENT = "-";
 	private static final String FORMAT_HANZI_ST = "%s [%s]";
+	private static final String FORMAT_HANZI_ST_HTML = "%s<font>&nbsp;</font><font>[</font>%s<font>]</font>";
+
 	private String[] mColorsArray;
 
 	private static final String[] PINYIN_NB2TONE_SRC = new String[] {
@@ -204,9 +206,8 @@ public final class ChineseCharsHandler {
 			if (prefColorHanzi) {
 				left = addColorToHanzi(left, pinyin);
 				right = addColorToHanzi(right, pinyin);
+				return String.format(ChineseCharsHandler.FORMAT_HANZI_ST_HTML, left, right);
 			}
-
-			// Return formatted String
 			return String.format(ChineseCharsHandler.FORMAT_HANZI_ST, left, right);
 		}
 	}

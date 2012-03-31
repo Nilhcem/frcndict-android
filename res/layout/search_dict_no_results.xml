@@ -4,4 +4,4 @@
 	android:layout_height="wrap_content"
     android:layout_width="fill_parent"
     android:text="@string/search_no_results"
-    style="@style/ListItemNoResults" />
+    style="@style/NoResults.ListItem" />

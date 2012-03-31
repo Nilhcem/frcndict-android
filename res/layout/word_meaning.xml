@@ -1,57 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	style="@style/WordMeaningScrollLayout">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
+    <!-- Loading -->
 	<LinearLayout
+	    android:id="@+id/wmLoadingLayout"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:gravity="center"
+	    android:visibility="visible" >
+
+	    <include layout="@layout/search_dict_loading"/>
+    </LinearLayout>
+
+    <!-- Meaning -->
+	<ScrollView
+	    android:id="@+id/wmMeaningLayout"
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		style="@style/WordMeaningLayout">
+		android:layout_height="fill_parent"
+		android:visibility="gone"
+		style="@style/WordMeaningScrollLayout">
 
-		<!-- Hanzi -->
-		<TextView
-			android:id="@+id/wmChinese"
+		<LinearLayout
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@style/WordMeaningHanzi" />
+			android:orientation="vertical"
+			style="@style/WordMeaningLayout">
 
-		<!-- Pinyin -->
+			<!-- Hanzi -->
+			<com.nilhcem.frcndict.core.layout.ClickableHanzi
+				android:id="@+id/wmChinese"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/WordMeaningHanzi" />
+
+			<!-- Pinyin -->
+			<TextView
+				android:id="@+id/wmPinyin"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				style="@style/WordMeaningPinyin" />
+
+		    <!-- Separator -->
+		    <View
+				android:layout_width="fill_parent"
+				style="@style/WordMeaningSeparator" />
+
+			<!-- Meaning title -->
+			<TextView
+				android:id="@+id/wmMeaningTitle"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/meaning_title_singular"
+				style="@style/WordMeaningMeaningTitle" />
+
+			<!-- Meaning -->
+			<TextView
+				android:id="@+id/wmMeaning"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+			<!-- Separator -->
+			<View
+				android:layout_width="fill_parent"
+				style="@style/WordMeaningSeparator.star" />
+
+			<!-- Star button -->
+			<com.nilhcem.frcndict.core.layout.StarButton
+				android:id="@+id/wmStarButton"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+	</ScrollView>
+
+    <!-- No result -->
+	<LinearLayout
+	    android:id="@+id/wmNoResultLayout"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:orientation="vertical"
+	    android:visibility="gone" >
+
 		<TextView
-			android:id="@+id/wmPinyin"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			style="@style/WordMeaningPinyin" />
-
-	    <!-- Separator -->
-	    <View
-			android:layout_width="fill_parent"
-			style="@style/WordMeaningSeparator" />
-
-		<!-- Meaning title -->
+			android:text="@string/meaning_no_result"
+			style="@style/NoResults" />
 		<TextView
-			android:id="@+id/wmMeaningTitle"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/meaning_title_singular"
-			style="@style/WordMeaningMeaningTitle" />
-
-		<!-- Meaning -->
-		<TextView
-			android:id="@+id/wmMeaning"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content" />
-
-		<!-- Separator -->
-		<View
-			android:layout_width="fill_parent"
-			style="@style/WordMeaningSeparator.star" />
-
-		<!-- Star button -->
-		<com.nilhcem.frcndict.core.layout.StarButton
-			android:id="@+id/wmStarButton"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content" />
-	</LinearLayout>
-</ScrollView>
+			android:text="@string/meaning_no_result_press_back"
+			style="@style/NoResults.Small" />
+    </LinearLayout>
+</LinearLayout>

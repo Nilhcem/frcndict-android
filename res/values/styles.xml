@@ -113,10 +113,15 @@
 	</style>
 
 	<!-- No Result -->
-	<style name="ListItemNoResults">
+	<style name="NoResults">
 		<item name="android:gravity">center</item>
 		<item name="android:textColor">?loadingNoResultsColor</item>
 		<item name="android:textSize">@dimen/search_no_item_size</item>
+	</style>
+	<style name="NoResults.Small">
+		<item name="android:textSize">@dimen/search_no_item_size_small</item>
+	</style>
+	<style name="NoResults.ListItem">
 		<item name="android:paddingTop">@dimen/search_no_item_paddingTopBottom</item>
 	</style>
 

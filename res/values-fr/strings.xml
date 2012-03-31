@@ -69,16 +69,19 @@
 	<string name="meaning_starred_date_format">dd/MM/yyyy</string>
 	<string name="meaning_starred_on">Mis en favoris le %s</string>
 	<string name="meaning_not_starred">Ajouter aux favoris</string>
-	<string name="meaning_copy_title">Copier…</string>
+	<string name="meaning_copy_title">Choisissez…</string>
 	<string name="meaning_copy_text">Copier %s</string>
+	<string name="meaning_see_text">Voir la signification de %s\</string>
 	<string name="meaning_copied">copié dans le presse papier</string>
+	<string name="meaning_no_result">Aucun résultat trouvé.</string>
+	<string name="meaning_no_result_press_back">\nAppuyez sur \"retour\" pour rechercher une autre définition.</string>
 
 	<!-- Menus -->
 	<string name="main_menu_about">À propos</string>
 	<string name="main_menu_settings">Paramètres</string>
 	<string name="main_menu_starred">Favoris</string>
 	<string name="starred_menu_refresh">Rafraîchir</string>
-	<string name="starred_menu_search">Retour à la recherche</string>
+	<string name="starred_menu_back">Retour</string>
 
 	<!-- About dialog (see also ~/assets/about/about-fr.html) -->
 	<string name="about_title">À propos</string>

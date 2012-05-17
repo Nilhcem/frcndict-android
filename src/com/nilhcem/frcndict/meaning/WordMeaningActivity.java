@@ -64,7 +64,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 		return stopProcessing;
 	}
 
-	// Get id from indent
+	// Get id from intent
 	private void initId() {
 		Intent intent = getIntent();
 		mId = intent.getIntExtra(WordMeaningActivity.ID_INTENT, 0);

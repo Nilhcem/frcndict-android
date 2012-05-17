@@ -46,7 +46,9 @@ public final class StarredActivity extends AbstractListActivity {
 
 	@Override
 	protected void onDestroy() {
-		mService.stopPreviousThread();
+		if (mService != null) {
+			mService.stopPreviousThread();
+		}
 		super.onDestroy();
 	}
 

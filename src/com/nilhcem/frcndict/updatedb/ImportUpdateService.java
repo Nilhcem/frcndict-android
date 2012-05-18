@@ -91,7 +91,11 @@ public final class ImportUpdateService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		changeStatus(ImportUpdateService.STATUS_PROCESSING);
 
-		mImport = intent.getBooleanExtra(ImportUpdateService.INTENT_IMPORT_KEY, true);
+		if (intent == null) {
+			mImport = false;
+		} else {
+			mImport = intent.getBooleanExtra(ImportUpdateService.INTENT_IMPORT_KEY, true);
+		}
 		displayImportNotification();
 
 		if (mImport) {

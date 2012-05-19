@@ -125,7 +125,7 @@ public final class CheckDataActivity extends Activity {
 		long lastTimeChecked = prefs.getLong(SettingsActivity.KEY_LAST_UPDATE_CHECKED, 0l);
 
 		if (lastTimeChecked == 0l) { // database has never been checked
-			startUpdate = true;
+			startUpdate = false;
 		} else {
 			long daysBetween = (curDate - lastTimeChecked) / CheckDataActivity.NB_MILLISEC_IN_A_DAY;
 			startUpdate = (daysBetween > Config.CHECK_FOR_UPDATES_INTERVAL);

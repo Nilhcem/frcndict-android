@@ -147,8 +147,8 @@ public final class ClickableHanzi extends LinearLayout {
 	/**
 	 * Display some options:
 	 * <ul>
-	 * 	<li>See CHAR meaning [only if size > 1 && CHAR is a chinese character]</li>
-	 * 	<li>Copy CHAR [only if size > 1 && CHAR is a chinese character]</li>
+	 * 	<li>See CHAR meaning [only if size > 1 && CHAR is a Chinese character]</li>
+	 * 	<li>Copy CHAR [only if size > 1 && CHAR is a Chinese character]</li>
 	 * 	<li>Copy Simplified [only if simplified selected in settings]</li>
 	 * 	<li>Copy Traditional [only if traditional selected in settings and Trad != Simp]</li>
 	 * </ul>

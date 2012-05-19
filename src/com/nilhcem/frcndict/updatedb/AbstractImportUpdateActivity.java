@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -126,13 +125,6 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 	}
 
 	protected void initDialogs() {
-		// Disable back button
-		DialogInterface.OnKeyListener disableBackButton = new DialogInterface.OnKeyListener() {
-			@Override
-			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-				return (keyCode == KeyEvent.KEYCODE_BACK);
-			}
-		};
 		// Exit
 		DialogInterface.OnClickListener exitClickListener = new DialogInterface.OnClickListener() {
 			@Override
@@ -145,13 +137,14 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 			.setTitle(R.string.import_dialog_title)
 			.setMessage(mImport ? R.string.import_dialog_msg : R.string.update_dialog_msg)
 			.setIcon(R.drawable.checkbox_on_background)
+			.setCancelable(false)
 			.setPositiveButton(R.string.import_dialog_btn, mCompletedListener)
 			.create();
-		mCompletedDialog.setOnKeyListener(disableBackButton);
 
 		mErrorDialog = new AlertDialog.Builder(this)
 			.setTitle(R.string.import_err_dialog_title)
 			.setIcon(R.drawable.ic_delete)
+			.setCancelable(false)
 			.setPositiveButton(R.string.import_err_retry, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -160,12 +153,12 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 			})
 			.setNegativeButton(R.string.import_err_cancel, exitClickListener)
 			.create();
-		mErrorDialog.setOnKeyListener(disableBackButton);
 
 		mUpdateDialog = new AlertDialog.Builder(this)
 			.setTitle(R.string.import_err_dialog_title)
 			.setMessage(R.string.import_err_too_old)
 			.setIcon(R.drawable.ic_delete)
+			.setCancelable(false)
 			.setPositiveButton(R.string.import_err_too_old_update, new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -177,7 +170,6 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 			})
 			.setNegativeButton(R.string.import_quit_activity_btn, exitClickListener)
 			.create();
-		mUpdateDialog.setOnKeyListener(disableBackButton);
 	}
 
 	private void initButtons() {

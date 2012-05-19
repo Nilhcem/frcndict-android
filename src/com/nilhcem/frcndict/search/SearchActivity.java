@@ -240,8 +240,8 @@ public final class SearchActivity extends AbstractListActivity {
 	}
 
 	private void runNewSearch(boolean clearSearchType) {
-		String text = mInputText.getText().toString();
-		if (ChineseCharsHandler.isStringEmpty(text)) {
+		String search = mInputText.getText().toString().replace('*', '%'); // wildcard support
+		if (ChineseCharsHandler.isStringEmpty(search)) {
 			cancelToastIfNotNull(mSearchEmptyToast);
 			mSearchEmptyToast = Toast.makeText(SearchActivity.this, R.string.search_empty_text, Toast.LENGTH_SHORT);
 			mSearchEmptyToast.show();
@@ -249,7 +249,7 @@ public final class SearchActivity extends AbstractListActivity {
 			clearResults(clearSearchType);
 			showHideIntroText(false);
 			mListAdapter.addLoading();
-			mService.runSearchThread(this, null, mInputText.getText().toString());
+			mService.runSearchThread(this, null, search);
 		}
 	}
 

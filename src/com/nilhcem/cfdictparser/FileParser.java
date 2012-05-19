@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +21,7 @@ import com.nilhcem.cfdictparser.sqlite.DbHandler;
  */
 public final class FileParser {
 	private File inputFile;
+	private static final String MEANINGS_SEPARATOR = "/";
 	private static final Pattern PATTERN = Pattern.compile("^\\s*(.+)\\s+\\[(.*)\\]\\s+/(.+)/\\s*$");
 
 	// For pinyin formatting
@@ -85,7 +88,7 @@ public final class FileParser {
 				traditional = "";
 			}
 			String pinyin = matcher.group(2);
-			String translation = matcher.group(3);
+			String translation = formatTranslation(matcher.group(3));
 
 			pinyin = formatPinyin(pinyin, simplified);
 			if (pinyin != null) {
@@ -132,5 +135,38 @@ public final class FileParser {
 			}
 		}
 		return pinyin;
+	}
+
+	/**
+	 * Remove duplicates and trim every translation.
+	 *
+	 * @param meaning original translations
+	 * @return a duplicated-free and trimmed translation list
+	 */
+	private String formatTranslation(String translation) {
+		String result = null;
+
+		if (translation != null) {
+			boolean addSeparator = false;
+			StringBuilder sb = new StringBuilder();
+			List<String> alreadyInserted = new ArrayList<>();
+
+			String[] meanings = translation.split(FileParser.MEANINGS_SEPARATOR);
+			for (String meaning : meanings) {
+				meaning = meaning.trim();
+				if (!meaning.isEmpty()
+					&& !alreadyInserted.contains(meaning)) {
+					if (addSeparator) {
+						sb.append(FileParser.MEANINGS_SEPARATOR);
+					} else {
+						addSeparator = true;
+					}
+					sb.append(meaning);
+					alreadyInserted.add(meaning);
+				}
+			}
+			result = sb.toString();
+		}
+		return result;
 	}
 }

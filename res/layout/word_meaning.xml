@@ -52,7 +52,6 @@
 				android:id="@+id/wmMeaningTitle"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/meaning_title_singular"
 				style="@style/WordMeaningMeaningTitle" />
 
 			<!-- Meaning -->

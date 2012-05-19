@@ -62,8 +62,10 @@
 	<string name="search_btn_pinyin">拼音</string>
 
 	<!-- Word meaning -->
-	<string name="meaning_title_singular">詞義:</string>
-	<string name="meaning_title_plural">詞義:</string>
+	<plurals name="meaning_title">
+		<item quantity="one">詞義:</item>
+		<item quantity="other">詞義:</item>
+	</plurals>
 	<string name="meaning_title_bullet">•</string>
 	<string name="meaning_star_desc">標記</string>
 	<string name="meaning_starred_date_format">yyyy年MM月dd日</string>

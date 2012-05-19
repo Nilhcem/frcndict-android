@@ -62,8 +62,10 @@
 	<string name="search_btn_pinyin">Pinyin</string>
 
 	<!-- Word meaning -->
-	<string name="meaning_title_singular">Signification :</string>
-	<string name="meaning_title_plural">Significations :</string>
+	<plurals name="meaning_title">
+		<item quantity="one">Signification :</item>
+		<item quantity="other">Significations :</item>
+	</plurals>
 	<string name="meaning_title_bullet">•</string>
 	<string name="meaning_star_desc">favoris</string>
 	<string name="meaning_starred_date_format">dd/MM/yyyy</string>

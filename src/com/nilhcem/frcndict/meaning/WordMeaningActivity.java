@@ -149,10 +149,9 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 			sb.append(bullet).append(space).append(curMeaning.trim());
 		}
 
-		// If there are many meanings, put the title in plural form (instead of singular form)
-		if (meanings.length > 1) {
-			mMeaningTitle.setText(R.string.meaning_title_plural);
-		}
+		// Meaning / Meanings (handle plural form)
+		mMeaningTitle.setText(getResources().getQuantityText(R.plurals.meaning_title, meanings.length));
+
 		return sb.toString();
 	}
 

@@ -26,7 +26,11 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 		super();
 		mRefAdapter = adapter;
 		mRefService = service;
-		mRefActivity = new WeakReference<SearchActivity>(activity);
+		if (activity == null) {
+			mRefActivity = null;
+		} else {
+			mRefActivity = new WeakReference<SearchActivity>(activity);
+		}
 	}
 
 	@Override

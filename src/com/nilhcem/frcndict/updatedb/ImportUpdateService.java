@@ -72,7 +72,11 @@ public final class ImportUpdateService extends Service {
 	}
 
 	public static void setActivity(AbstractImportUpdateActivity activity) {
-		ImportUpdateService.sActivity = new WeakReference<AbstractImportUpdateActivity>(activity);
+		if (activity == null) {
+			ImportUpdateService.sActivity = null;
+		} else {
+			ImportUpdateService.sActivity = new WeakReference<AbstractImportUpdateActivity>(activity);
+		}
 	}
 
 	@Override
@@ -185,10 +189,14 @@ public final class ImportUpdateService extends Service {
 		} else { // an error appeared: display error
 			mCurErrorId = errorId;
 
-			if (sActivity == null || sActivity.get() == null) {
+			AbstractImportUpdateActivity activity = null;
+			if (sActivity != null) {
+				activity = sActivity.get();
+			}
+			if (activity == null) {
 				displayErrorNotification();
-			} else if (sActivity != null) {
-				sActivity.get().displayError(errorId);
+			} else {
+				activity.displayError(errorId);
 			}
 		}
 		stopSelf();

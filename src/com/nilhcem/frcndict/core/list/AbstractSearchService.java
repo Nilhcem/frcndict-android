@@ -23,7 +23,11 @@ public abstract class AbstractSearchService {
 	public abstract void detectAndSetSearchType(String search);
 
 	public void setAdapter(ListAdapter searchAdapter) {
-		mRefSearchAdapter = new WeakReference<ListAdapter>(searchAdapter);
+		if (searchAdapter == null) {
+			mRefSearchAdapter = null;
+		} else {
+			mRefSearchAdapter = new WeakReference<ListAdapter>(searchAdapter);
+		}
 	}
 
 	public int getSearchType() {
@@ -44,8 +48,12 @@ public abstract class AbstractSearchService {
 	public void runSearchThread(SearchActivity activity, String curPage, String search) { // curPage should be null if first page
 		stopPreviousThread();
 
-		if (mRefSearchAdapter != null && mRefSearchAdapter.get() != null) {
-			mLastTask = new SearchAsync(mRefSearchAdapter.get(), this, activity);
+		ListAdapter adapter = null;
+		if (mRefSearchAdapter != null) {
+			adapter = mRefSearchAdapter.get();
+		}
+		if (adapter != null) {
+			mLastTask = new SearchAsync(adapter, this, activity);
 			mLastTask.execute(curPage, search);
 		}
 	}

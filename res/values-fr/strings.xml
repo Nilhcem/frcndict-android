@@ -111,9 +111,5 @@
 	<string name="settings_dark_theme_sum">Utiliser un thème plus adapté à une utilisation la nuit</string>
 	<string name="settings_cat_advanced">Avancé</string>
 	<string name="settings_db_updates">Mises à jour</string>
-	<string name="settings_db_updates_sum">Modifier la fréquence de mise à jour du dictionnaire</string>
-	<string name="settings_db_updates_daily">Une fois par jour</string>
-	<string name="settings_db_updates_weekly">Une fois par semaine</string>
-	<string name="settings_db_updates_monthly">Une fois par mois</string>
-	<string name="settings_db_updates_never">Jamais</string>
+	<string name="settings_db_updates_sum">Vérifier régulièrement les mises à jour du dictionnaire</string>
 </resources>

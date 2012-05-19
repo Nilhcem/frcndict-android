@@ -30,9 +30,9 @@
 
 	<!-- Advanced (Database updates) -->
 	<PreferenceCategory android:title="@string/settings_cat_advanced">
-		<ListPreference android:title="@string/settings_db_updates"
+		<CheckBoxPreference android:title="@string/settings_db_updates"
+			android:defaultValue="false"
 			android:summary="@string/settings_db_updates_sum"
-			android:key="dbUpdates" android:defaultValue="4"
-			android:entries="@array/dbUpdatesEntries" android:entryValues="@array/dbUpdatesValues" />
+			android:key="checkDbUpdates" />
 	</PreferenceCategory>
 </PreferenceScreen>

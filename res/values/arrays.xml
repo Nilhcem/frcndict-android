@@ -87,18 +87,4 @@
 		<item>2</item>
 		<item>3</item>
 	</string-array>
-
-	<!-- Settings - Check for database updates -->
-	<string-array name="dbUpdatesEntries">
-		<item>@string/settings_db_updates_daily</item>
-		<item>@string/settings_db_updates_weekly</item>
-		<item>@string/settings_db_updates_monthly</item>
-		<item>@string/settings_db_updates_never</item>
-	</string-array>
-	<string-array name="dbUpdatesValues">
-		<item>1</item>
-		<item>2</item>
-		<item>3</item>
-		<item>4</item>
-	</string-array>
 </resources>

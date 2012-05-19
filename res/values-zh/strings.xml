@@ -111,9 +111,5 @@
 	<string name="settings_dark_theme_sum">改變為暗色主題</string>
 	<string name="settings_cat_advanced">其它</string>
 	<string name="settings_db_updates">查找更新</string>
-	<string name="settings_db_updates_sum">指定查找更新的時間</string>
-	<string name="settings_db_updates_daily">每天</string>
-	<string name="settings_db_updates_weekly">每周</string>
-	<string name="settings_db_updates_monthly">每月</string>
-	<string name="settings_db_updates_never">從不</string>
+	<string name="settings_db_updates_sum">定期檢查詞典更新</string>
 </resources>

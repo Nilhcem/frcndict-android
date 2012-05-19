@@ -111,9 +111,5 @@
 	<string name="settings_dark_theme_sum">Change the display to a dark theme</string>
 	<string name="settings_cat_advanced">Advanced</string>
 	<string name="settings_db_updates">Check for updates</string>
-	<string name="settings_db_updates_sum">Specify when to check for dictionary updates</string>
-	<string name="settings_db_updates_daily">Daily</string>
-	<string name="settings_db_updates_weekly">Weekly</string>
-	<string name="settings_db_updates_monthly">Monthly</string>
-	<string name="settings_db_updates_never">Never</string>
+	<string name="settings_db_updates_sum">Regularly check for dictionary updates</string>
 </resources>

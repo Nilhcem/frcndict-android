@@ -27,6 +27,7 @@ import com.nilhcem.frcndict.meaning.WordMeaningActivity;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
+@SuppressWarnings("deprecation")
 public final class ClickableHanzi extends LinearLayout {
 	private static final String END_FONT_TAG = "</font>";
 

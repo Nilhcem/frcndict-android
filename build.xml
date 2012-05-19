@@ -97,6 +97,7 @@
 			<filterset>
 				<filter token="DICT.URL" value="${dict.url}" />
 				<filter token="LOGGING.LEVEL" value="${logging.level}" />
+				<filter token="UPDATES.INTERVAL" value="${updates.day.interval}" />
 			</filterset>
 		</copy>
 	</target>

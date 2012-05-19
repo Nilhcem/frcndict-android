@@ -29,17 +29,12 @@ public final class SettingsActivity extends PreferenceActivity {
 
 	public static final String KEY_COLOR_HANZI = "hanziColoring";
 	public static final String KEY_DARK_THEME = "darkTheme";
+	public static final String KEY_DATABASE_UPDATES = "checkDbUpdates";
 
 	public static final String KEY_TEXT_SIZE = "textSize";
 	public static final String VAL_TEXT_SIZE_SMALL = "1";
 	public static final String VAL_TEXT_SIZE_MEDIUM = "2";
 	public static final String VAL_TEXT_SIZE_BIG = "3";
-
-	public static final String KEY_DATABASE_UPDATES = "dbUpdates";
-	public static final String VAL_DATABASE_UPDATES_DAILY = "1";
-	public static final String VAL_DATABASE_UPDATES_WEEKLY = "2";
-	public static final String VAL_DATABASE_UPDATES_MONTHLY = "3";
-	public static final String VAL_DATABASE_UPDATES_NEVER = "4";
 
 	// Other preferences
 	public static final int NB_ENTRIES_PER_LIST = 20;

@@ -26,7 +26,7 @@ import com.nilhcem.frcndict.updatedb.UpdateActivity;
  * If no, launches the import data activity
  */
 public final class CheckDataActivity extends Activity {
-	private static final long NB_MILLISEC_IN_A_DAY = 86400000l; //24 * 60 * 60 * 1000
+	private static final long NB_MILLISEC_IN_A_DAY = 86400000l; // 24 * 60 * 60 * 1000
 
 	@Override
 	protected void onResume() {
@@ -90,12 +90,13 @@ public final class CheckDataActivity extends Activity {
 		//If no update currently
 		if (ImportUpdateService.getInstance() == null
 				|| ImportUpdateService.getInstance().getStatus() == ImportUpdateService.STATUS_UNSTARTED) {
-			String updatePrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
-					.getString(SettingsActivity.KEY_DATABASE_UPDATES, SettingsActivity.VAL_DATABASE_UPDATES_NEVER);
 
-			if (!updatePrefs.equals(SettingsActivity.VAL_DATABASE_UPDATES_NEVER)) {
+			boolean checkForUpdates = PreferenceManager.getDefaultSharedPreferences(getBaseContext())
+					.getBoolean(SettingsActivity.KEY_DATABASE_UPDATES, false);
+
+			if (checkForUpdates) {
 				long curDate = getCurDateInMillisWithoutTimeValue();
-				boolean startUpdate = checkIfUpdateServiceShouldBeStarted(prefs, curDate, updatePrefs);
+				boolean startUpdate = checkIfUpdateServiceShouldBeStarted(prefs, curDate);
 
 				// Set new last update checked
 				SharedPreferences.Editor editor = prefs.edit();
@@ -119,7 +120,7 @@ public final class CheckDataActivity extends Activity {
 		return today.getTimeInMillis();
 	}
 
-	private boolean checkIfUpdateServiceShouldBeStarted(SharedPreferences prefs, long curDate, String updatePrefs) {
+	private boolean checkIfUpdateServiceShouldBeStarted(SharedPreferences prefs, long curDate) {
 		boolean startUpdate;
 		long lastTimeChecked = prefs.getLong(SettingsActivity.KEY_LAST_UPDATE_CHECKED, 0l);
 
@@ -127,11 +128,8 @@ public final class CheckDataActivity extends Activity {
 			startUpdate = true;
 		} else {
 			long daysBetween = (curDate - lastTimeChecked) / CheckDataActivity.NB_MILLISEC_IN_A_DAY;
-			startUpdate = ((daysBetween > 31) // monthly
-				|| (updatePrefs.equals(SettingsActivity.VAL_DATABASE_UPDATES_WEEKLY) && daysBetween > 7)
-				|| (updatePrefs.equals(SettingsActivity.VAL_DATABASE_UPDATES_DAILY) && daysBetween > 0));
+			startUpdate = (daysBetween > Config.CHECK_FOR_UPDATES_INTERVAL);
 		}
-
 		return startUpdate;
 	}
 }

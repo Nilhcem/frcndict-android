@@ -14,4 +14,7 @@ public final class Config {
 	public static final boolean LOG_WARN = LOGLEVEL > 1;
 	public static final boolean LOG_INFO = LOGLEVEL > 2;
 	public static final boolean LOG_DEBUG = LOGLEVEL > 3;
+
+	/** Checks for updates every @UPDATES.INTERVAL@ days*/
+	public static final int CHECK_FOR_UPDATES_INTERVAL = @UPDATES.INTERVAL@;
 }

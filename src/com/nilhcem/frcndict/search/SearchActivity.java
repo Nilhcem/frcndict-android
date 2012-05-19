@@ -127,8 +127,7 @@ public final class SearchActivity extends AbstractListActivity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
+		// No call for super(). Bug on API Level > 11
 		if (mAboutDialog != null && mAboutDialog.isShowing()) {
 			outState.putBoolean("about-displayed", true);
 			mAboutDialog.dismiss();

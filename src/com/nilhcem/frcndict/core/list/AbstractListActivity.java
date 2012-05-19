@@ -42,7 +42,7 @@ public abstract class AbstractListActivity extends AbstractDictActivity implemen
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
+		// No call for super(). Bug on API Level > 11
 		outState.putInt("cur-page", mEndlessScrollListener.getCurrentPage());
 		outState.putBoolean("loading", mEndlessScrollListener.isLoading());
 		outState.putInt("prev-total", mEndlessScrollListener.getPreviousTotal());

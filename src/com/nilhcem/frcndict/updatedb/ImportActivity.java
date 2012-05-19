@@ -61,8 +61,7 @@ public final class ImportActivity extends AbstractImportUpdateActivity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
+		// No call for super(). Bug on API Level > 11
 		if (mStorageDialog.isShowing()) {
 			outState.putBoolean("select-storage", true);
 			mStorageDialog.dismiss();

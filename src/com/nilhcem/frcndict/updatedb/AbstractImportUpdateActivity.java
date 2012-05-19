@@ -67,8 +67,7 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
+		// No call for super(). Bug on API Level > 11
 		mCompletedDialog.dismiss();
 		mErrorDialog.dismiss();
 		mUpdateDialog.dismiss();

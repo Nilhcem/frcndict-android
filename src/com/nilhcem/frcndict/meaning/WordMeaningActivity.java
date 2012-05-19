@@ -146,7 +146,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 			} else {
 				addSeparator = true;
 			}
-			sb.append(bullet).append(space).append(curMeaning);
+			sb.append(bullet).append(space).append(curMeaning.trim());
 		}
 
 		// If there are many meanings, put the title in plural form (instead of singular form)

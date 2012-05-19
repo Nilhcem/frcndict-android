@@ -31,7 +31,6 @@ To generate dictionary data, please see the **dbparser** git branch.
 Steps to do before releasing the application
 ---------------------------------------------
 
-- Open `AndroidManifest.xml` and set `android:debuggable="false"`
 - Open `ant.properties` and set `logging.level=0`
 - Launch `ant clean release`
 - Sign application and run `zipalign` (See Android Developers Documentation)

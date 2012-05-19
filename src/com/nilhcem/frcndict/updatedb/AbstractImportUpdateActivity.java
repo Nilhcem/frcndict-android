@@ -241,7 +241,9 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 		}
 
 		if (intent != null) {
-			intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			int flags = intent.getFlags();
+			flags |= Intent.FLAG_ACTIVITY_NO_ANIMATION;
+			intent.setFlags(flags);
 			overridePendingTransition(0, 0);
 			startActivity(intent);
 		}

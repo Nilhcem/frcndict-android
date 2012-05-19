@@ -1,10 +1,13 @@
 package com.nilhcem.frcndict.updatedb;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.View;
 
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.layout.ProgressBar;
+import com.nilhcem.frcndict.search.SearchActivity;
+import com.nilhcem.frcndict.utils.Compatibility;
 
 public final class UpdateActivity extends AbstractImportUpdateActivity {
 	private ProgressBar mBackupProgress;
@@ -24,7 +27,13 @@ public final class UpdateActivity extends AbstractImportUpdateActivity {
 		mCompletedListener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				stopActivityAndStartIntent(null);
+				int flags = Intent.FLAG_ACTIVITY_NEW_TASK;
+				Intent intent = new Intent(UpdateActivity.this, SearchActivity.class);
+				if (Compatibility.isCompatible(11)) {
+					flags |= Intent.FLAG_ACTIVITY_CLEAR_TASK;
+				}
+				intent.addFlags(flags);
+				stopActivityAndStartIntent(intent);
 			}
 		};
 	}

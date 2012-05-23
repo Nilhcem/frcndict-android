@@ -11,6 +11,7 @@ import java.net.URL;
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
 
 public final class HttpDownloader extends AbstractCancellableObservable {
+	private static final int GENERIC_SIZE = 6000000;
 	private final File mOutput;
 	private final URL mUrl;
 
@@ -28,6 +29,9 @@ public final class HttpDownloader extends AbstractCancellableObservable {
 		connection.connect();
 
 		int totalSize = connection.getContentLength();
+		if (totalSize == -1) { // Small hack if this field is not set
+			totalSize = HttpDownloader.GENERIC_SIZE;
+		}
 		FileOutputStream fos = new FileOutputStream(mOutput);
 		InputStream is = connection.getInputStream();
 		byte[] buffer = new byte[1024];

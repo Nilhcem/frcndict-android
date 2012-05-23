@@ -32,6 +32,14 @@ public final class ProgressBar extends RelativeLayout {
 	}
 
 	public void setProgress(Integer progress) {
+		// Range check
+		if (progress < 0) {
+			progress = 0;
+		}
+		if (progress > ProgressBar.MAX_PROGRESS) {
+			progress = ProgressBar.MAX_PROGRESS;
+		}
+
 		// Do not display 0%
 		if (progress != 0) {
 			mProgressBar.setProgress(progress);

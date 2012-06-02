@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -107,10 +108,10 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 			String starredDate = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_STARRED_DATE));
 
 			ChineseCharsHandler chineseCharsHandler = ChineseCharsHandler.getInstance();
-			if (pinyin.length() > 0) {
-				mPinyin.setText(chineseCharsHandler.formatPinyin(pinyin, mPrefs));
-			} else {
+			if (TextUtils.isEmpty(pinyin)) {
 				mPinyin.setVisibility(View.GONE); // hide pinyin if empty
+			} else {
+				mPinyin.setText(chineseCharsHandler.formatPinyin(pinyin, mPrefs));
 			}
 
 			mHanzi.setText(simplified, traditional, pinyin, mPrefs);

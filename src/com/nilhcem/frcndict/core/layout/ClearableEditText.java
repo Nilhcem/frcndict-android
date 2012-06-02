@@ -5,6 +5,7 @@ import java.util.Observer;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -62,10 +63,10 @@ public final class ClearableEditText extends RelativeLayout {
 		mEditText.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (s.length() > 0) {
-					mBtnClear.setVisibility(View.VISIBLE);
-				} else {
+				if (TextUtils.isEmpty(s)) {
 					mBtnClear.setVisibility(View.INVISIBLE);
+				} else {
+					mBtnClear.setVisibility(View.VISIBLE);
 				}
 				mObservable.notifyObservers(); // clear search results when text changes
 			}

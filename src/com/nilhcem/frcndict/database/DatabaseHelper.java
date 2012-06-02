@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteStatement;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.nilhcem.frcndict.core.Config;
@@ -270,7 +271,7 @@ public final class DatabaseHelper {
 		boolean isPinyin = false;
 
 		String formattedSearch = ChineseCharsHandler.getInstance().pinyinTonesToNb(search).replaceAll("[^a-zA-Z]", "");
-		if (!ChineseCharsHandler.isStringEmpty(formattedSearch)) {
+		if (!TextUtils.isEmpty(formattedSearch.trim())) {
 			Cursor c = mDb.rawQuery(String.format(DatabaseHelper.QUERY_IS_PINYIN, formattedSearch), null);
 			isPinyin = (c.getCount() > 0);
 			c.close();

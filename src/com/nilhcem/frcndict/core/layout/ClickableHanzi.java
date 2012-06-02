@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.ClipboardManager;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Display;
@@ -60,7 +61,7 @@ public final class ClickableHanzi extends LinearLayout {
 		} else {
 			String[] splittedArray = input.split("");
 			for (String curStr : splittedArray) {
-				if (curStr.length() > 0) {
+				if (!TextUtils.isEmpty(curStr)) {
 					splitted.add(curStr);
 				}
 			}

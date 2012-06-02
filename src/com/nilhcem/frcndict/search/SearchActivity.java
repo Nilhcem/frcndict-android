@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +33,6 @@ import com.nilhcem.frcndict.core.list.EndlessScrollListener;
 import com.nilhcem.frcndict.settings.OnPreferencesChangedListener;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.starred.StarredActivity;
-import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class SearchActivity extends AbstractListActivity {
 	private TextView mIntroText;
@@ -240,7 +240,7 @@ public final class SearchActivity extends AbstractListActivity {
 
 	private void runNewSearch(boolean clearSearchType) {
 		String search = mInputText.getText().toString().replace('*', '%'); // wildcard support
-		if (ChineseCharsHandler.isStringEmpty(search)) {
+		if (TextUtils.isEmpty(search.trim())) {
 			cancelToastIfNotNull(mSearchEmptyToast);
 			mSearchEmptyToast = Toast.makeText(SearchActivity.this, R.string.search_empty_text, Toast.LENGTH_SHORT);
 			mSearchEmptyToast.show();

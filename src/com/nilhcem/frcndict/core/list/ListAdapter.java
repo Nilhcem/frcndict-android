@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,10 +75,10 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 			chinese.setText(Html.fromHtml(charsHandler.formatHanzi(entry.getSimplified(),
 					entry.getTraditional(), entry.getPinyin() , mPrefs)));
 			String pinyinStr = charsHandler.formatPinyin(entry.getPinyin(), mPrefs);
-			if (pinyinStr.length() > 0) {
-				pinyin.setText(pinyinStr);
-			} else {
+			if (TextUtils.isEmpty(pinyinStr)) {
 				pinyin.setVisibility(View.GONE); // hide pinyin if empty
+			} else {
+				pinyin.setText(pinyinStr);
 			}
 			desc.setText(entry.getDesc());
 		}

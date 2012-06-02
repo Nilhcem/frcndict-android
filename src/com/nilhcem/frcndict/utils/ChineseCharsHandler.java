@@ -1,6 +1,7 @@
 package com.nilhcem.frcndict.utils;
 
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.nilhcem.frcndict.core.Config;
@@ -183,7 +184,7 @@ public final class ChineseCharsHandler {
 		// Determine the position of the hanzi [SIMP-TRAD or TRAD-SIMP]
 		String left;
 		String right;
-		if (traditional.length() == 0
+		if (TextUtils.isEmpty(traditional)
 			|| prefHanzi.equals(SettingsActivity.VAL_CHINESE_CHARS_SIMP)
 			|| prefHanzi.equals(SettingsActivity.VAL_CHINESE_CHARS_BOTH_ST)) {
 			left = simplified;
@@ -196,7 +197,7 @@ public final class ChineseCharsHandler {
 		// Only one displayed
 		if (prefHanzi.equals(SettingsActivity.VAL_CHINESE_CHARS_SIMP)
 			|| prefHanzi.equals(SettingsActivity.VAL_CHINESE_CHARS_TRAD)
-			|| traditional.length() == 0
+			|| TextUtils.isEmpty(traditional)
 			|| simplified.equalsIgnoreCase(traditional)) {
 			return (prefColorHanzi) ? addColorToHanzi(left, pinyin) : left;
 		} else { // Both are displayed
@@ -210,20 +211,6 @@ public final class ChineseCharsHandler {
 			}
 			return String.format(ChineseCharsHandler.FORMAT_HANZI_ST, left, right);
 		}
-	}
-
-	// Checks if a "trimmed" string is empty
-	public static boolean isStringEmpty(String str) {
-		boolean isEmpty = true;
-		int length = str.length();
-
-		for (int i = 0; i < length; i++) {
-			if (!Character.isWhitespace(str.charAt(i))) {
-				isEmpty = false;
-				break;
-			}
-		}
-		return isEmpty;
 	}
 
 	private String replaceSameHanziByDash(String base, String toReplace) {
@@ -249,7 +236,7 @@ public final class ChineseCharsHandler {
 	// surround hanzi with html color tags depending on their tones
 	private String addColorToHanzi(String hanzi, String pinyin) {
 		// if pinyin is missing, return normal hanzi
-		if (pinyin.length() == 0) {
+		if (TextUtils.isEmpty(pinyin)) {
 			return hanzi;
 		}
 

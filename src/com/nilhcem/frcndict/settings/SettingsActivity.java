@@ -2,12 +2,15 @@ package com.nilhcem.frcndict.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 
 import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractDictActivity;
+import com.nilhcem.frcndict.utils.FileHandler;
 
 public final class SettingsActivity extends PreferenceActivity {
 	// Shared preferences
@@ -39,6 +42,9 @@ public final class SettingsActivity extends PreferenceActivity {
 	// Other preferences
 	public static final int NB_ENTRIES_PER_LIST = 20;
 
+	private static final String KEY_ADVANCED = "advanced";
+	private static final String KEY_IMPORT_EXPORT = "importExport";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -48,6 +54,7 @@ public final class SettingsActivity extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.preferences);
 		prefs.registerOnSharedPreferenceChangeListener(((ApplicationController) getApplication())
 				.getOnPreferencesChangedListener());
+		removeImportExportIfNoSdCard();
 	}
 
 	@Override
@@ -69,5 +76,13 @@ public final class SettingsActivity extends PreferenceActivity {
 			index = 2;
 		}
 		return index;
+	}
+
+	private void removeImportExportIfNoSdCard() {
+		PreferenceCategory advanced = (PreferenceCategory) findPreference(SettingsActivity.KEY_ADVANCED);
+		Preference importExport = findPreference(SettingsActivity.KEY_IMPORT_EXPORT);
+		if (advanced != null && importExport != null && !FileHandler.isSdCardMounted()) {
+			advanced.removePreference(importExport);
+		}
 	}
 }

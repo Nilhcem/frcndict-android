@@ -295,15 +295,14 @@ public final class ImportUpdateService extends Service {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			DatabaseHelper db = DatabaseHelper.getInstance();
-			File dbPath = db.getDatabasePath();
+			File dbPath = DatabaseHelper.getInstance().getDatabasePath();
 
 			mRootDir = FileHandler.getAppRootDir(getApplication(), FileHandler.isDatabaseInstalledOnSDcard());
 			mXmlFile = new File(mRootDir, TEMP_XML_FILE);
 
 			// Backup starred words in the XML file
 			try {
-				mXmlWriter = new BackupXmlWriter(db, mXmlFile);
+				mXmlWriter = new BackupXmlWriter(mXmlFile);
 				mXmlWriter.addObserver(this);
 				mXmlWriter.start();
 			} catch (IOException ex) {
@@ -574,7 +573,7 @@ public final class ImportUpdateService extends Service {
 		protected Void doInBackground(Void... params) {
 			// Restore starred words from the XML file
 			try {
-				mXmlReader = new RestoreXmlReader(DatabaseHelper.getInstance(), mXmlFile);
+				mXmlReader = new RestoreXmlReader(mXmlFile);
 				mXmlReader.addObserver(this);
 				mXmlReader.start();
 			} catch (IOException ex) {

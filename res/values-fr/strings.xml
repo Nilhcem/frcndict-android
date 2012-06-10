@@ -114,4 +114,16 @@
 	<string name="settings_cat_advanced">Avancé</string>
 	<string name="settings_db_updates">Mises à jour</string>
 	<string name="settings_db_updates_sum">Vérifier régulièrement les mises à jour du dictionnaire</string>
+	<string name="settings_db_importexport">Sauvegarde / Restauration des données</string>
+	<string name="settings_db_importexport_sum">Importer ou exporter les favoris dans un fichier xml</string>
+
+	<!-- Backup / Restore starred words -->
+	<string name="backup_restore_backup">Sauvegarder sur la carte sd</string>
+	<string name="backup_restore_restore">Restaurer depuis un fichier xml</string>
+	<string name="backup_restore_nosdcard">Vous devez avoir une carte sd pour utiliser cette fonctionnalité</string>
+	<string name="backup_restore_processing">Traitement en cours. Veuillez patienter…</string>
+	<string name="backup_restore_saved">Fichier sauvegardé vers %s</string>
+	<string name="backup_restore_not_found">Le fichier %s n\'a pas été trouvé sur la carte sd</string>
+	<string name="backup_restore_restore_ok">Favoris restaurés avec succès</string>
+	<string name="backup_restore_restore_ko">Error lors de la restauration des favoris</string>
 </resources>

@@ -13,8 +13,12 @@ import android.os.Environment;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 
 public final class FileHandler {
+	public static final String SD_BACKUP_RESTORE_FILE = "cfdict.xml";
 	private static final String SD_PATH = "/Android/data/";
 	private static final String INTERNAL_PATH = "/data/";
+
+	private FileHandler() {
+	}
 
 	public static String readFile(File file) throws IOException {
 		FileInputStream stream = new FileInputStream(file);
@@ -53,5 +57,16 @@ public final class FileHandler {
 			return true;
 		}
 		return false;
+	}
+
+	public static boolean isSdCardMounted() {
+		return android.os.Environment.getExternalStorageState().equals(
+				android.os.Environment.MEDIA_MOUNTED);
+	}
+
+	public static File getBackupRestoreFile() {
+		File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+				+ "/" + FileHandler.SD_BACKUP_RESTORE_FILE);
+		return file;
 	}
 }

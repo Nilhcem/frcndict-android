@@ -8,10 +8,12 @@ import java.util.HashMap;
 
 import org.xmlpull.v1.XmlSerializer;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 import android.util.Xml;
 
+import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
 import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
@@ -21,13 +23,15 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 	public static final String XML_SUB_TAG = "entry";
 	public static final String XML_ENCODING = "UTF-8";
 	private static final String XML_MAIN_TAG = "starred";
+	private static final String XML_HEADER = "Backup file containing starred words for %s (https://play.google.com/store/apps/details?id=%s)";
 
 	private final DatabaseHelper mDb;
+	private String mHeaders = null;
 	private FileOutputStream mOutputStream;
 
-	public BackupXmlWriter(DatabaseHelper db, File xmlFile) {
+	public BackupXmlWriter(File xmlFile) {
 		super();
-		mDb = db;
+		mDb = DatabaseHelper.getInstance();
 
 		// Create FileOuputStream for xmlFile
 		try {
@@ -50,6 +54,12 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 				serializer.setOutput(mOutputStream, BackupXmlWriter.XML_ENCODING);
 				serializer.startDocument(BackupXmlWriter.XML_ENCODING, Boolean.TRUE);
 				serializer.setFeature("http://xmlpull.org/v1/doc/features.html#indent-output", true);
+
+				// Insert headers if any
+				if (mHeaders != null) {
+					serializer.comment(mHeaders);
+				}
+
 				serializer.startTag(null, BackupXmlWriter.XML_MAIN_TAG);
 
 				HashMap<String, Integer> columnsIndexCache = new HashMap<String, Integer>();
@@ -81,6 +91,12 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 		}
 		mDb.close();
         mOutputStream.close();
+	}
+
+	public void insertHeader(Context app) {
+		mHeaders = String.format(XML_HEADER,
+				app.getString(R.string.app_name),
+				app.getClass().getPackage().getName());
 	}
 
 	private void fillColumnsIndexCache(HashMap<String, Integer> cache, Cursor c) {

@@ -114,4 +114,16 @@
 	<string name="settings_cat_advanced">其它</string>
 	<string name="settings_db_updates">查找更新</string>
 	<string name="settings_db_updates_sum">定期檢查詞典更新</string>
+	<string name="settings_db_importexport">備份/還原 數據</string>
+	<string name="settings_db_importexport_sum">導入或導出已標記的單詞到xml文檔</string>
+
+	<!-- Backup / Restore starred words -->
+	<string name="backup_restore_backup">備份到安全數碼卡</string>
+	<string name="backup_restore_restore">從xml文檔中提取備份</string>
+	<string name="backup_restore_nosdcard">您需要一個安全數碼卡來使用本功能</string>
+	<string name="backup_restore_processing">處理中,請稍候…</string>
+	<string name="backup_restore_saved">已存儲 %s</string>
+	<string name="backup_restore_not_found">在安全數碼卡內未找到文檔 %s</string>
+	<string name="backup_restore_restore_ok">成功備份已標記的單詞</string>
+	<string name="backup_restore_restore_ko">在備份標記的單詞時出錯</string>
 </resources>

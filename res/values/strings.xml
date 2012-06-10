@@ -114,4 +114,16 @@
 	<string name="settings_cat_advanced">Advanced</string>
 	<string name="settings_db_updates">Check for updates</string>
 	<string name="settings_db_updates_sum">Regularly check for dictionary updates</string>
+	<string name="settings_db_importexport">Backup / Restore data</string>
+	<string name="settings_db_importexport_sum">Import or export starred words in a xml file</string>
+
+	<!-- Backup / Restore starred words -->
+	<string name="backup_restore_backup">Backup to sd card</string>
+	<string name="backup_restore_restore">Restore from xml file</string>
+	<string name="backup_restore_nosdcard">You must have a sdcard to use this feature</string>
+	<string name="backup_restore_processing">Processing. Please wait…</string>
+	<string name="backup_restore_saved">File saved in %s</string>
+	<string name="backup_restore_not_found">File cfdict.xml was not found in sdcard</string>
+	<string name="backup_restore_restore_ok">Starred words successfully restored</string>
+	<string name="backup_restore_restore_ko">Error while restoring starred words</string>
 </resources>

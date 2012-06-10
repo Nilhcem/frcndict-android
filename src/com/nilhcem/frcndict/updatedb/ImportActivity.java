@@ -4,11 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 
 import com.nilhcem.frcndict.CheckDataActivity;
 import com.nilhcem.frcndict.R;
+import com.nilhcem.frcndict.utils.FileHandler;
 
 public final class ImportActivity extends AbstractImportUpdateActivity {
 	private AlertDialog mStorageDialog;
@@ -20,8 +20,7 @@ public final class ImportActivity extends AbstractImportUpdateActivity {
 		mStartServiceListener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-			    String state = Environment.getExternalStorageState();
-			    if (Environment.MEDIA_MOUNTED.equals(state)) {
+				if (FileHandler.isSdCardMounted()) {
 					mStorageDialog.show();
 			    } else {
 					startProcess(Boolean.FALSE);

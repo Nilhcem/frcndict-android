@@ -26,9 +26,9 @@ public final class RestoreXmlReader extends AbstractCancellableObservable {
 	private final File mXmlFile;
 	private final DatabaseHelper mDb;
 
-	public RestoreXmlReader(DatabaseHelper db, File xmlFile) {
+	public RestoreXmlReader(File xmlFile) {
 		super();
-		mDb = db;
+		mDb = DatabaseHelper.getInstance();
 		mXmlFile = xmlFile;
 	}
 

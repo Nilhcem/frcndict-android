@@ -16,7 +16,7 @@
 			android:key="hanziColoring" />
 	</PreferenceCategory>
 
-	<!-- Appearance (Night mode) -->
+	<!-- Appearance (Text size - Night mode) -->
 	<PreferenceCategory android:title="@string/settings_cat_display">
 		<ListPreference android:title="@string/settings_text_size"
 			android:summary="@string/settings_text_size_sum"
@@ -28,11 +28,17 @@
 			android:key="darkTheme" />
 	</PreferenceCategory>
 
-	<!-- Advanced (Database updates) -->
-	<PreferenceCategory android:title="@string/settings_cat_advanced">
+	<!-- Advanced (Check for updates - Import/export starred words) -->
+	<PreferenceCategory
+	    android:key="advanced"
+	    android:title="@string/settings_cat_advanced">
 		<CheckBoxPreference android:title="@string/settings_db_updates"
 			android:defaultValue="false"
 			android:summary="@string/settings_db_updates_sum"
 			android:key="checkDbUpdates" />
+		<com.nilhcem.frcndict.core.layout.PrefsImportExportStarred
+		    android:key="importExport"
+		    android:title="@string/settings_db_importexport"
+			android:summary="@string/settings_db_importexport_sum" />
 	</PreferenceCategory>
 </PreferenceScreen>

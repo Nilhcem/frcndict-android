@@ -49,7 +49,7 @@ public final class CheckDataActivity extends Activity {
 			if (dbPath != null) {
 				DatabaseHelper dbHelper = DatabaseHelper.getInstance();
 				dbHelper.setDatabasePath(new File(dbPath));
-				importDatabase ^= dbHelper.isInitialized();
+				importDatabase = !dbHelper.isInitialized();
 			}
 
 			if (importDatabase) {
@@ -74,9 +74,11 @@ public final class CheckDataActivity extends Activity {
 		boolean isCompatible = true;
 
 		DatabaseHelper db = DatabaseHelper.getInstance();
-		db.open();
-		int installedDbVersion = Integer.parseInt(db.getDbVersion().split(DatabaseHelper.VERSION_SEPARATOR)[1]);
-		db.close();
+		int installedDbVersion = Tables.DATABASE_VERSION;
+		if (db.open()) {
+			installedDbVersion = Integer.parseInt(db.getDbVersion().split(DatabaseHelper.VERSION_SEPARATOR)[1]);
+			db.close();
+		}
 
 		// Force a mandatory update if previous database is not compatible with this program version
 		if (installedDbVersion != Tables.DATABASE_VERSION) {

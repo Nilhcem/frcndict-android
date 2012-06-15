@@ -166,16 +166,18 @@ public final class DatabaseHelper {
 	}
 
 	// "start using database"
-	public synchronized void open() {
+	public synchronized boolean open() {
+		boolean success = false;
 		if (Config.LOG_INFO) Log.i(DatabaseHelper.TAG, "[Open] Database currently used by " + mUsed + " process[es].");
-		if (++mUsed == 1) {
+		if (mDbPath != null && mDbPath.exists() && ++mUsed == 1) {
 			mDb = SQLiteDatabase.openDatabase(mDbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
 		}
+		return success;
 	}
 
 	// "stop using database"
 	public synchronized void close() {
-		if (--mUsed == 0) {
+		if (--mUsed <= 0) {
 			mDb.close();
 		}
 		if (Config.LOG_INFO) Log.i(DatabaseHelper.TAG, "[Close] Database still used by " + mUsed + " process[es].");

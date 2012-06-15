@@ -48,9 +48,12 @@ final class JavascriptInterface {
 
 	public String getDbVersion() {
 		DatabaseHelper db = DatabaseHelper.getInstance();
-		db.open();
-		String version = db.getDbVersion();
-		db.close();
+		String version = null;
+
+		if (db.open()) {
+			version = db.getDbVersion();
+			db.close();
+		}
 		return convertDbVersionToFormattedDateVersion(version);
 	}
 
@@ -65,7 +68,7 @@ final class JavascriptInterface {
 	}
 
 	private String convertDbVersionToFormattedDateVersion(String version) {
-		return (version.length() > 8)
+		return (version != null && version.length() > 8)
 			? new StringBuilder()
 			.append(version.substring(0, 4))
 			.append(JavascriptInterface.VERSION_SEPARATOR)

@@ -459,7 +459,12 @@ public final class ImportUpdateService extends Service {
 					String[] splitted = versionStr.split(DatabaseHelper.VERSION_SEPARATOR);
 
 					if (splitted.length > 1 && splitted[1] != null && splitted[1].length() > 0) {
-						int onlineVersion = Integer.parseInt(splitted[1]);
+						int onlineVersion = 0;
+						try {
+							onlineVersion = Integer.parseInt(splitted[1]);
+						} catch (NumberFormatException e) {
+							if (Config.LOG_ERROR) Log.e(DownloadFileAsync.TAG, "NumberFormatException", e);
+						}
 						if (Tables.DATABASE_VERSION != onlineVersion) {
 							if (Config.LOG_ERROR) {
 								Log.e(DownloadFileAsync.TAG, "Program is too old for this database");

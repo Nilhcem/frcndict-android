@@ -83,7 +83,12 @@ public class CheckForUpdatesService extends Service {
 						// Skip update notification
 						curVersionCode = Integer.MAX_VALUE;
 					}
-					int minVersionCode = Integer.parseInt(splitted[1]);
+					int minVersionCode = 0;
+					try {
+						minVersionCode = Integer.parseInt(splitted[1]);
+					} catch (NumberFormatException e) {
+						if (Config.LOG_ERROR) Log.e(CheckForUpdatesService.class.getSimpleName(), "", e);
+					}
 
 					// Check if database number differs
 					if (curVersionCode >= minVersionCode && !params[0].equals(splitted[0])) {

@@ -76,8 +76,13 @@ public final class CheckDataActivity extends Activity {
 		DatabaseHelper db = DatabaseHelper.getInstance();
 		int installedDbVersion = Tables.DATABASE_VERSION;
 		if (db.open()) {
-			installedDbVersion = Integer.parseInt(db.getDbVersion().split(DatabaseHelper.VERSION_SEPARATOR)[1]);
-			db.close();
+			try {
+				installedDbVersion = Integer.parseInt(db.getDbVersion().split(DatabaseHelper.VERSION_SEPARATOR)[1]);
+			} catch (NumberFormatException e) {
+				if (Config.LOG_ERROR) Log.e(CheckDataActivity.class.getSimpleName(), "", e);
+			} finally {
+				db.close();
+			}
 		}
 
 		// Force a mandatory update if previous database is not compatible with this program version

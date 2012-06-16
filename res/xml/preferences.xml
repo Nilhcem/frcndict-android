@@ -28,15 +28,19 @@
 			android:key="darkTheme" />
 	</PreferenceCategory>
 
-	<!-- Advanced (Check for updates - Import/export starred words) -->
+	<!-- Advanced (Speech synthesis - Check for updates - Import/export starred words) -->
 	<PreferenceCategory
 	    android:key="advanced"
 	    android:title="@string/settings_cat_advanced">
+		<com.nilhcem.frcndict.core.layout.prefs.PrefsInstallTTS
+		    android:key="installTTS"
+		    android:title="@string/settings_db_installtts"
+			android:summary="@string/settings_db_installtts_sum" />
 		<CheckBoxPreference android:title="@string/settings_db_updates"
 			android:defaultValue="false"
 			android:summary="@string/settings_db_updates_sum"
 			android:key="checkDbUpdates" />
-		<com.nilhcem.frcndict.core.layout.PrefsImportExportStarred
+		<com.nilhcem.frcndict.core.layout.prefs.PrefsImportExportStarred
 		    android:key="importExport"
 		    android:title="@string/settings_db_importexport"
 			android:summary="@string/settings_db_importexport_sum" />

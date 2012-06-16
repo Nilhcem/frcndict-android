@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 
 import android.app.Application;
 import android.os.Environment;
+import android.os.StatFs;
 
 import com.nilhcem.frcndict.database.DatabaseHelper;
 
@@ -16,6 +17,8 @@ public final class FileHandler {
 	public static final String SD_BACKUP_RESTORE_FILE = "cfdict.xml";
 	private static final String SD_PATH = "/Android/data/";
 	private static final String INTERNAL_PATH = "/data/";
+	private static final String VOICES_DIR = "/chinese-tts-data";
+	private static final int BYTES_IN_A_MB = 1048576; // 1048576 = Nb of bytes in a MB: 1 * 1024 (kb) * 1024 (mb)
 
 	private FileHandler() {
 	}
@@ -68,5 +71,43 @@ public final class FileHandler {
 		File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
 				+ "/" + FileHandler.SD_BACKUP_RESTORE_FILE);
 		return file;
+	}
+
+	public static File getVoicesDir() {
+		File file = null;
+
+		if (isSdCardMounted()) {
+			file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+				+ FileHandler.VOICES_DIR);
+		}
+		return file;
+	}
+
+	public static boolean areVoicesInstalled() {
+		boolean installed = false;
+
+		File voices = FileHandler.getVoicesDir();
+		if (voices != null) {
+			// Check if it contains some data
+			File mp3 = new File(voices, "zhang1.mp3");
+			if (mp3.isFile()) {
+				installed = true;
+			}
+		}
+		return installed;
+	}
+
+	/**
+	 * @return free space in external storage (in MB).
+	 */
+	public static double getFreeSpaceInExternalStorage() {
+		double freeSpace = 0;
+
+		if (isSdCardMounted()) {
+			StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+			double sdAvailSize = (double)stat.getAvailableBlocks() * (double)stat.getBlockSize();
+			freeSpace = sdAvailSize / FileHandler.BYTES_IN_A_MB;
+		}
+		return freeSpace;
 	}
 }

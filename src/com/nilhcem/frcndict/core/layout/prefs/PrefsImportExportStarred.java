@@ -1,4 +1,4 @@
-package com.nilhcem.frcndict.core.layout;
+package com.nilhcem.frcndict.core.layout.prefs;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +42,7 @@ public final class PrefsImportExportStarred extends Preference {
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 				builder.setTitle(R.string.settings_db_importexport);
-				builder.setItems(items,  new DialogInterface.OnClickListener() {
+				builder.setItems(items, new DialogInterface.OnClickListener() {
 					@Override
 					public synchronized void onClick(DialogInterface dialog, int which) {
 						if (which == 0) {

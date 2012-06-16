@@ -43,6 +43,7 @@ public final class SettingsActivity extends PreferenceActivity {
 	public static final int NB_ENTRIES_PER_LIST = 20;
 
 	private static final String KEY_ADVANCED = "advanced";
+	private static final String KEY_INSTALL_TTS = "installTTS";
 	private static final String KEY_IMPORT_EXPORT = "importExport";
 
 	@Override
@@ -55,6 +56,7 @@ public final class SettingsActivity extends PreferenceActivity {
 		prefs.registerOnSharedPreferenceChangeListener(((ApplicationController) getApplication())
 				.getOnPreferencesChangedListener());
 		removeImportExportIfNoSdCard();
+		removeInstallTtsIfNoFreeSpaceOnExternalStoreOrAlreadyInstalled();
 	}
 
 	@Override
@@ -83,6 +85,20 @@ public final class SettingsActivity extends PreferenceActivity {
 		Preference importExport = findPreference(SettingsActivity.KEY_IMPORT_EXPORT);
 		if (advanced != null && importExport != null && !FileHandler.isSdCardMounted()) {
 			advanced.removePreference(importExport);
+		}
+	}
+
+	/**
+	 * Remove option if voices are already installed or if available space on external storage < 100MB.
+	 */
+	private void removeInstallTtsIfNoFreeSpaceOnExternalStoreOrAlreadyInstalled() {
+		PreferenceCategory advanced = (PreferenceCategory) findPreference(SettingsActivity.KEY_ADVANCED);
+		Preference installTts = findPreference(SettingsActivity.KEY_INSTALL_TTS);
+
+		if (advanced != null && installTts != null
+				&& (FileHandler.getFreeSpaceInExternalStorage() < 100
+						|| FileHandler.areVoicesInstalled())) {
+			advanced.removePreference(installTts);
 		}
 	}
 }

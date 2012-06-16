@@ -74,6 +74,7 @@
 	<string name="meaning_copy_title">Choisissez…</string>
 	<string name="meaning_copy_text">Copier %s</string>
 	<string name="meaning_see_text">Voir la signification de %s\</string>
+	<string name="meaning_listen">Écouter %s</string>
 	<string name="meaning_copied">copié dans le presse papier</string>
 	<string name="meaning_no_result">Aucun résultat trouvé.</string>
 	<string name="meaning_no_result_press_back">\nAppuyez sur \"retour\" pour rechercher une autre définition.</string>
@@ -112,6 +113,8 @@
 	<string name="settings_dark_theme">Mode nuit</string>
 	<string name="settings_dark_theme_sum">Utiliser un thème plus adapté à une utilisation la nuit</string>
 	<string name="settings_cat_advanced">Avancé</string>
+	<string name="settings_db_installtts">Synthèse vocale</string>
+	<string name="settings_db_installtts_sum">Installer les voix chinoises</string>
 	<string name="settings_db_updates">Mises à jour</string>
 	<string name="settings_db_updates_sum">Vérifier régulièrement les mises à jour du dictionnaire</string>
 	<string name="settings_db_importexport">Sauvegarde / Restauration des données</string>
@@ -126,4 +129,9 @@
 	<string name="backup_restore_not_found">Le fichier %s n\'a pas été trouvé sur la carte sd</string>
 	<string name="backup_restore_restore_ok">Favoris restaurés avec succès</string>
 	<string name="backup_restore_restore_ko">Error lors de la restauration des favoris</string>
+
+	<!-- Install TTS data -->
+	<string name="install_tts_title">Installer la synthèse vocale</string>
+	<string name="install_tts_desc">Pour installer la synthèse vocale (TTS), vous devez installer et lancer l\'application (gratuite) \"Chinese Dictionary and TTS\".\n\nL\'application \"TTS\" téléchargera automatiquement les voix (10MO) sur la carte sd lors de son premier lancement.\n\nVeuillez noter qu\'une fois les voix téléchargées, vous pouvez désinstaller l\'application \"TTS\" à tout moment si vous le souhaitez. Les voix ne seront pas supprimées et pourront toujours être utilisées dans ce dictionnaire.</string>
+	<string name="install_tts_btn">Installer depuis Google Play</string>
 </resources>

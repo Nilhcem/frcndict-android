@@ -24,9 +24,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nilhcem.frcndict.R;
+import com.nilhcem.frcndict.meaning.HanziListener;
 import com.nilhcem.frcndict.meaning.WordMeaningActivity;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
+import com.nilhcem.frcndict.utils.FileHandler;
 
 @SuppressWarnings("deprecation")
 public final class ClickableHanzi extends LinearLayout {
@@ -36,9 +38,12 @@ public final class ClickableHanzi extends LinearLayout {
 	private static final Integer ACTION_COPY_CHAR = 1;
 	private static final Integer ACTION_COPY_SIMP = 2;
 	private static final Integer ACTION_COPY_TRAD = 3;
+	private static final Integer ACTION_LISTEN_HANZI = 4;
 
 	private String mSimplified;
+	private String mPinyin;
 	private String mTraditional;
+	private boolean mAddListenFeature;
 	private SharedPreferences mPrefs;
 	private List<TextView> mTextViews = new ArrayList<TextView>();
 
@@ -48,6 +53,7 @@ public final class ClickableHanzi extends LinearLayout {
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		this.setLayoutParams(params);
 		this.setOrientation(LinearLayout.VERTICAL);
+		mAddListenFeature = FileHandler.areVoicesInstalled();
 	}
 
 	private List<String> splitHanzi(String input) {
@@ -88,6 +94,7 @@ public final class ClickableHanzi extends LinearLayout {
 
 		mSimplified = simplified;
 		mTraditional = traditional;
+		mPinyin = pinyin;
 		mPrefs = prefs;
 
 		float hanziSize = getHanziSize(prefs);
@@ -159,42 +166,50 @@ public final class ClickableHanzi extends LinearLayout {
 		@Override
 		public void onClick(View v) {
 			int actionId = 0;
+			Context c = getContext();
 			final Map<Integer, Integer> actionsMap = new HashMap<Integer, Integer>();
 
 			final String selectedChar = Html.fromHtml(((TextView) v).getText().toString()).toString();
 			List<CharSequence> options = new ArrayList<CharSequence>();
 			if (mSimplified.length() > 1 && ChineseCharsHandler.getInstance().charIsChinese(selectedChar.charAt(0))) {
-				options.add(String.format(getContext().getString(R.string.meaning_see_text), selectedChar));
-				options.add(String.format(getContext().getString(R.string.meaning_copy_text), selectedChar));
+				options.add(String.format(c.getString(R.string.meaning_see_text), selectedChar));
+				options.add(String.format(c.getString(R.string.meaning_copy_text), selectedChar));
 				actionsMap.put(actionId++, ACTION_OPEN_CHAR);
 				actionsMap.put(actionId++, ACTION_COPY_CHAR);
 			}
 
 			String prefHanzi = mPrefs.getString(SettingsActivity.KEY_CHINESE_CHARS, SettingsActivity.VAL_CHINESE_CHARS_SIMP);
 			if (prefHanzi.equals(SettingsActivity.VAL_CHINESE_CHARS_TRAD)) {
-				options.add(String.format(getContext().getString(R.string.meaning_copy_text), mTraditional));
+				options.add(String.format(c.getString(R.string.meaning_copy_text), mTraditional));
+				addListenOption(options, c, mTraditional);
 				actionsMap.put(actionId++, ACTION_COPY_TRAD);
 			} else {
 				if ((prefHanzi.equals(SettingsActivity.VAL_CHINESE_CHARS_SIMP)) || mSimplified.equals(mTraditional)) {
-					options.add(String.format(getContext().getString(R.string.meaning_copy_text), mSimplified));
+					options.add(String.format(c.getString(R.string.meaning_copy_text), mSimplified));
+					addListenOption(options, c, mSimplified);
 					actionsMap.put(actionId++, ACTION_COPY_SIMP);
 				} else {
 					if (prefHanzi.equals(SettingsActivity.VAL_CHINESE_CHARS_BOTH_ST)) {
-						options.add(String.format(getContext().getString(R.string.meaning_copy_text), mSimplified));
-						options.add(String.format(getContext().getString(R.string.meaning_copy_text), mTraditional));
+						options.add(String.format(c.getString(R.string.meaning_copy_text), mSimplified));
+						options.add(String.format(c.getString(R.string.meaning_copy_text), mTraditional));
+						addListenOption(options, c, mSimplified);
 						actionsMap.put(actionId++, ACTION_COPY_SIMP);
 						actionsMap.put(actionId++, ACTION_COPY_TRAD);
 					} else {
-						options.add(String.format(getContext().getString(R.string.meaning_copy_text), mTraditional));
-						options.add(String.format(getContext().getString(R.string.meaning_copy_text), mSimplified));
+						options.add(String.format(c.getString(R.string.meaning_copy_text), mTraditional));
+						options.add(String.format(c.getString(R.string.meaning_copy_text), mSimplified));
+						addListenOption(options, c, mTraditional);
 						actionsMap.put(actionId++, ACTION_COPY_TRAD);
 						actionsMap.put(actionId++, ACTION_COPY_SIMP);
 					}
 				}
 			}
 			final CharSequence items[] = (CharSequence[]) options.toArray(new CharSequence[options.size()]);
+			if (mAddListenFeature) {
+				actionsMap.put(actionId++, ACTION_LISTEN_HANZI);
+			}
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+			AlertDialog.Builder builder = new AlertDialog.Builder(c);
 			builder.setTitle(R.string.meaning_copy_title);
 			builder.setItems(items, new DialogInterface.OnClickListener() {
 				@Override
@@ -204,6 +219,8 @@ public final class ClickableHanzi extends LinearLayout {
 						Intent intent = new Intent(getContext(), WordMeaningActivity.class);
 						intent.putExtra(WordMeaningActivity.HANZI_INTENT, selectedChar);
 						getContext().startActivity(intent);
+					} else if (action.equals(ACTION_LISTEN_HANZI)) {
+						new HanziListener().play(mPinyin);
 					} else { // Copy to clipboard
 						String toCopy;
 						if (action.equals(ACTION_COPY_SIMP)) {
@@ -224,4 +241,10 @@ public final class ClickableHanzi extends LinearLayout {
 			alert.show();
 		}
 	};
+
+	private void addListenOption(List<CharSequence> options, Context c, String hanzi) {
+		if (mAddListenFeature) {
+			options.add(String.format(c.getString(R.string.meaning_listen), hanzi));
+		}
+	}
 }

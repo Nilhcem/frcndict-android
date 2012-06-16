@@ -74,6 +74,7 @@
 	<string name="meaning_copy_title">請選擇…</string>
 	<string name="meaning_copy_text">復制 %s</string>
 	<string name="meaning_see_text">看%s的釋義</string>
+	<string name="meaning_listen">聽取發音 %s</string>
 	<string name="meaning_copied">復制到剪貼板</string>
 	<string name="meaning_no_result">未找到結果.</string>
 	<string name="meaning_no_result_press_back">\n請按返回鍵退出並查找新單詞.</string>
@@ -112,6 +113,8 @@
 	<string name="settings_dark_theme">夜間模式</string>
 	<string name="settings_dark_theme_sum">改變為暗色主題</string>
 	<string name="settings_cat_advanced">其它</string>
+	<string name="settings_db_installtts">中文語音合成</string>
+	<string name="settings_db_installtts_sum">安裝中文發音</string>
 	<string name="settings_db_updates">查找更新</string>
 	<string name="settings_db_updates_sum">定期檢查詞典更新</string>
 	<string name="settings_db_importexport">備份/還原 數據</string>
@@ -126,4 +129,9 @@
 	<string name="backup_restore_not_found">在安全數碼卡內未找到文檔 %s</string>
 	<string name="backup_restore_restore_ok">成功備份已標記的單詞</string>
 	<string name="backup_restore_restore_ko">在備份標記的單詞時出錯</string>
+
+	<!-- Install TTS data -->
+	<string name="install_tts_title">安裝語音合成數據</string>
+	<string name="install_tts_desc">您需要安裝並打開此應用程序\"Chinese Dictionary and TTS\" (免費) 以啟用語音合成載體.\n\n此應用程序將在被第一次使用時自動將它的發音數據(10MB)下載到您的存儲卡上.\n\n注意發音數據一經下載，您可以隨時卸載\"TTS\"程序而不影響此數據在辭典中的使用.</string>
+	<string name="install_tts_btn">從Google Play安裝</string>
 </resources>

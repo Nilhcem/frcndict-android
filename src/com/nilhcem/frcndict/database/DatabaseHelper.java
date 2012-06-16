@@ -169,8 +169,11 @@ public final class DatabaseHelper {
 	public synchronized boolean open() {
 		boolean success = false;
 		if (Config.LOG_INFO) Log.i(DatabaseHelper.TAG, "[Open] Database currently used by " + mUsed + " process[es].");
-		if (mDbPath != null && mDbPath.exists() && ++mUsed == 1) {
-			mDb = SQLiteDatabase.openDatabase(mDbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
+		if (mDbPath != null && mDbPath.exists()) {
+			if (++mUsed == 1) {
+				mDb = SQLiteDatabase.openDatabase(mDbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
+			}
+			success = true;
 		}
 		return success;
 	}

@@ -74,6 +74,7 @@
 	<string name="meaning_copy_title">Select…</string>
 	<string name="meaning_copy_text">Copy %s</string>
 	<string name="meaning_see_text">See %s\'s meaning</string>
+	<string name="meaning_see_stroke">See %s\'s stroke order</string>
 	<string name="meaning_listen">Listen %s</string>
 	<string name="meaning_copied">copied to clipboard</string>
 	<string name="meaning_no_result">No result found.</string>

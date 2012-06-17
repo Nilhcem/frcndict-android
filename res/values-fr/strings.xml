@@ -74,6 +74,7 @@
 	<string name="meaning_copy_title">Choisissez…</string>
 	<string name="meaning_copy_text">Copier %s</string>
 	<string name="meaning_see_text">Voir la signification de %s\</string>
+	<string name="meaning_see_stroke">Voir le tracé de %s</string>
 	<string name="meaning_listen">Écouter %s</string>
 	<string name="meaning_copied">copié dans le presse papier</string>
 	<string name="meaning_no_result">Aucun résultat trouvé.</string>

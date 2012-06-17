@@ -74,6 +74,7 @@
 	<string name="meaning_copy_title">請選擇…</string>
 	<string name="meaning_copy_text">復制 %s</string>
 	<string name="meaning_see_text">看%s的釋義</string>
+	<string name="meaning_see_stroke">看%s的筆順</string>
 	<string name="meaning_listen">聽取發音 %s</string>
 	<string name="meaning_copied">復制到剪貼板</string>
 	<string name="meaning_no_result">未找到結果.</string>

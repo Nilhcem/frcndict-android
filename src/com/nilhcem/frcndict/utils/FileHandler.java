@@ -18,6 +18,8 @@ public final class FileHandler {
 	private static final String SD_PATH = "/Android/data/";
 	private static final String INTERNAL_PATH = "/data/";
 	private static final String VOICES_DIR = "/chinese-tts-data";
+	private static final String STROKES_DIR = "/chinese-stroke-data";
+	private static final String STROKES_EXT = ".gif";
 	private static final int BYTES_IN_A_MB = 1048576; // 1048576 = Nb of bytes in a MB: 1 * 1024 (kb) * 1024 (mb)
 
 	private FileHandler() {
@@ -81,6 +83,26 @@ public final class FileHandler {
 				+ FileHandler.VOICES_DIR);
 		}
 		return file;
+	}
+
+	public static File getStrokesDir() {
+		File file = null;
+
+		if (isSdCardMounted()) {
+			file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+				+ FileHandler.STROKES_DIR);
+		}
+		return file;
+	}
+
+	public static File getStrokesFile(String hanzi) {
+		File strokeFile = null;
+
+		File strokeDir = FileHandler.getStrokesDir();
+		if (strokeDir != null) {
+			strokeFile = new File(strokeDir, String.format("%s%s", hanzi, FileHandler.STROKES_EXT));
+		}
+		return strokeFile;
 	}
 
 	public static boolean areVoicesInstalled() {

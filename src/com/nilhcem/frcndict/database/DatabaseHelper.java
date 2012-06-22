@@ -180,7 +180,7 @@ public final class DatabaseHelper {
 
 	// "stop using database"
 	public synchronized void close() {
-		if (--mUsed <= 0) {
+		if (--mUsed <= 0 && mDb != null) {
 			mDb.close();
 		}
 		if (Config.LOG_INFO) Log.i(DatabaseHelper.TAG, "[Close] Database still used by " + mUsed + " process[es].");
@@ -334,16 +334,23 @@ public final class DatabaseHelper {
 	}
 
 	public long getNbStarred() {
-		// Create query
-		StringBuilder query = new StringBuilder("SELECT count(`")
-			.append(Tables.ENTRIES_KEY_ROWID)
-			.append("`) FROM `")
-			.append(Tables.ENTRIES_TABLE_NAME)
-			.append("` WHERE `").append(Tables.ENTRIES_KEY_STARRED_DATE)
-			.append("` IS NOT NULL");
+		long nbStarred;
 
-		SQLiteStatement statement = mDb.compileStatement(query.toString());
-		return statement.simpleQueryForLong();
+		if (mDb == null) {
+			nbStarred = 0;
+		} else {
+			// Create query
+			StringBuilder query = new StringBuilder("SELECT count(`")
+				.append(Tables.ENTRIES_KEY_ROWID)
+				.append("`) FROM `")
+				.append(Tables.ENTRIES_TABLE_NAME)
+				.append("` WHERE `").append(Tables.ENTRIES_KEY_STARRED_DATE)
+				.append("` IS NOT NULL");
+
+			SQLiteStatement statement = mDb.compileStatement(query.toString());
+			nbStarred = statement.simpleQueryForLong();
+		}
+		return nbStarred;
 	}
 
 	public Cursor getAllStarred() {

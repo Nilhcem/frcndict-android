@@ -1,0 +1,64 @@
+package com.nilhcem.frcndict.utils;
+
+import java.util.IllegalFormatException;
+
+import com.nilhcem.frcndict.core.Config;
+
+public final class Log {
+	private static final boolean LOG_ERROR = Config.LOGLEVEL > 0;
+	private static final boolean LOG_WARN = Config.LOGLEVEL > 1;
+	private static final boolean LOG_INFO = Config.LOGLEVEL > 2;
+	private static final boolean LOG_DEBUG = Config.LOGLEVEL > 3;
+
+	private Log() {
+		throw new UnsupportedOperationException();
+	}
+
+	public static void d(String tag, String msgFormat, Object... args) {
+		if (LOG_DEBUG) {
+			try {
+				android.util.Log.d(tag, String.format(msgFormat, args));
+			} catch (NullPointerException e) {
+				// Do nothing
+			} catch (IllegalFormatException e) {
+				android.util.Log.d(tag, msgFormat);
+			}
+		}
+	}
+
+	public static void i(String tag, String msgFormat, Object... args) {
+		if (LOG_INFO) {
+			try {
+				android.util.Log.i(tag, String.format(msgFormat, args));
+			} catch (NullPointerException e) {
+				// Do nothing
+			} catch (IllegalFormatException e) {
+				android.util.Log.i(tag, msgFormat);
+			}
+		}
+	}
+
+	public static void e(String tag, String msgFormat, Object... args) {
+		if (LOG_ERROR) {
+			try {
+				android.util.Log.e(tag, String.format(msgFormat, args));
+			} catch (NullPointerException e) {
+				// Do nothing
+			} catch (IllegalFormatException e) {
+				android.util.Log.e(tag, msgFormat);
+			}
+		}
+	}
+
+	public static void e(String tag, Throwable t, String msgFormat, Object... args) {
+		if (LOG_ERROR) {
+			try {
+				android.util.Log.e(tag, String.format(msgFormat, args), t);
+			} catch (NullPointerException e) {
+				// Do nothing
+			} catch (IllegalFormatException e) {
+				android.util.Log.e(tag, msgFormat, t);
+			}
+		}
+	}
+}

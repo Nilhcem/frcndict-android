@@ -14,6 +14,7 @@ import android.os.StatFs;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 
 public final class FileHandler {
+	public static final String EXTERNAL_DICT_PATH = "cfdict.zip";
 	public static final String SD_BACKUP_RESTORE_FILE = "cfdict.xml";
 	private static final String SD_PATH = "/Android/data/";
 	private static final String INTERNAL_PATH = "/data/";
@@ -23,6 +24,7 @@ public final class FileHandler {
 	private static final int BYTES_IN_A_MB = 1048576; // 1048576 = Nb of bytes in a MB: 1 * 1024 (kb) * 1024 (mb)
 
 	private FileHandler() {
+		throw new UnsupportedOperationException();
 	}
 
 	public static String readFile(File file) throws IOException {
@@ -72,6 +74,16 @@ public final class FileHandler {
 	public static File getBackupRestoreFile() {
 		File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
 				+ "/" + FileHandler.SD_BACKUP_RESTORE_FILE);
+		return file;
+	}
+
+	public static File getDictionaryFileOnExternalStorage() {
+		File file = null;
+
+		if (isSdCardMounted()) {
+			file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+				+ "/" + FileHandler.EXTERNAL_DICT_PATH);
+		}
 		return file;
 	}
 

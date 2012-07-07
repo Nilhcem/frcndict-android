@@ -97,7 +97,8 @@
 			<filterset>
 				<filter token="DICT.URL" value="${dict.url}" />
 				<filter token="LOGGING.LEVEL" value="${logging.level}" />
-				<filter token="UPDATES.INTERVAL" value="${updates.day.interval}" />
+				<filter token="GCM.SENDER.ID" value="${gcm.sender.id}" />
+				<filter token="GCM.SERVER.URL" value="${gcm.server.url}" />
 			</filterset>
 		</copy>
 	</target>

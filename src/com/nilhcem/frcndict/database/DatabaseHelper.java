@@ -169,7 +169,15 @@ public final class DatabaseHelper {
 	public synchronized boolean open() {
 		boolean success = false;
 		if (Config.LOG_INFO) Log.i(DatabaseHelper.TAG, "[Open] Database currently used by " + mUsed + " process[es].");
-		if (mDbPath != null && mDbPath.exists()) {
+		if (mDbPath == null) {
+			if (Config.LOG_ERROR) Log.e(TAG, "mDbPath is null");
+		} else if (!mDbPath.isFile()) {
+			if (Config.LOG_ERROR) Log.e(TAG, "mDbPath doesn't exist or is not a file");
+		} else {
+			// Should not happen, just to make sure
+			if (mDb == null) {
+				mUsed = 0;
+			}
 			if (++mUsed == 1) {
 				mDb = SQLiteDatabase.openDatabase(mDbPath.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
 			}
@@ -184,25 +192,6 @@ public final class DatabaseHelper {
 			mDb.close();
 		}
 		if (Config.LOG_INFO) Log.i(DatabaseHelper.TAG, "[Close] Database still used by " + mUsed + " process[es].");
-	}
-
-	// returns true if database exists
-	public boolean isInitialized() {
-		boolean initialized = false;
-
-		if (mDbPath != null && mDbPath.exists()) {
-			open();
-			try {
-				mDb.query(Tables.ENTRIES_TABLE_NAME, new String[] {
-						Tables.ENTRIES_KEY_ROWID }, null, null, null, null, null);
-				initialized = true;
-			} catch (SQLiteException exc) {
-				//initialized = false;
-			} finally {
-				close();
-			}
-		}
-		return initialized;
 	}
 
 	public Cursor findById(int id) {
@@ -220,15 +209,28 @@ public final class DatabaseHelper {
 		return id;
 	}
 
+	/**
+	 * Returns the database version, or {@code null} if database is not initialized.
+	 */
 	public String getDbVersion() {
 		String dbVersion = null;
 
-		Cursor c = mDb.query(Tables.METADATA_TABLE_NAME, new String[] {Tables.METADATA_KEY_VERSION},
-				null, null, null, null, null, DatabaseHelper.LIMIT_1);
-		if (c.moveToFirst()) {
-			dbVersion = c.getString(c.getColumnIndex(Tables.METADATA_KEY_VERSION));
+		if (mDbPath != null) {
+			Cursor c = null;
+			try {
+				c = mDb.query(Tables.METADATA_TABLE_NAME, new String[] {Tables.METADATA_KEY_VERSION},
+						null, null, null, null, null, DatabaseHelper.LIMIT_1);
+				if (c.moveToFirst()) {
+					dbVersion = c.getString(c.getColumnIndex(Tables.METADATA_KEY_VERSION));
+				}
+			} catch (SQLiteException e) {
+				dbVersion = null;
+			} finally {
+				if (c != null) {
+					c.close();
+				}
+			}
 		}
-		c.close();
 		return dbVersion;
 	}
 

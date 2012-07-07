@@ -13,9 +13,11 @@ import android.widget.TextView;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractDictActivity;
 import com.nilhcem.frcndict.core.layout.ProgressBar;
+import com.nilhcem.frcndict.utils.FileHandler;
 
 public abstract class AbstractImportUpdateActivity extends Activity {
 	protected boolean mImport; // true if import, false if update
+	protected boolean mLocalInstall; // true if database should be installed locally (not from Internet)
 	protected View.OnClickListener mStartServiceListener;
 	protected DialogInterface.OnClickListener mCompletedListener;
 
@@ -34,15 +36,19 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 
 	private AlertDialog mCompletedDialog;
 	private AlertDialog mErrorDialog;
+	private AlertDialog mErrorLocalDialog;
 	private AlertDialog mUpdateDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// Get intent extras
+		mLocalInstall = getIntent().getBooleanExtra(ImportUpdateService.INTENT_LOCAL_INSTALL, false);
+
+		// Init views
 		AbstractDictActivity.checkForNightModeTheme(this, null);
 		setContentView(R.layout.import_update_data);
-
 		initWelcomeTitle();
 		initDialogs();
 		initButtons();
@@ -70,6 +76,7 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 		// No call for super(). Bug on API Level > 11
 		mCompletedDialog.dismiss();
 		mErrorDialog.dismiss();
+		mErrorLocalDialog.dismiss();
 		mUpdateDialog.dismiss();
 	}
 
@@ -83,6 +90,8 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 		if (errorId != 0) {
 			if (errorId == R.string.import_err_too_old) {
 				mUpdateDialog.show();
+			} else if (errorId == R.string.import_err_wrong_dictionary_file_local) {
+				mErrorLocalDialog.show();
 			} else {
 				mErrorDialog.setMessage(getString(errorId));
 				mErrorDialog.show();
@@ -103,7 +112,13 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 				? ImportUpdateService.STATUS_UNSTARTED : ImportUpdateService.getInstance().getStatus();
 
 		if (status == ImportUpdateService.STATUS_UNSTARTED) {
-			mImportMessage.setText(mImport ? R.string.import_welcome_msg : R.string.update_welcome_msg);
+			if (mLocalInstall) {
+				mImportMessage.setText(String.format(getString(
+						mImport ? R.string.import_welcome_msg_local : R.string.update_welcome_msg_local),
+						FileHandler.EXTERNAL_DICT_PATH));
+			} else {
+				mImportMessage.setText(mImport ? R.string.import_welcome_msg : R.string.update_welcome_msg);
+			}
 			mStartLayout.setVisibility(View.VISIBLE);
 			mProgressLayout.setVisibility(View.GONE);
 		} else {
@@ -151,6 +166,14 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 				}
 			})
 			.setNegativeButton(R.string.import_err_cancel, exitClickListener)
+			.create();
+
+		mErrorLocalDialog = new AlertDialog.Builder(this)
+			.setTitle(R.string.import_err_dialog_title)
+			.setMessage(R.string.import_err_wrong_dictionary_file_local)
+			.setIcon(R.drawable.ic_delete)
+			.setCancelable(false)
+			.setNegativeButton(R.string.import_err_exit, exitClickListener)
 			.create();
 
 		mUpdateDialog = new AlertDialog.Builder(this)
@@ -220,6 +243,7 @@ public abstract class AbstractImportUpdateActivity extends Activity {
 	protected void startProcess(Boolean installOnSdcard) {
 		Intent intent = new Intent(this, ImportUpdateService.class);
 		intent.putExtra(ImportUpdateService.INTENT_IMPORT_KEY, mImport);
+		intent.putExtra(ImportUpdateService.INTENT_LOCAL_INSTALL, mLocalInstall);
 
 		if (mImport) {
 			intent.putExtra(ImportUpdateService.INTENT_SDCARD_KEY, installOnSdcard);

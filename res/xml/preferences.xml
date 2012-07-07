@@ -37,7 +37,7 @@
 		    android:title="@string/settings_db_installtts"
 			android:summary="@string/settings_db_installtts_sum" />
 		<CheckBoxPreference android:title="@string/settings_db_updates"
-			android:defaultValue="false"
+			android:defaultValue="true"
 			android:summary="@string/settings_db_updates_sum"
 			android:key="checkDbUpdates" />
 		<com.nilhcem.frcndict.core.layout.prefs.PrefsImportExportStarred

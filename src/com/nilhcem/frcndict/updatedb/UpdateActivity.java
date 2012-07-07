@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 
+import com.nilhcem.frcndict.CheckDataActivity;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.layout.ProgressBar;
 import com.nilhcem.frcndict.search.SearchActivity;
@@ -86,6 +87,8 @@ public final class UpdateActivity extends AbstractImportUpdateActivity {
 	@Override
 	protected void onCancelProgressButtonClicked() {
 		super.onCancelProgressButtonClicked();
-		CheckForUpdatesService.displayUpdateNotification(this);
+		if (!mLocalInstall) {
+			CheckDataActivity.displayUpdateNotification(this);
+		}
 	}
 }

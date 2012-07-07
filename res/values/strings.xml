@@ -7,8 +7,9 @@
 	<string name="import_service_label">Dictionary import / update</string>
 	<string name="import_welcome_title">Welcome</string>
 	<string name="import_welcome_msg">The dictionary needs to be downloaded first.\nPlease make sure your device is connected to the Internet.\n6.6 MB will be downloaded and about 25 MB will be needed during the installation process.\n\nDo you want to start the download now?</string>
-	<string name="import_processing_msg">Downloading dictionary data (6.6M).\nPlease wait…</string>
-	<string name="import_start_service_btn">Download</string>
+	<string name="import_welcome_msg_local">The dictionary from the external storage will be installed.\nAbout 25 MB will be needed during the installation process.\nAfter the installation, the %s file will be deleted automatically from your external storage.\n\nDo you want to start the installation now?</string>
+	<string name="import_processing_msg">Installing dictionary data (6.6M).\nPlease wait…</string>
+	<string name="import_start_service_btn">Install</string>
 	<string name="import_quit_activity_btn">Exit</string>
 	<string name="import_done">Done</string>
 	<string name="import_download_text">Downloading dictionary…</string>
@@ -25,8 +26,10 @@
 	<string name="import_err_too_old_update">Open Google Play Store to update</string>
 	<string name="import_err_cannot_download">Cannot download the dictionary.\nPlease make sure your device is connected to the Internet and try again.</string>
 	<string name="import_err_wrong_dictionary_file">The dictionary was not properly downloaded.\nPlease try again.</string>
+	<string name="import_err_wrong_dictionary_file_local">The dictionary file is not valid.</string>
 	<string name="import_err_retry">Retry</string>
 	<string name="import_err_cancel">Cancel</string>
+	<string name="import_err_exit">Exit</string>
 	<string name="import_cancel_btn">Cancel</string>
 	<string name="import_notification_import_title">Importing CN/FR dictionary data</string>
 	<string name="import_notification_import_msg">Click to see progress</string>
@@ -36,9 +39,9 @@
 	<string name="import_notification_failed_msg">Click to see the reason and try again</string>
 
 	<!-- Update data -->
-	<string name="update_service_label">Check for updates</string>
 	<string name="update_welcome_title">Update dictionary</string>
 	<string name="update_welcome_msg">A dictionary update is available.\nPlease make sure your device is connected to the Internet.\n6.6 MB will be downloaded and about 25 MB will be needed during the update process.\n\nDo you want to start the update now?</string>
+	<string name="update_welcome_msg_local">A dictionary update is available.\nAbout 25 MB will be needed during the update process.\nAfter the update, the %s file will be deleted automatically from your external storage.\n\nDo you want to start the update now?</string>
 	<string name="update_processing_msg">Updating dictionary data (6.6M).\nPlease wait…</string>
 	<string name="update_start_service_btn">Update</string>
 	<string name="update_quit_activity_btn">Cancel</string>
@@ -116,8 +119,8 @@
 	<string name="settings_cat_advanced">Advanced</string>
 	<string name="settings_db_installtts">Speech synthesis</string>
 	<string name="settings_db_installtts_sum">Install Chinese voices</string>
-	<string name="settings_db_updates">Check for updates</string>
-	<string name="settings_db_updates_sum">Regularly check for dictionary updates</string>
+	<string name="settings_db_updates">Dictionary updates</string>
+	<string name="settings_db_updates_sum">Be notified when an update is available</string>
 	<string name="settings_db_importexport">Backup / Restore data</string>
 	<string name="settings_db_importexport_sum">Import or export starred words in a xml file</string>
 
@@ -135,4 +138,10 @@
 	<string name="install_tts_title">Install Speech Synthesis data</string>
 	<string name="install_tts_desc">You need to install and open the \"Chinese Dictionary and TTS\" (free) application to enable Speech Synthesis (TTS) support.\n\nThe \"TTS\" application will automatically download the voice data (10MB) on your sdcard at the first launch.\n\nNote that once the voice data are downloaded, you can uninstall the \"TTS\" application anytime you want. Voice data will be kept and can still be used with this dictionary.</string>
 	<string name="install_tts_btn">Install from Google Play</string>
+
+	<!-- Local dictionary installation -->
+	<string name="install_local_title">Install local dictionary</string>
+	<string name="install_local_desc">A dictionary file was found on the external storage. Do you want to install this dictionary?\n\nTo remove this alert, delete the %s file on your external storage</string>
+	<string name="install_local_yes">Yes</string>
+	<string name="install_local_no">No</string>
 </resources>

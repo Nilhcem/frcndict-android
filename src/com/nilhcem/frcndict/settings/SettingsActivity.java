@@ -7,16 +7,17 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 
+import com.google.android.gcm.GCMRegistrar;
 import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractDictActivity;
+import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.utils.FileHandler;
 
 public final class SettingsActivity extends PreferenceActivity {
 	// Shared preferences
 	public static final String PREFS_NAME = "SharedPrefs";
 	public static final String KEY_DB_PATH = "dbPath";
-	public static final String KEY_LAST_UPDATE_CHECKED = "lastUpdateChecked";
 
 	public static final String KEY_CHINESE_CHARS = "chineseChars";
 	public static final String VAL_CHINESE_CHARS_SIMP = "1";
@@ -48,13 +49,14 @@ public final class SettingsActivity extends PreferenceActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		AbstractDictActivity.checkForNightModeTheme(this, prefs);
 
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
 		prefs.registerOnSharedPreferenceChangeListener(((ApplicationController) getApplication())
 				.getOnPreferencesChangedListener());
+		removePushUpdatesIfNotCompatible();
 		removeImportExportIfNoSdCard();
 		removeInstallTtsIfNoFreeSpaceOnExternalStoreOrAlreadyInstalled();
 	}
@@ -78,6 +80,25 @@ public final class SettingsActivity extends PreferenceActivity {
 			index = 2;
 		}
 		return index;
+	}
+
+	private void removePushUpdatesIfNotCompatible() {
+		boolean isCompatible = Config.isGcmEnabled();
+		if (isCompatible) {
+			try {
+				GCMRegistrar.checkDevice(this);
+			} catch (UnsupportedOperationException e) {
+				isCompatible = false;
+			}
+		}
+
+		if (!isCompatible) {
+			PreferenceCategory advanced = (PreferenceCategory) findPreference(SettingsActivity.KEY_ADVANCED);
+			Preference pushUpdates = findPreference(SettingsActivity.KEY_DATABASE_UPDATES);
+			if (advanced != null && pushUpdates != null) {
+				advanced.removePreference(pushUpdates);
+			}
+		}
 	}
 
 	private void removeImportExportIfNoSdCard() {

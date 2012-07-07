@@ -44,16 +44,19 @@ public final class ImportUpdateService extends Service {
 	private int mCurStatus; // activity status, see STATUS_*
 	private int mCurErrorId; //error string id or 0 if no error
 	private boolean mImport; //import or update
+	private boolean mLocalInstall; // true if database should be installed locally (not from Internet)
 	private int[] mProgressPercents = new int[ImportUpdateService.PROGRESS_BAR_RESTORE + 1]; // percent of each progressbar, see PROGRESS_BAR_* for idx
 
 	// Intent keys
 	public static final String INTENT_IMPORT_KEY = "is-import";
 	public static final String INTENT_SDCARD_KEY = "install-on-sdcard";
+	public static final String INTENT_LOCAL_INSTALL = "local-install";
 
 	// File names
 	private static final String TEMP_XML_FILE = "backup.xml";
 	private static final String TEMP_ZIP_FILE = "download.tmp";
 	private static final String TEMP_MD5_FILE = "md5sum";
+	private static final String VERSION_FILE = "version";
 
 	// Status (sorted)
 	public static final int STATUS_UNSTARTED = 0;
@@ -97,8 +100,10 @@ public final class ImportUpdateService extends Service {
 
 		if (intent == null) {
 			mImport = false;
+			mLocalInstall = false;
 		} else {
 			mImport = intent.getBooleanExtra(ImportUpdateService.INTENT_IMPORT_KEY, true);
+			mLocalInstall = intent.getBooleanExtra(ImportUpdateService.INTENT_LOCAL_INSTALL, false);
 		}
 		displayImportNotification();
 
@@ -358,22 +363,30 @@ public final class ImportUpdateService extends Service {
 		protected Integer doInBackground(File... params) {
 			Integer errorCode = null;
 			mRootDir = params[0];
-			mZipFile = new File(mRootDir, TEMP_ZIP_FILE);
-			mMd5File = new File(mRootDir, TEMP_MD5_FILE);
 
-			try {
-				errorCode = checkVersion();
-				if (errorCode == null) {
-					mDownloader = new HttpDownloader(Config.DICT_URL + DownloadFileAsync.ZIP_FILE, mZipFile);
-					mDownloader.addObserver(this);
-					mDownloader.start();
-					if (!isCancelled()) {
-						errorCode = checkMd5();
+			if (mLocalInstall) {
+				// Local install: We do not download the dictionary, as it is already in the external storage.
+				// We trust user and won't verify the checksum or else.
+				mZipFile = FileHandler.getDictionaryFileOnExternalStorage();
+				publishProgress(100);
+			} else {
+				mZipFile = new File(mRootDir, TEMP_ZIP_FILE);
+				mMd5File = new File(mRootDir, TEMP_MD5_FILE);
+
+				try {
+					errorCode = checkVersion();
+					if (errorCode == null) {
+						mDownloader = new HttpDownloader(Config.DICT_URL + DownloadFileAsync.ZIP_FILE, mZipFile);
+						mDownloader.addObserver(this);
+						mDownloader.start();
+						if (!isCancelled()) {
+							errorCode = checkMd5();
+						}
 					}
+				} catch (IOException ex) {
+					if (Config.LOG_ERROR) Log.e(DownloadFileAsync.TAG, "Error downloading dictionary", ex);
+					errorCode = R.string.import_err_cannot_download;
 				}
-			} catch (IOException ex) {
-				if (Config.LOG_ERROR) Log.e(DownloadFileAsync.TAG, "Error downloading dictionary", ex);
-				errorCode = R.string.import_err_cannot_download;
 			}
 			return errorCode;
 		}
@@ -449,9 +462,9 @@ public final class ImportUpdateService extends Service {
 
 			// If import, check if database we are going to download is compatible with current version
 			if (mImport) {
-				File versionFile = new File(mRootDir, CheckForUpdatesService.VERSION_FILE);
+				File versionFile = new File(mRootDir, ImportUpdateService.VERSION_FILE);
 				try {
-					HttpDownloader downloader = new HttpDownloader(Config.DICT_URL + CheckForUpdatesService.VERSION_FILE, versionFile);
+					HttpDownloader downloader = new HttpDownloader(Config.DICT_URL + ImportUpdateService.VERSION_FILE, versionFile);
 					downloader.start();
 
 					// Open file
@@ -503,7 +516,11 @@ public final class ImportUpdateService extends Service {
 				}
 			} catch (IOException ex) {
 				if (Config.LOG_ERROR) Log.e(UnzipAsync.TAG, "Failed unzipping dictionary", ex);
-				errorCode = R.string.import_err_wrong_dictionary_file;
+				if (mLocalInstall) {
+					errorCode = R.string.import_err_wrong_dictionary_file_local;
+				} else {
+					errorCode = R.string.import_err_wrong_dictionary_file;
+				}
 			}
 			return errorCode;
 		}

@@ -25,7 +25,7 @@ public abstract class AbstractDictActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		if (!AbstractDictActivity.checkForDatabaseImportOrUpdate(this)) {
 			// Get shared preferences
-			mPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+			mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 			// Check if database is initialized and open it (if it is not already opened), otherwise, redirects to the main activity
 			if (mDb.getDatabasePath() == null) {
@@ -79,7 +79,7 @@ public abstract class AbstractDictActivity extends Activity {
 
 		// Display night mode theme if set by user.
 		if (curPrefs == null) {
-			curPrefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
+			curPrefs = PreferenceManager.getDefaultSharedPreferences(activity);
 		}
 		if (curPrefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false)) {
 			activity.setTheme(R.style.DarkTheme);

@@ -11,14 +11,13 @@ import android.os.AsyncTask;
 import android.preference.Preference;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.nilhcem.frcndict.R;
-import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.updatedb.xml.BackupXmlWriter;
 import com.nilhcem.frcndict.updatedb.xml.RestoreXmlReader;
 import com.nilhcem.frcndict.utils.FileHandler;
+import com.nilhcem.frcndict.utils.Log;
 
 public final class PrefsImportExportStarred extends Preference {
 	public PrefsImportExportStarred(Context context, AttributeSet attrs) {
@@ -93,11 +92,7 @@ public final class PrefsImportExportStarred extends Preference {
 					xmlWriter.insertHeader(getContext().getApplicationContext());
 					xmlWriter.start();
 				} catch (IOException ex) {
-					if (Config.LOG_ERROR) {
-						Log.e(BackupAsync.class.getSimpleName(),
-								"Failed backing up starred words", ex);
-					}
-					// Do nothing
+					Log.e(BackupAsync.class.getSimpleName(), ex, "Failed backing up starred words");
 				}
 				path = xmlFile.getAbsolutePath();
 			}
@@ -174,10 +169,7 @@ public final class PrefsImportExportStarred extends Preference {
 					xmlReader.start();
 					result = Boolean.TRUE;
 				} catch (IOException ex) {
-					if (Config.LOG_ERROR) {
-						Log.e(RestoreAsync.class.getSimpleName(),
-								"Failed restoring starred words", ex);
-					}
+					Log.e(RestoreAsync.class.getSimpleName(), ex, "Failed restoring starred words");
 					result = Boolean.FALSE;
 				}
 			}

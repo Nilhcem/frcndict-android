@@ -1,11 +1,9 @@
 package com.nilhcem.frcndict.search;
 
-import android.util.Log;
-
-import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.core.list.AbstractSearchService;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
+import com.nilhcem.frcndict.utils.Log;
 
 public final class SearchService extends AbstractSearchService {
 	public static final int BACK_TO_EXIT_TIMER = 4000;
@@ -49,12 +47,11 @@ public final class SearchService extends AbstractSearchService {
 				}
 				db.close();
 			}
-			if (Config.LOG_DEBUG) {
-				Log.d(SearchService.TAG, "[Search type] Detected: "
-						+ (mSearchType == AbstractSearchService.SEARCH_HANZI ? "Hanzi"
-								: (mSearchType == AbstractSearchService.SEARCH_PINYIN ? "Pinyin"
-										: (mSearchType == AbstractSearchService.SEARCH_FRENCH ? "French" : "Undefined"))));
-			}
+
+			Log.d(SearchService.TAG, "[Search type] Detected: %s",
+				(mSearchType == AbstractSearchService.SEARCH_HANZI ? "Hanzi"
+					: (mSearchType == AbstractSearchService.SEARCH_PINYIN ? "Pinyin"
+						: (mSearchType == AbstractSearchService.SEARCH_FRENCH ? "French" : "Undefined"))));
 		}
 	}
 }

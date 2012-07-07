@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
@@ -27,6 +26,7 @@ import com.nilhcem.frcndict.updatedb.xml.BackupXmlWriter;
 import com.nilhcem.frcndict.updatedb.xml.RestoreXmlReader;
 import com.nilhcem.frcndict.utils.FileHandler;
 import com.nilhcem.frcndict.utils.HttpDownloader;
+import com.nilhcem.frcndict.utils.Log;
 import com.nilhcem.frcndict.utils.Md5;
 import com.nilhcem.frcndict.utils.Unzip;
 
@@ -311,7 +311,7 @@ public final class ImportUpdateService extends Service {
 				mXmlWriter.addObserver(this);
 				mXmlWriter.start();
 			} catch (IOException ex) {
-				if (Config.LOG_ERROR) Log.e(BackupAsync.TAG, "Failed backing up starred words", ex);
+				Log.e(BackupAsync.TAG, ex, "Failed backing up starred words");
 				// Do nothing
 			}
 
@@ -384,7 +384,7 @@ public final class ImportUpdateService extends Service {
 						}
 					}
 				} catch (IOException ex) {
-					if (Config.LOG_ERROR) Log.e(DownloadFileAsync.TAG, "Error downloading dictionary", ex);
+					Log.e(DownloadFileAsync.TAG, ex, "Error downloading dictionary");
 					errorCode = R.string.import_err_cannot_download;
 				}
 			}
@@ -435,11 +435,11 @@ public final class ImportUpdateService extends Service {
 
 				String remoteMd5 = FileHandler.readFile(mMd5File);
 				if (!md5.equalsIgnoreCase(remoteMd5)) {
-					if (Config.LOG_ERROR) Log.e(DownloadFileAsync.TAG, "MD5 doesn't match");
+					Log.e(DownloadFileAsync.TAG, "MD5 doesn't match");
 					errorCode = R.string.import_err_wrong_dictionary_file;
 				}
 			} catch (IOException ex) {
-				if (Config.LOG_ERROR) Log.e(DownloadFileAsync.TAG, "Failed while checking MD5", ex);
+				Log.e(DownloadFileAsync.TAG, ex, "Failed while checking MD5");
 				errorCode = R.string.import_err_wrong_dictionary_file;
 			} finally {
 				mMd5File.delete();
@@ -476,14 +476,12 @@ public final class ImportUpdateService extends Service {
 						try {
 							onlineVersion = Integer.parseInt(splitted[1]);
 						} catch (NumberFormatException e) {
-							if (Config.LOG_ERROR) Log.e(DownloadFileAsync.TAG, "NumberFormatException", e);
+							Log.e(DownloadFileAsync.TAG, e, "NumberFormatException");
 						}
 						if (Tables.DATABASE_VERSION != onlineVersion) {
-							if (Config.LOG_ERROR) {
-								Log.e(DownloadFileAsync.TAG, "Program is too old for this database");
-								Log.e(DownloadFileAsync.TAG, "Database version required: " + Tables.DATABASE_VERSION);
-								Log.e(DownloadFileAsync.TAG, "Database version online: " + onlineVersion);
-							}
+							Log.e(DownloadFileAsync.TAG, "Program is too old for this database");
+							Log.e(DownloadFileAsync.TAG, "Database version required: %d", Tables.DATABASE_VERSION);
+							Log.e(DownloadFileAsync.TAG, "Database version online: %d", onlineVersion);
 							errorCode = R.string.import_err_too_old;
 						}
 					}
@@ -515,7 +513,7 @@ public final class ImportUpdateService extends Service {
 					throw new IOException("File cannot be found");
 				}
 			} catch (IOException ex) {
-				if (Config.LOG_ERROR) Log.e(UnzipAsync.TAG, "Failed unzipping dictionary", ex);
+				Log.e(UnzipAsync.TAG, ex, "Failed unzipping dictionary");
 				if (mLocalInstall) {
 					errorCode = R.string.import_err_wrong_dictionary_file_local;
 				} else {
@@ -599,7 +597,7 @@ public final class ImportUpdateService extends Service {
 				mXmlReader.addObserver(this);
 				mXmlReader.start();
 			} catch (IOException ex) {
-				if (Config.LOG_ERROR) Log.e(RestoreAsync.TAG, "Failed restoring starred words", ex);
+				Log.e(RestoreAsync.TAG, ex, "Failed restoring starred words");
 				// Do nothing
 			}
 			return null;

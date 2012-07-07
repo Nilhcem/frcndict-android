@@ -9,10 +9,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import android.util.Log;
-
-import com.nilhcem.frcndict.core.Config;
-
 /**
  * Provides classes to compute md5 checksum.
  *
@@ -20,6 +16,10 @@ import com.nilhcem.frcndict.core.Config;
  * @since 1.0
  */
 public final class Md5 {
+	private Md5() {
+		throw new UnsupportedOperationException();
+	}
+
 	/**
 	 * Returns the MD5 checksum of the file passed in parameters.
 	 *
@@ -33,7 +33,7 @@ public final class Md5 {
 		try {
 			digest = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException ex) {
-			if (Config.LOG_ERROR) Log.e(Md5.class.getSimpleName(), "MD5 algorithm was not found", ex);
+			Log.e(Md5.class.getSimpleName(), ex, "MD5 algorithm was not found");
 			return null;
 		}
 
@@ -48,7 +48,7 @@ public final class Md5 {
 			}
 			is.close();
 		} catch (IOException ex) {
-			if (Config.LOG_ERROR) Log.e(Md5.class.getSimpleName(), "Error while computing MD5 sum", ex);
+			Log.e(Md5.class.getSimpleName(), ex, "Error while computing MD5 sum");
 			return null;
 		}
 

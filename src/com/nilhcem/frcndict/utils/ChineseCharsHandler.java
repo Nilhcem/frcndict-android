@@ -2,9 +2,7 @@ package com.nilhcem.frcndict.utils;
 
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 
 public final class ChineseCharsHandler {
@@ -216,7 +214,7 @@ public final class ChineseCharsHandler {
 	private String replaceSameHanziByDash(String base, String toReplace) {
 		int length = base.length();
 		if (length != toReplace.length()) {
-			if (Config.LOG_WARN) Log.w(ChineseCharsHandler.TAG, "[replaceSameHanziByDash] Size doesn't match: " + base + " - " + toReplace);
+			Log.w(ChineseCharsHandler.TAG, "[replaceSameHanziByDash] Size doesn't match: %s - %s", base, toReplace);
 			return toReplace;
 		}
 
@@ -271,7 +269,7 @@ public final class ChineseCharsHandler {
 			}
 			return sb.toString();
 		} else {
-			if (Config.LOG_WARN) Log.w(ChineseCharsHandler.TAG, "[addColorToHanzi] Size doesn't match: " + hanzi + " - " + pinyin);
+			Log.w(ChineseCharsHandler.TAG, "[addColorToHanzi] Size doesn't match: %s - %s", hanzi, pinyin);
 		}
 
 		return hanzi;

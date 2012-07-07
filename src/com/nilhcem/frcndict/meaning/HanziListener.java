@@ -8,10 +8,9 @@ import java.util.List;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.utils.FileHandler;
+import com.nilhcem.frcndict.utils.Log;
 
 public final class HanziListener implements OnCompletionListener {
 	private static final String TAG = "HanziListener";
@@ -46,11 +45,11 @@ public final class HanziListener implements OnCompletionListener {
 				mp.start();
 				mp.setOnCompletionListener(HanziListener.this);
 			} catch (IllegalArgumentException e) {
-				if (Config.LOG_ERROR) Log.e(TAG, "", e);
+				Log.e(TAG, e);
 			} catch (IllegalStateException e) {
-				if (Config.LOG_ERROR) Log.e(TAG, "", e);
+				Log.e(TAG, e);
 			} catch (IOException e) {
-				if (Config.LOG_ERROR) Log.e(TAG, "", e);
+				Log.e(TAG, e);
 			}
 		}
 	}
@@ -79,7 +78,7 @@ public final class HanziListener implements OnCompletionListener {
 
 			// We don't have this sound
 			if (!sound.isFile()) {
-				if (Config.LOG_WARN) Log.w(TAG, "Sound was not found for: " + sound.getName());
+				Log.w(TAG, "Sound was not found for: %s", sound.getName());
 			}
 		}
 		return sound;

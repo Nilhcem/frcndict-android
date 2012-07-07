@@ -12,10 +12,10 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.android.gcm.GCMRegistrar;
 import com.nilhcem.frcndict.core.Config;
+import com.nilhcem.frcndict.utils.Log;
 
 public final class GCMServerUtilities {
 	private static final String TAG = "GCMServerUtilities";
@@ -39,28 +39,28 @@ public final class GCMServerUtilities {
 	 * @return whether the registration succeeded or not.
 	 */
 	public static boolean register(final Context context, final String regId) {
-		if (Config.LOG_INFO) Log.i(TAG, "registering device (regId = " + regId + ")");
+		Log.i(TAG, "registering device (regId = %s)", regId);
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("regId", regId);
 
 		boolean success = false;
 		long backoff = BACKOFF_MILLI_SECONDS + random.nextInt(1000);
 		for (int i = 1; i <= MAX_ATTEMPTS; i++) {
-			if (Config.LOG_DEBUG) Log.d(TAG, "Attempt #" + i + " to register");
+			Log.d(TAG, "Attempt #%d to register", i);
 			try {
 				post(GCM_REGISTER_URL, params);
 				GCMRegistrar.setRegisteredOnServer(context, true);
 				success = true;
 				break;
 			} catch (IOException e) {
-				if (Config.LOG_ERROR) Log.e(TAG, "Failed to register on attempt " + i, e);
+				Log.e(TAG, e, "Failed to register on attempt %d", i);
 				if (i != MAX_ATTEMPTS) {
 					try {
-						if (Config.LOG_DEBUG) Log.d(TAG, "Sleeping for " + backoff + " ms before retry");
+						Log.d(TAG, "Sleeping for %d ms before retry", backoff);
 						Thread.sleep(backoff);
 					} catch (InterruptedException e1) {
 						// Activity finished before we complete - exit.
-						if (Config.LOG_DEBUG) Log.d(TAG, "Thread interrupted: abort remaining retries!");
+						Log.d(TAG, "Thread interrupted: abort remaining retries!");
 						Thread.currentThread().interrupt();
 						break;
 					}
@@ -79,19 +79,19 @@ public final class GCMServerUtilities {
 	 * </p>
 	 */
 	public static void unregister(final Context context, final String regId) {
-		if (Config.LOG_INFO) Log.i(TAG, "unregistering device (regId = " + regId + ")");
+		Log.i(TAG, "unregistering device (regId = %d)", regId);
         Map<String, String> params = new HashMap<String, String>();
         params.put("regId", regId);
         try {
             post(GCM_UNREGISTER_URL, params);
             GCMRegistrar.setRegisteredOnServer(context, false);
-            if (Config.LOG_INFO) Log.i(TAG, "Unregistered");
+            Log.i(TAG, "Unregistered");
         } catch (IOException e) {
             // At this point the device is unregistered from GCM, but still registered in the server.
             // We could try to unregister again, but it is not necessary:
             // if the server tries to send a message to the device, it will get
             // a "NotRegistered" error message and should unregister the device.
-            if (Config.LOG_WARN) Log.w(TAG, "Failed to unregister");
+            Log.w(TAG, "Failed to unregister");
         }
 	}
 
@@ -123,7 +123,7 @@ public final class GCMServerUtilities {
 		}
 		String body = bodyBuilder.toString();
 
-		if (Config.LOG_DEBUG) Log.d(TAG, "Posting '" + body + "' to " + url);
+		Log.d(TAG, "Posting '%s' to %s", body, url);
 		byte[] bytes = body.getBytes();
 		HttpURLConnection conn = null;
 		try {

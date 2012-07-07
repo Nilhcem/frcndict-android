@@ -6,12 +6,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.nilhcem.frcndict.R;
-import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.settings.SettingsActivity;
+import com.nilhcem.frcndict.utils.Log;
 
 /**
  * Note: if some changes are made to this class, please modify proguard.cfg
@@ -40,7 +39,7 @@ final class JavascriptInterface {
 			PackageInfo pInfo = mParentContext.getPackageManager().getPackageInfo(mParentContext.getPackageName(), 0);
 			version = pInfo.versionName;
 		} catch (NameNotFoundException ex) {
-			if (Config.LOG_ERROR) Log.e(JavascriptInterface.class.getSimpleName(), "Failed to get version", ex);
+			Log.e(JavascriptInterface.class.getSimpleName(), ex, "Failed to get version");
 			version = "";
 		}
 		return version;

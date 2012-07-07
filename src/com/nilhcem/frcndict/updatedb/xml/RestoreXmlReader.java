@@ -15,12 +15,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
 
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
-import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Tables;
+import com.nilhcem.frcndict.utils.Log;
 
 public final class RestoreXmlReader extends AbstractCancellableObservable {
 	private final File mXmlFile;
@@ -69,17 +68,17 @@ public final class RestoreXmlReader extends AbstractCancellableObservable {
 				}
 				mDb.setTransactionSuccessfull();
 			} catch (ParserConfigurationException ex) {
-				if (Config.LOG_ERROR) Log.e(RestoreXmlReader.class.getSimpleName(), "Failed to get DocumentBuilder factory", ex);
+				Log.e(RestoreXmlReader.class.getSimpleName(), ex, "Failed to get DocumentBuilder factory");
 				// Do nothing
 			} catch (SAXException ex) {
-				if (Config.LOG_ERROR) Log.e(RestoreXmlReader.class.getSimpleName(), "Error parsing xml file", ex);
+				Log.e(RestoreXmlReader.class.getSimpleName(), ex, "Error parsing xml file");
 				// Do nothing
 			} finally {
 				mDb.endTransaction();
 			}
 			updateProgress(100); // Notify that it is finished (even if 0 elements to restore)
 		} catch (SQLiteException ex) {
-			if (Config.LOG_ERROR) Log.e(RestoreXmlReader.class.getSimpleName(), "SQLite exception", ex);
+			Log.e(RestoreXmlReader.class.getSimpleName(), ex, "SQLite exception");
 			// Do nothing
 		}
 		mDb.close();

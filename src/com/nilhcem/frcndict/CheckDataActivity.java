@@ -186,16 +186,14 @@ public final class CheckDataActivity extends Activity {
 			try {
 				minVersionCode = Integer.parseInt(splitted[1]);
 			} catch (NumberFormatException e) {
-				if (Config.LOG_ERROR) Log.e(TAG, "", e);
+				Log.e(TAG, e);
 			}
 
 			// Check if database number differs
 			if (curVersionCode >= minVersionCode && !installedVersion.equals(splitted[0])) {
-				if (Config.LOG_DEBUG) {
-					Log.d(TAG, "[Update] Update is available");
-					Log.d(TAG, "[Update] Current DB version: " + curVersionCode);
-					Log.d(TAG, "[Update] Available DB version: " + minVersionCode);
-				}
+				Log.d(TAG, "[Update] Update is available");
+				Log.d(TAG, "[Update] Current DB version: %d", curVersionCode);
+				Log.d(TAG, "[Update] Available DB version: %d", minVersionCode);
 				isCompatible = true;
 			}
 		}

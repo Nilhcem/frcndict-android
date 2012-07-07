@@ -10,6 +10,10 @@ import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.utils.Compatibility;
 
 public final class Config {
+	private Config() {
+		throw new UnsupportedOperationException();
+	}
+
 	/** Dictionary URL */
 	public static final String DICT_URL = "@DICT.URL@";
 
@@ -19,10 +23,6 @@ public final class Config {
 
 	/** Logging level: 0:none, 1:error, 2:warn, 3:info, 4:debug */
 	public static final int LOGLEVEL = @LOGGING.LEVEL@;
-	public static final boolean LOG_ERROR = LOGLEVEL > 0; // TODO: REMOVE
-	public static final boolean LOG_WARN = LOGLEVEL > 1; // TODO: REMOVE
-	public static final boolean LOG_INFO = LOGLEVEL > 2; // TODO: REMOVE
-	public static final boolean LOG_DEBUG = LOGLEVEL > 3; // TODO: REMOVE
 
 	public static boolean isGcmEnabled() {
 		return (Compatibility.isCompatible(8)

@@ -26,6 +26,18 @@ public final class Log {
 		}
 	}
 
+	public static void w(String tag, String msgFormat, Object... args) {
+		if (LOG_WARN) {
+			try {
+				android.util.Log.w(tag, String.format(msgFormat, args));
+			} catch (NullPointerException e) {
+				// Do nothing
+			} catch (IllegalFormatException e) {
+				android.util.Log.w(tag, msgFormat);
+			}
+		}
+	}
+
 	public static void i(String tag, String msgFormat, Object... args) {
 		if (LOG_INFO) {
 			try {
@@ -35,6 +47,12 @@ public final class Log {
 			} catch (IllegalFormatException e) {
 				android.util.Log.i(tag, msgFormat);
 			}
+		}
+	}
+
+	public static void e(String tag, Throwable t) {
+		if (LOG_ERROR) {
+			android.util.Log.e(tag, "", t);
 		}
 	}
 

@@ -10,14 +10,13 @@ import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.util.Xml;
 
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
-import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.database.DatabaseHelper;
 import com.nilhcem.frcndict.database.Tables;
+import com.nilhcem.frcndict.utils.Log;
 
 public final class BackupXmlWriter extends AbstractCancellableObservable {
 	public static final String XML_SUB_TAG = "entry";
@@ -37,7 +36,7 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 		try {
 			mOutputStream = new FileOutputStream(xmlFile);
 		} catch (FileNotFoundException ex) {
-			if (Config.LOG_ERROR) Log.e(BackupXmlWriter.class.getSimpleName(), "Can't get output stream", ex);
+			Log.e(BackupXmlWriter.class.getSimpleName(), ex, "Can't get output stream");
 		}
 	}
 

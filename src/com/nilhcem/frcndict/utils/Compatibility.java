@@ -2,13 +2,13 @@ package com.nilhcem.frcndict.utils;
 
 import java.lang.reflect.Field;
 
-import android.util.Log;
-
-import com.nilhcem.frcndict.core.Config;
-
 public final class Compatibility {
 	private static int sCurSdkVersion = 0;
 	private static final String TAG = "Compatibility";
+
+	private Compatibility() {
+		throw new UnsupportedOperationException();
+	}
 
 	public static int getApiLevel() {
 		if (sCurSdkVersion > 0) {
@@ -23,7 +23,7 @@ public final class Compatibility {
 				sdkField = android.os.Build.VERSION.class.getDeclaredField("SDK_INT");
 				sCurSdkVersion = sdkField.getInt(null);
 			} catch (Exception e) {
-				if (Config.LOG_WARN) Log.w(Compatibility.TAG, "Can't get API level: SDK_INT not supported");
+				Log.w(Compatibility.TAG, "Can't get API level: SDK_INT not supported");
 				sCurSdkVersion = 0;
 			}
 		}

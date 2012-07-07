@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.nilhcem.frcndict.CheckDataActivity;
 import com.nilhcem.frcndict.R;
@@ -14,6 +13,7 @@ import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.updatedb.ImportActivity;
 import com.nilhcem.frcndict.updatedb.ImportUpdateService;
 import com.nilhcem.frcndict.updatedb.UpdateActivity;
+import com.nilhcem.frcndict.utils.Log;
 
 public abstract class AbstractDictActivity extends Activity {
 	protected DatabaseHelper mDb = DatabaseHelper.getInstance();
@@ -63,7 +63,7 @@ public abstract class AbstractDictActivity extends Activity {
 		if (service == null || service.getStatus() == ImportUpdateService.STATUS_UNSTARTED) {
 			isRunning = false;
 		} else {
-			if (Config.LOG_DEBUG) Log.d(AbstractDictActivity.class.getSimpleName(), "[Check Import/Update service] Already running. Redirecting.");
+			Log.d(AbstractDictActivity.class.getSimpleName(), "[Check Import/Update service] Already running. Redirecting.");
 			activity.finish();
 			Intent intent = new Intent(activity, service.isImport() ? ImportActivity.class : UpdateActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

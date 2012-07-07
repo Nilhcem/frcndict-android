@@ -5,14 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.webkit.WebView;
 
 import com.nilhcem.frcndict.R;
-import com.nilhcem.frcndict.core.Config;
+import com.nilhcem.frcndict.utils.Log;
 
 public final class AboutDialog extends Dialog {
 	private static final String ABOUT_ASSET_DIR = "about";
@@ -27,6 +27,7 @@ public final class AboutDialog extends Dialog {
 		mParentContext = context;
 	}
 
+	@SuppressLint("SetJavaScriptEnabled")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,7 +66,7 @@ public final class AboutDialog extends Dialog {
 				localeUrl = localeUrl.replace("zh", "zh-simplified");
 			}
 		} catch (IOException e) {
-			if (Config.LOG_ERROR) Log.e(AboutDialog.class.getSimpleName(), "Can't find about asset");
+			Log.e(AboutDialog.class.getSimpleName(), e, "Can't find about asset");
 			// found = false;
 		}
 

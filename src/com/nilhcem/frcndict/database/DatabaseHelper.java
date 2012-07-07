@@ -12,11 +12,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
+import com.nilhcem.frcndict.utils.Log;
 
 public final class DatabaseHelper {
 	public static final String DATABASE_NAME = "dictionary.db";
@@ -168,11 +167,11 @@ public final class DatabaseHelper {
 	// "start using database"
 	public synchronized boolean open() {
 		boolean success = false;
-		if (Config.LOG_INFO) Log.i(DatabaseHelper.TAG, "[Open] Database currently used by " + mUsed + " process[es].");
+		Log.i(DatabaseHelper.TAG, "[Open] Database currently used by %d process[es]", mUsed);
 		if (mDbPath == null) {
-			if (Config.LOG_ERROR) Log.e(TAG, "mDbPath is null");
+			Log.e(TAG, "mDbPath is null");
 		} else if (!mDbPath.isFile()) {
-			if (Config.LOG_ERROR) Log.e(TAG, "mDbPath doesn't exist or is not a file");
+			Log.e(TAG, "mDbPath doesn't exist or is not a file");
 		} else {
 			// Should not happen, just to make sure
 			if (mDb == null) {
@@ -191,7 +190,7 @@ public final class DatabaseHelper {
 		if (--mUsed <= 0 && mDb != null) {
 			mDb.close();
 		}
-		if (Config.LOG_INFO) Log.i(DatabaseHelper.TAG, "[Close] Database still used by " + mUsed + " process[es].");
+		Log.i(DatabaseHelper.TAG, "[Close] Database still used by %d process[es]", mUsed);
 	}
 
 	public Cursor findById(int id) {
@@ -365,17 +364,17 @@ public final class DatabaseHelper {
 	}
 
 	public void beginTransaction() {
-		if (Config.LOG_DEBUG) Log.d(DatabaseHelper.TAG, "[Transaction] Begin");
+		Log.d(DatabaseHelper.TAG, "[Transaction] Begin");
 		mDb.beginTransaction();
 	}
 
 	public void setTransactionSuccessfull() {
-		if (Config.LOG_DEBUG) Log.d(DatabaseHelper.TAG, "[Transaction] Success");
+		Log.d(DatabaseHelper.TAG, "[Transaction] Success");
 		mDb.setTransactionSuccessful();
 	}
 
 	public void endTransaction() {
-		if (Config.LOG_DEBUG) Log.d(DatabaseHelper.TAG, "[Transaction] End");
+		Log.d(DatabaseHelper.TAG, "[Transaction] End");
 		mDb.endTransaction();
 	}
 }

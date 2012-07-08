@@ -1,5 +1,8 @@
 package com.nilhcem.frcndict.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
@@ -9,6 +12,7 @@ public final class ChineseCharsHandler {
 	private static final String TAG = "ChineseCharsHandler";
 	private static final ChineseCharsHandler INSTANCE = new ChineseCharsHandler();
 	private static final String SAME_HANZI_REPLACEMENT = "-";
+	private static final String REGEX_CHAR_OTHER_THAN_NB = ".*[^0-9].*";
 	private static final String FORMAT_HANZI_ST = "%s [%s]";
 	private static final String FORMAT_HANZI_ST_HTML = "%s<font>&nbsp;</font><font>[</font>%s<font>]</font>";
 
@@ -239,7 +243,7 @@ public final class ChineseCharsHandler {
 		}
 
 		String[] splitPinyin = pinyin.split("\\s");
-		char[] splitHanzi = hanzi.toCharArray();
+		String[] splitHanzi = splitHanzi(hanzi, splitPinyin.length);
 
 		int length = splitHanzi.length;
 		if (splitPinyin.length == length) {
@@ -247,13 +251,12 @@ public final class ChineseCharsHandler {
 
 			// loop for each hanzi
 			for (int curHanzi = 0; curHanzi < length; curHanzi++) {
-				int nbTones = mColorsArray.length;
+				int nbTones = mColorsArray.length - 1;
 
 				boolean foundColor = false;
 				for (int colorNb = 1; colorNb <= nbTones; colorNb++) {
 					if (splitPinyin[curHanzi].contains(Integer.toString(colorNb))
-							/* TODO: and contains at least one character (to make sure it's not a number */
-							) {
+							&& splitPinyin[curHanzi].matches(REGEX_CHAR_OTHER_THAN_NB)) {
 						sb.append("<font color=\"")
 							.append(mColorsArray[colorNb])
 							.append("\">")
@@ -281,5 +284,45 @@ public final class ChineseCharsHandler {
 			str = str.replaceAll(src[i], dst[i]);
 		}
 		return str;
+	}
+
+	/**
+	 * Split a Hanzi into a String array.
+	 * <p>
+	 * Usually the split is easy, but sometimes, the hanzi String contains
+	 * characters other than hanzi, ie letters.<br />
+	 * If this happens, tries to join all characters together and
+	 * separate it from hanzi.<br />
+	 * Some problems: "D N A jiàn dìng" (size 5 or 3), "DNA fù zhì" (size 3 or 5).
+	 * </p>
+	 */
+	private String[] splitHanzi(String hanzi, int length) {
+		List<String> split = new ArrayList<String>();
+
+		char[] charArray = hanzi.toCharArray();
+		if (charArray.length == length) {
+			for (char c : charArray) {
+				split.add(Character.toString(c));
+			}
+		} else {
+			// Use another way since this one is not working
+			char[] chars = hanzi.toCharArray();
+			StringBuilder sb = new StringBuilder();
+			for (char c : chars) {
+				if (ChineseCharsHandler.getInstance().charIsChinese(c)) {
+					if (sb.length() > 0) {
+						split.add(sb.toString());
+					}
+					split.add(Character.toString(c));
+					sb.setLength(0);
+				} else if (!Character.isWhitespace(c)) {
+					sb.append(c);
+				}
+			}
+			if (sb.length() > 0) {
+				split.add(sb.toString());
+			}
+		}
+		return (String[]) split.toArray(new String[split.size()]);
 	}
 }

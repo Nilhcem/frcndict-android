@@ -296,11 +296,11 @@ public final class ChineseCharsHandler {
 	 * Some problems: "D N A jiàn dìng" (size 5 or 3), "DNA fù zhì" (size 3 or 5).
 	 * </p>
 	 */
-	private String[] splitHanzi(String hanzi, int length) {
+	private String[] splitHanzi(String hanzi, int pinyinLength) {
 		List<String> split = new ArrayList<String>();
 
 		char[] charArray = hanzi.toCharArray();
-		if (charArray.length == length) {
+		if (charArray.length == pinyinLength) {
 			for (char c : charArray) {
 				split.add(Character.toString(c));
 			}

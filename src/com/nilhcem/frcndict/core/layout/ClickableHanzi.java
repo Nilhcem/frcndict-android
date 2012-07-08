@@ -32,6 +32,7 @@ import com.nilhcem.frcndict.utils.FileHandler;
 
 @SuppressWarnings("deprecation")
 public final class ClickableHanzi extends LinearLayout {
+	private static final String START_FONT_TAG = "<font";
 	private static final String END_FONT_TAG = "</font>";
 
 	private static final Integer ACTION_OPEN_CHAR = 0;
@@ -62,7 +63,18 @@ public final class ClickableHanzi extends LinearLayout {
 
 		if (input.contains(END_FONT_TAG)) { // HTML
 			String[] splittedArray = input.split(END_FONT_TAG);
+			int i = 0;
 			for (String curStr : splittedArray) {
+				// Handle case where String doesn't start by a hanzi, ie: "DNA<font...>hanzi</font>"
+				if (i++ == 0) {
+					if (!curStr.startsWith(START_FONT_TAG)) {
+						String[] splittedFont = curStr.split(START_FONT_TAG);
+						if (splittedFont.length > 1) {
+							splitted.add(splittedFont[0]);
+							curStr = String.format("%s%s", START_FONT_TAG, splittedFont[1]);
+						}
+					}
+				}
 				splitted.add(curStr + END_FONT_TAG);
 			}
 		} else {

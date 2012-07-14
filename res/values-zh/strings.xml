@@ -61,8 +61,6 @@
 	<string name="search_empty_text">搜索不能為空</string>
 	<string name="search_no_results">沒有結果</string>
 	<string name="search_loading">正在載入…</string>
-	<string name="search_btn_french">法語</string>
-	<string name="search_btn_pinyin">拼音</string>
 
 	<!-- Word meaning -->
 	<plurals name="meaning_title">

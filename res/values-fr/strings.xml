@@ -61,8 +61,6 @@
 	<string name="search_empty_text">La recherche ne doit pas être vide</string>
 	<string name="search_no_results">Aucun résultat</string>
 	<string name="search_loading">Chargement…</string>
-	<string name="search_btn_french">Français</string>
-	<string name="search_btn_pinyin">Pinyin</string>
 
 	<!-- Word meaning -->
 	<plurals name="meaning_title">

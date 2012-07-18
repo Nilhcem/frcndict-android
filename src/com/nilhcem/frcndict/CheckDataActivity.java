@@ -80,7 +80,11 @@ public final class CheckDataActivity extends Activity {
 			if (mRegisterTask != null) {
 				mRegisterTask.cancel(true);
 			}
-			GCMRegistrar.onDestroy(this);
+			try {
+			    GCMRegistrar.onDestroy(this);
+			} catch (IllegalArgumentException e) {
+			    Log.e(TAG, e);
+			}
 		}
 		super.onDestroy();
     }

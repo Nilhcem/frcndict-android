@@ -316,7 +316,7 @@ public final class ImportUpdateService extends Service {
 			}
 
 			// Rename current db to create a backup
-			if (!isCancelled() && dbPath.exists()) {
+			if (!isCancelled() && dbPath != null && dbPath.exists()) {
 				File backup = new File(dbPath.getAbsolutePath() + BackupAsync.BACKUP_EXTENS);
 				dbPath.renameTo(backup);
 			}

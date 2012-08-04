@@ -82,7 +82,7 @@ public final class CheckDataActivity extends Activity {
 			}
 			try {
 			    GCMRegistrar.onDestroy(this);
-			} catch (IllegalArgumentException e) {
+			} catch (RuntimeException e) { // IllegalArgumentException
 			    Log.e(TAG, e);
 			}
 		}

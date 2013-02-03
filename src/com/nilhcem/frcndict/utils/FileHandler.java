@@ -1,20 +1,13 @@
 package com.nilhcem.frcndict.utils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
+import java.util.Locale;
 
-import android.app.Application;
+import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
 
-import com.nilhcem.frcndict.database.DatabaseHelper;
-
 public final class FileHandler {
-	public static final String EXTERNAL_DICT_PATH = "cfdict.zip";
 	public static final String SD_BACKUP_RESTORE_FILE = "cfdict.xml";
 	private static final String SD_PATH = "/Android/data/";
 	private static final String INTERNAL_PATH = "/data/";
@@ -27,43 +20,40 @@ public final class FileHandler {
 		throw new UnsupportedOperationException();
 	}
 
-	public static String readFile(File file) throws IOException {
-		FileInputStream stream = new FileInputStream(file);
-		try {
-			FileChannel fc = stream.getChannel();
-			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-			return Charset.defaultCharset().decode(bb).toString();
-		} finally {
-			stream.close();
+	public static String getDbStorageDirectory(Context context) {
+		File external = FileHandler.getAppRootDir(context.getApplicationContext(), true);
+		if (external != null && external.exists() && external.canRead() && external.canWrite()) {
+			return external.getAbsolutePath();
+		} else {
+			external = FileHandler.getAppRootDir(context.getApplicationContext(), false);
+			if (external != null && external.exists() && external.canRead() && external.canWrite()) {
+				return external.getAbsolutePath();
+			}
 		}
+		return null;
 	}
 
-	public static File getAppRootDir(Application app, boolean sdcard) {
-		File rootDir;
+	public static File getAppRootDir(Context appContext, boolean sdcard) {
+		File rootDir = null;
 
 		if (sdcard) {
-			// API Level 8: Use getExternalFilesDir(null).getAbsolutePath() instead
-			rootDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-				+ FileHandler.SD_PATH + app.getClass().getPackage().getName());
-		} else {
+			File externalDir = Environment.getExternalStorageDirectory();
+			if (externalDir == null) {
+				sdcard = false;
+			} else {
+				rootDir = new File(externalDir.getAbsolutePath()
+						+ FileHandler.SD_PATH + appContext.getClass().getPackage().getName());
+			}
+		}
+		if (!sdcard) {
 			rootDir = new File(Environment.getDataDirectory().getAbsolutePath()
-				+ FileHandler.INTERNAL_PATH + app.getClass().getPackage().getName());
+				+ FileHandler.INTERNAL_PATH + appContext.getClass().getPackage().getName());
 		}
 
-		if (!rootDir.exists()) {
+		if (rootDir != null && !rootDir.exists()) {
 			rootDir.mkdirs();
 		}
 		return rootDir;
-	}
-
-	public static boolean isDatabaseInstalledOnSDcard() {
-		File dbPath = DatabaseHelper.getInstance().getDatabasePath();
-
-		if (dbPath != null && dbPath.getAbsolutePath().startsWith(
-				Environment.getExternalStorageDirectory().getAbsolutePath() + FileHandler.SD_PATH)) {
-			return true;
-		}
-		return false;
 	}
 
 	public static boolean isSdCardMounted() {
@@ -77,16 +67,6 @@ public final class FileHandler {
 		return file;
 	}
 
-	public static File getDictionaryFileOnExternalStorage() {
-		File file = null;
-
-		if (isSdCardMounted()) {
-			file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-				+ "/" + FileHandler.EXTERNAL_DICT_PATH);
-		}
-		return file;
-	}
-
 	public static File getVoicesDir() {
 		File file = null;
 
@@ -95,6 +75,20 @@ public final class FileHandler {
 				+ FileHandler.VOICES_DIR);
 		}
 		return file;
+	}
+
+	/**
+	 * @return free space in external storage (in MB).
+	 */
+	public static double getFreeSpaceInExternalStorage() {
+		double freeSpace = 0;
+
+		if (isSdCardMounted()) {
+			StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+			double sdAvailSize = (double)stat.getAvailableBlocks() * (double)stat.getBlockSize();
+			freeSpace = sdAvailSize / FileHandler.BYTES_IN_A_MB;
+		}
+		return freeSpace;
 	}
 
 	public static File getStrokesDir() {
@@ -112,7 +106,7 @@ public final class FileHandler {
 
 		File strokeDir = FileHandler.getStrokesDir();
 		if (strokeDir != null) {
-			strokeFile = new File(strokeDir, String.format("%s%s", hanzi, FileHandler.STROKES_EXT));
+			strokeFile = new File(strokeDir, String.format(Locale.US, "%s%s", hanzi, FileHandler.STROKES_EXT));
 		}
 		return strokeFile;
 	}
@@ -129,19 +123,5 @@ public final class FileHandler {
 			}
 		}
 		return installed;
-	}
-
-	/**
-	 * @return free space in external storage (in MB).
-	 */
-	public static double getFreeSpaceInExternalStorage() {
-		double freeSpace = 0;
-
-		if (isSdCardMounted()) {
-			StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
-			double sdAvailSize = (double)stat.getAvailableBlocks() * (double)stat.getBlockSize();
-			freeSpace = sdAvailSize / FileHandler.BYTES_IN_A_MB;
-		}
-		return freeSpace;
 	}
 }

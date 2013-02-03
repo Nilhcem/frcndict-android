@@ -10,18 +10,6 @@
 	<color name="dark_blue">#ff030119</color>
 	<color name="transparent">#00000000</color>
 
-	<!-- Import text -->
-	<color name="import_text_bg">#fff0eff9</color>
-	<color name="import_text_border">#ff6e748c</color>
-
-	<!-- Progress bar -->
-	<color name="progress_bg_start">#fff4f7f9</color>
-	<color name="progress_bg_center">#ff898989</color>
-	<color name="progress_bg_end">#ff969696</color>
-	<color name="progress_fg_start">#ff9ba3c4</color>
-	<color name="progress_fg_center">#ff53586b</color>
-	<color name="progress_fg_end">#ff6e748c</color>
-
 	<!-- List divider -->
 	<color name="divider_default_side">#fff4f7f9</color>
 	<color name="divider_default_middle">#ffdce4ea</color>

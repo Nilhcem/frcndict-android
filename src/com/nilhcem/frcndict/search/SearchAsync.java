@@ -4,25 +4,32 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import android.database.Cursor;
 import android.os.AsyncTask;
 
+import com.nilhcem.frcndict.core.Log;
 import com.nilhcem.frcndict.core.list.AbstractSearchService;
 import com.nilhcem.frcndict.core.list.ListAdapter;
-import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.database.DictDbHelper;
 import com.nilhcem.frcndict.database.Entry;
+import com.nilhcem.frcndict.database.StarredDbHelper;
 import com.nilhcem.frcndict.database.Tables;
 import com.nilhcem.frcndict.settings.SettingsActivity;
-import com.nilhcem.frcndict.utils.Log;
 
 public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 	private final ListAdapter mRefAdapter;
+	private final DictDbHelper mDatabase;
+	private final StarredDbHelper mStarredDb;
 	private final AbstractSearchService mRefService;
 	private final WeakReference<SearchActivity> mRefActivity;
 
-	public SearchAsync(ListAdapter adapter, AbstractSearchService service, SearchActivity activity) {
+	public SearchAsync(DictDbHelper db, StarredDbHelper starredDb,
+			ListAdapter adapter, AbstractSearchService service, SearchActivity activity) {
 		super();
+		mDatabase = db;
+		mStarredDb = starredDb;
 		mRefAdapter = adapter;
 		mRefService = service;
 		if (activity == null) {
@@ -44,26 +51,25 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 			// Do the query depending on the searchType
 			mRefService.detectAndSetSearchType(search);
 			Log.d(SearchAsync.class.getSimpleName(), "[Query] Started");
-			DatabaseHelper db = DatabaseHelper.getInstance();
-			db.open();
-			Cursor c = search(db, search, mRefService.getSearchType(), currentPage);
+			Cursor c = search(search, mRefService.getSearchType(), currentPage);
 			Log.d(SearchAsync.class.getSimpleName(), "[Query] Stopped");
 
 			HashMap<String, Integer> columnsIndexCache = new HashMap<String, Integer>();
-			if (c.moveToFirst()) {
-				fillColumnsIndexCache(columnsIndexCache, c);
-				do {
-					Entry entry = new Entry();
-					entry.setId(c.getInt(columnsIndexCache.get(Tables.ENTRIES_KEY_ROWID)));
-					entry.setSimplified(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_SIMPLIFIED)));
-					entry.setTraditional(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_TRADITIONAL)));
-					entry.setPinyin(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_PINYIN)));
-					entry.setDesc(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_TRANSLATION)));
-					entries.add(entry);
-				} while (c.moveToNext() && !isCancelled());
+			if (c != null) {
+				if (c.moveToFirst()) {
+					fillColumnsIndexCache(columnsIndexCache, c);
+					do {
+						Entry entry = new Entry();
+						entry.setId(c.getInt(columnsIndexCache.get(Tables.ENTRIES_KEY_ROWID)));
+						entry.setSimplified(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_SIMPLIFIED)));
+						entry.setTraditional(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_TRADITIONAL)));
+						entry.setPinyin(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_PINYIN)));
+						entry.setDesc(c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_TRANSLATION)));
+						entries.add(entry);
+					} while (c.moveToNext() && !isCancelled());
+				}
+				c.close();
 			}
-			c.close();
-			db.close();
 		}
 		return entries;
 	}
@@ -96,17 +102,17 @@ public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
 		}
 	}
 
-	private Cursor search(DatabaseHelper db, String search, int searchType, int currentPage) {
+	private Cursor search(String search, int searchType, int currentPage) {
 		if (searchType == AbstractSearchService.SEARCH_STARRED) {
-			return db.searchStarred(currentPage);
+			return mDatabase.searchStarred(mStarredDb, currentPage);
 		}
 
-		String curSearch = search.trim().toLowerCase();
+		String curSearch = search.trim().toLowerCase(Locale.getDefault());
 		if (searchType == AbstractSearchService.SEARCH_HANZI) {
-			return db.searchHanzi(curSearch, currentPage);
+			return mDatabase.searchHanzi(curSearch, currentPage);
 		} else if (searchType == AbstractSearchService.SEARCH_PINYIN) {
-			return db.searchPinyin(curSearch, currentPage);
+			return mDatabase.searchPinyin(curSearch, currentPage);
 		}
-		return db.searchFrench(curSearch, currentPage); // by default
+		return mDatabase.searchFrench(curSearch, currentPage); // by default
 	}
 }

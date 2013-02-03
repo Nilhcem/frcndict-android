@@ -2,6 +2,8 @@ package com.nilhcem.frcndict.core.list;
 
 import java.lang.ref.WeakReference;
 
+import com.nilhcem.frcndict.database.DictDbHelper;
+import com.nilhcem.frcndict.database.StarredDbHelper;
 import com.nilhcem.frcndict.search.SearchActivity;
 import com.nilhcem.frcndict.search.SearchAsync;
 
@@ -45,7 +47,7 @@ public abstract class AbstractSearchService {
 		}
 	}
 
-	public void runSearchThread(SearchActivity activity, String curPage, String search) { // curPage should be null if first page
+	public void runSearchThread(DictDbHelper db, StarredDbHelper mStarredDb, SearchActivity activity, String curPage, String search) { // curPage should be null if first page
 		stopPreviousThread();
 
 		ListAdapter adapter = null;
@@ -53,7 +55,7 @@ public abstract class AbstractSearchService {
 			adapter = mRefSearchAdapter.get();
 		}
 		if (adapter != null) {
-			mLastTask = new SearchAsync(adapter, this, activity);
+			mLastTask = new SearchAsync(db, mStarredDb, adapter, this, activity);
 			mLastTask.execute(curPage, search);
 		}
 	}

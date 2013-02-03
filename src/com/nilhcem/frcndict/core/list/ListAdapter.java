@@ -36,7 +36,6 @@ public final class ListAdapter extends ArrayAdapter<Entry> {
 		mPrefs = prefs;
 	}
 
-	// TODO: Check if convertView != null ?
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Entry entry = getItem(position);

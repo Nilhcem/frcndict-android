@@ -3,56 +3,10 @@
 	<!-- Application -->
 	<string name="app_name">Dictionnaire Français Chinois</string>
 
-	<!-- Import data -->
-	<string name="import_service_label">Import / Mise à jour des données</string>
-	<string name="import_welcome_title">Bienvenue</string>
-	<string name="import_welcome_msg">Les données de l\'application ont besoin d\'être téléchargées.\nVotre appareil doit être connecté à Internet.\n6,6 MO vont être téléchargés et environ 25 MO seront nécessaires pendant le processus d\'installation.\n\nVoulez-vous commencer le téléchargement maintenant ?</string>
-	<string name="import_welcome_msg_local">Le dictionnaire va être installé depuis le stockage externe.\nEnviron 25 MO seront nécessaires pendant le processus d\'installation.\nUne fois l\'installation terminée, le fichier %s sera supprimé automatiquement de votre stockage externe\n\nVoulez-vous commencer l\'installation maintenant ?</string>
-	<string name="import_processing_msg">Installation des données du dictionnaire (6,6M).\nVeuillez patienter…</string>
-	<string name="import_start_service_btn">Installer</string>
-	<string name="import_quit_activity_btn">Quitter</string>
-	<string name="import_done">Terminé</string>
-	<string name="import_download_text">Téléchargement du dictionnaire…</string>
-	<string name="import_install_text">Installation du dictionnaire…</string>
-	<string name="import_dialog_title">Terminé</string>
-	<string name="import_dialog_msg">Merci d\'avoir patienté.\nVous pouvez dès à présent commencer à utiliser l\'application !</string>
-	<string name="import_dialog_btn">OK</string>
-	<string name="import_storage_dialog_title">Emplacement des données</string>
-	<string name="import_storage_dialog_msg">Où souhaitez-vous installer le dictionnaire ?</string>
-	<string name="import_storage_dialog_sdcard">Carte SD (recommandé)</string>
-	<string name="import_storage_dialog_device">Mémoire interne de l\'appareil</string>
-	<string name="import_err_dialog_title">Erreur</string>
-	<string name="import_err_too_old">La version du programme que vous utilisez actuellement est obsolète et ne peut plus fonctionner.\nVeuillez mettre à jour le programme et recommencer.</string>
-	<string name="import_err_too_old_update">Ouvrir \"Google Play Store\" et mettre à jour</string>
-	<string name="import_err_cannot_download">Impossible de télécharger le dictionnaire.\nAssurez-vous que votre appareil est bien connecté à Internet et réessayez.</string>
-	<string name="import_err_wrong_dictionary_file">Le dictionnaire n\'a pas été correctement téléchargé.\nVeuillez recommencer.</string>
-	<string name="import_err_wrong_dictionary_file_local">Le dictionnaire n\'est pas valide.</string>
-	<string name="import_err_retry">Réessayer</string>
-	<string name="import_err_cancel">Annuler</string>
-	<string name="import_err_exit">Quitter</string>
-	<string name="import_cancel_btn">Annuler</string>
-	<string name="import_notification_import_title">Importation du dictionnaire CN/FR</string>
-	<string name="import_notification_import_msg">Voir la progression</string>
-	<string name="import_notification_success_title">Dictionnaire CN/FR correctement importé</string>
-	<string name="import_notification_success_msg">Commencer à utiliser l\'application</string>
-	<string name="import_notification_failed_title">Échec lors de l\'importation du dictionnaire CN/FR</string>
-	<string name="import_notification_failed_msg">Veuillez réessayer</string>
-
-	<!-- Update data -->
-	<string name="update_welcome_title">Mise à jour du dictionnaire</string>
-	<string name="update_welcome_msg">Une mise à jour du dictionnaire est disponible.\nVeuillez vous assurer que le périphérique est bien connecté à Internet.\n6,6 MO vont être téléchargés et environ 25 MO seront nécessaires pendant le processus d\'installation.\n\nVoulez-vous commencer la mise à jour maintenant ?</string>
-	<string name="update_welcome_msg_local">Une mise à jour du dictionnaire est disponible.\nEnviron 25 MO seront nécessaires pendant le processus d\'installation.\nUne fois la mise à jour terminée, le fichier %s sera supprimé automatiquement de votre stockage externe.\n\nVoulez-vous commencer la mise à jour maintenant ?</string>
-	<string name="update_processing_msg">Mise à jour du dictionnaire (6,6M).\nVeuillez patienter…</string>
-	<string name="update_start_service_btn">Mettre à jour</string>
-	<string name="update_quit_activity_btn">Annuler</string>
-	<string name="update_dialog_msg">Le dictionnaire a été mis à jour avec succès !\nMerci d\'avoir patienté.</string>
-	<string name="update_notification_import_title">Mise à jour du dictionnaire CN/FR</string>
-	<string name="update_notification_success_title">Le dictionnaire CN/FR a été mis à jour avec succès</string>
-	<string name="update_notification_success_msg">Cliquez pour utiliser l\'application</string>
-	<string name="update_notification_title">Une mise à jour du dictionnaire est disponible</string>
-	<string name="update_notification_msg">Cliquez pour commencer la mise à jour</string>
-	<string name="update_backup_text">Copie des données personnelles…</string>
-	<string name="update_restore_text">Restoration des données personnelles…</string>
+	<!-- Installation -->
+	<string name="install_text">Installation du dictionnaire…</string>
+	<string name="install_wait">Veuillez patienter jusqu\'à la fin de cette opération</string>
+	<string name="install_error">Erreur lors de l\'installation. Veuillez recommencer.</string>
 
 	<!-- Search entry -->
 	<string name="search_intro">Utilisez l\'espace de recherche ci-dessus pour consulter le dictionnaire.</string>
@@ -117,8 +71,6 @@
 	<string name="settings_cat_advanced">Avancé</string>
 	<string name="settings_db_installtts">Synthèse vocale</string>
 	<string name="settings_db_installtts_sum">Installer les voix chinoises</string>
-	<string name="settings_db_updates">Mises à jour du dictionnaire</string>
-	<string name="settings_db_updates_sum">Recevoir une notification quand une mise à jour est disponible</string>
 	<string name="settings_db_importexport">Sauvegarde / Restauration des données</string>
 	<string name="settings_db_importexport_sum">Importer ou exporter les favoris dans un fichier xml</string>
 
@@ -136,10 +88,4 @@
 	<string name="install_tts_title">Installer la synthèse vocale</string>
 	<string name="install_tts_desc">Pour installer la synthèse vocale (TTS), vous devez installer et lancer l\'application (gratuite) \"Chinese Dictionary and TTS\".\n\nL\'application \"TTS\" téléchargera automatiquement les voix (10MO) sur la carte sd lors de son premier lancement.\n\nVeuillez noter qu\'une fois les voix téléchargées, vous pouvez désinstaller l\'application \"TTS\" à tout moment si vous le souhaitez. Les voix ne seront pas supprimées et pourront toujours être utilisées dans ce dictionnaire.</string>
 	<string name="install_tts_btn">Installer depuis Google Play</string>
-
-	<!-- Local dictionary installation -->
-	<string name="install_local_title">Installer un dictionnaire sans Internet</string>
-	<string name="install_local_desc">Un fichier de données du dictionnaire à été trouvé sur le stockage externe. Voulez-vous installer ce dictionnaire ?\n\nPour ne plus avoir ce message, supprimez le fichier %s présent sur votre carte sd</string>
-	<string name="install_local_yes">Oui</string>
-	<string name="install_local_no">Non</string>
 </resources>

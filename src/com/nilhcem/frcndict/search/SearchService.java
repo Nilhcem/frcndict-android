@@ -1,17 +1,21 @@
 package com.nilhcem.frcndict.search;
 
+import android.content.Context;
+
+import com.nilhcem.frcndict.core.Log;
 import com.nilhcem.frcndict.core.list.AbstractSearchService;
-import com.nilhcem.frcndict.database.DatabaseHelper;
+import com.nilhcem.frcndict.database.DictDbHelper;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
-import com.nilhcem.frcndict.utils.Log;
 
 public final class SearchService extends AbstractSearchService {
 	public static final int BACK_TO_EXIT_TIMER = 4000;
 	private static final String TAG = "SearchService";
 	private long mLastBackPressTime = 0l;
+	private Context mContext;
 
-	public SearchService() {
+	public SearchService(Context context) {
 		super();
+		mContext = context;
 		mSearchType = AbstractSearchService.SEARCH_UNDEFINED;
 	}
 
@@ -38,8 +42,7 @@ public final class SearchService extends AbstractSearchService {
 
 			if (!isHanzi) {
 				// Determines if search is in pinyin or in french
-				DatabaseHelper db = DatabaseHelper.getInstance();
-				db.open();
+				DictDbHelper db = new DictDbHelper(mContext);
 				if (db.isPinyin(search)) {
 					mSearchType = AbstractSearchService.SEARCH_PINYIN;
 				} else {

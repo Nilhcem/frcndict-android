@@ -55,7 +55,7 @@ public final class StarredActivity extends AbstractListActivity {
 	@Override
 	public void update(Observable observable, Object data) {
 		if (observable instanceof EndlessScrollListener) {
-			mService.runSearchThread(null, (String) data, null);
+			mService.runSearchThread(mDb, mStarredDb, null, (String) data, null);
 		}
 	}
 
@@ -87,7 +87,7 @@ public final class StarredActivity extends AbstractListActivity {
 			mService.stopPreviousThread();
 		}
 		mListAdapter.addLoading();
-		mService.runSearchThread(null, null, null);
+		mService.runSearchThread(mDb, mStarredDb, null, null, null);
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package com.nilhcem.frcndict.settings;
 
 import android.content.SharedPreferences;
 
-import com.nilhcem.frcndict.utils.Log;
+import com.nilhcem.frcndict.core.Log;
 
 public final class OnPreferencesChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener {
 	private boolean mThemeHasChanged;

@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 	<!-- Core -->
 	<style name="ListViewStyle"> <!-- All ListView should inherit from this -->
 		<item name="android:cacheColorHint">@color/transparent</item>
+	</style>
+
+	<!-- Splash screen -->
+	<style name="SplashTitle">
+		<item name="android:gravity">center</item>
+		<item name="android:layout_alignParentTop">true</item>
+		<item name="android:paddingTop">@dimen/splash_title_paddingTop</item>
+		<item name="android:textSize">@dimen/splash_title_textSize</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:visibility">gone</item>
+	</style>
+	<style name="SplashSubtitle">
+		<item name="android:gravity">center</item>
+		<item name="android:paddingTop">@dimen/splash_subtitle_paddingTop</item>
+		<item name="android:textSize">@dimen/splash_subtitle_textSize</item>
+		<item name="android:visibility">gone</item>
+	</style>
+	<style name="SplashSublayout">
+		<item name="android:layout_alignParentBottom">true</item>
+		<item name="android:layout_centerHorizontal">true</item>
+		<item name="android:layout_gravity">center</item>
+		<item name="android:paddingBottom">@dimen/splash_sublayout_paddingBottom</item>
 	</style>
 
 	<!-- Clearable edit text [core] -->
@@ -17,16 +39,6 @@
 		<item name="android:layout_marginTop">@dimen/clearable_cross_marginTop</item>
 	</style>
 
-	<!-- Progress bar [core] -->
-	<style name="ProgressPercentText">
-		<item name="android:gravity">right</item>
-	</style>
-	<style name="ProgressProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
-		<item name="android:indeterminate">false</item>
-		<item name="android:max">100</item>
-		<item name="android:progressDrawable">@drawable/progress_bar</item>
-	</style>
-
 	<!-- Star button [core] -->
 	<style name="StarButtonLayout">
 		<item name="android:paddingBottom">@dimen/meaning_separator_marginTopBottom</item>
@@ -39,30 +51,6 @@
 	<style name="StarButtonText">
 		<item name="android:gravity">center_vertical</item>
 		<item name="android:paddingLeft">@dimen/meaning_star_text_paddingLeft</item>
-	</style>
-
-	<!-- Import database -->
-	<style name="ImportLayout">
-		<item name="android:background">?bgColor</item>
-		<item name="android:textColor">?fgColor</item>
-	</style>
-	<style name="ImportWelcomeText">
-		<item name="android:gravity">center</item>
-		<item name="android:layout_marginTop">@dimen/import_welcome_text_marginTop</item>
-		<item name="android:textSize">@dimen/import_welcome_text_size</item>
-	</style>
-	<style name="ImportTextFrame">
-		<item name="android:background">@drawable/import_text_bg</item>
-		<item name="android:gravity">center</item>
-		<item name="android:layout_marginLeft">@dimen/import_text_marginLeftRight</item>
-		<item name="android:layout_marginRight">@dimen/import_text_marginLeftRight</item>
-		<item name="android:layout_marginTop">@dimen/import_separator_size</item>
-		<item name="android:layout_marginBottom">@dimen/import_separator_size</item>
-		<item name="android:textColor">@color/black</item>
-	</style>
-	<style name="ImportLayoutMargin">
-		<item name="android:layout_marginLeft">@dimen/import_bottom_layout_marginLeftRight</item>
-		<item name="android:layout_marginRight">@dimen/import_bottom_layout_marginLeftRight</item>
 	</style>
 
 	<!-- Search -->

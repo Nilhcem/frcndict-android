@@ -1,8 +1,9 @@
 package com.nilhcem.frcndict.meaning;
 
+import java.util.Map;
+
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractDictActivity;
 import com.nilhcem.frcndict.core.layout.ClickableHanzi;
 import com.nilhcem.frcndict.core.layout.StarButton;
+import com.nilhcem.frcndict.database.StarredDbHelper;
 import com.nilhcem.frcndict.database.Tables;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
@@ -39,10 +41,8 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (!isFinishing()) {
-			setContentView(R.layout.word_meaning);
-			new LoadingAsync().execute();
-		}
+		setContentView(R.layout.word_meaning);
+		new LoadingAsync().execute();
 	}
 
 	@Override
@@ -74,9 +74,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 		if (mId == 0) {
 			String hanzi = intent.getStringExtra(WordMeaningActivity.HANZI_INTENT);
 			if (hanzi != null) {
-				mDb.open();
 				mId = mDb.getIdByHanzi(hanzi);
-				mDb.close();
 			}
 		}
 	}
@@ -94,18 +92,18 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 		mMeaningTitle = (TextView) findViewById(R.id.wmMeaningTitle);
 	}
 
-	private void initStarButton() {
+	private void initStarButton(String simplified) {
 		mStarButton = (StarButton) findViewById(R.id.wmStarButton);
-		mStarButton.init(mId, mDb, this);
+		mStarButton.init(simplified, mStarredDb, this);
 	}
 
-	private void fillViews(Cursor c) {
-		if (c != null && c.getCount() == 1 && c.moveToFirst()) {
-			String simplified = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED));
-			String traditional = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRADITIONAL));
-			String pinyin = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_PINYIN));
-			String desc = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_TRANSLATION));
-			String starredDate = c.getString(c.getColumnIndex(Tables.ENTRIES_KEY_STARRED_DATE));
+	private void fillViews(Map<String, String> data) {
+		if (data != null) {
+			String simplified = data.get(Tables.ENTRIES_KEY_SIMPLIFIED);
+			String traditional = data.get(Tables.ENTRIES_KEY_TRADITIONAL);
+			String pinyin = data.get(Tables.ENTRIES_KEY_PINYIN);
+			String desc = data.get(Tables.ENTRIES_KEY_TRANSLATION);
+			String starredDate = data.get(StarredDbHelper.STARRED_KEY_DATE);
 
 			ChineseCharsHandler chineseCharsHandler = ChineseCharsHandler.getInstance();
 			if (TextUtils.isEmpty(pinyin)) {
@@ -159,41 +157,40 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		mHanzi.display(this);
+		if (mHanzi != null) {
+			mHanzi.display(this);
+		}
 	}
 
-	private final class LoadingAsync extends AsyncTask<Void, Void, Cursor> {
+	private final class LoadingAsync extends AsyncTask<Void, Void, Map<String, String>> {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			initLayouts();
 			displayLayout(mLoadingLayout);
-			mDb.open();
 		}
 
 		@Override
-		protected Cursor doInBackground(Void... params) {
-			Cursor c = null;
-
+		protected Map<String, String> doInBackground(Void... params) {
 			initId();
 			initTextViews();
-			initStarButton();
 
+			// Put word into a Map object
+			Map<String, String> word = null;
 			if (mId > 0) {
-				c = mDb.findById(mId);
+				word = mDb.findById(mId, mStarredDb);
 			}
-			return c;
+			return word;
 		}
 
 		@Override
-		protected void onPostExecute(Cursor result) {
+		protected void onPostExecute(Map<String, String> result) {
 			super.onPostExecute(result);
 			if (result != null) {
+				initStarButton(result.get(Tables.ENTRIES_KEY_SIMPLIFIED));
 				fillViews(result);
 				initFontSizes();
-				result.close();
 			}
-			mDb.close();
 			if (result == null) {
 				displayLayout(mNoResultLayout);
 			} else {

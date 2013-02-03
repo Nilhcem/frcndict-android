@@ -7,8 +7,6 @@ package com.nilhcem.frcndict.database;
  * @since 1.0
  */
 public interface Tables {
-	int DATABASE_VERSION = 2;
-
 	// Entries table
 	String ENTRIES_TABLE_NAME = "entries";
 	String ENTRIES_KEY_ROWID = "_id";
@@ -19,9 +17,4 @@ public interface Tables {
 	String ENTRIES_KEY_TRANSLATION = "translation";
 	String ENTRIES_KEY_TRANS_NO_ACCENT = "trans_no_accent";
 	String ENTRIES_KEY_TRANS_AVG_LENGTH = "trans_avg_length";
-	String ENTRIES_KEY_STARRED_DATE = "starred_date";
-
-	// Metadata table
-	String METADATA_TABLE_NAME = "dict_metadata";
-	String METADATA_KEY_VERSION = "version";
 }

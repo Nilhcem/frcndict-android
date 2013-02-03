@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 
 import org.xmlpull.v1.XmlSerializer;
 
@@ -14,9 +15,8 @@ import android.util.Xml;
 
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
-import com.nilhcem.frcndict.database.DatabaseHelper;
-import com.nilhcem.frcndict.database.Tables;
-import com.nilhcem.frcndict.utils.Log;
+import com.nilhcem.frcndict.core.Log;
+import com.nilhcem.frcndict.database.StarredDbHelper;
 
 public final class BackupXmlWriter extends AbstractCancellableObservable {
 	public static final String XML_SUB_TAG = "entry";
@@ -24,13 +24,13 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 	private static final String XML_MAIN_TAG = "starred";
 	private static final String XML_HEADER = "Backup file containing starred words for %s (https://play.google.com/store/apps/details?id=%s)";
 
-	private final DatabaseHelper mDb;
+	private final StarredDbHelper mDb;
 	private String mHeaders = null;
 	private FileOutputStream mOutputStream;
 
-	public BackupXmlWriter(File xmlFile) {
+	public BackupXmlWriter(StarredDbHelper dbHelper, File xmlFile) {
 		super();
-		mDb = DatabaseHelper.getInstance();
+		mDb = dbHelper;
 
 		// Create FileOuputStream for xmlFile
 		try {
@@ -42,13 +42,12 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 
 	@Override
 	public void start() throws IOException {
-		mDb.open();
 		long totalEntries = mDb.getNbStarred();
 
 		if (totalEntries > 0 && !mCancelled) {
 			XmlSerializer serializer = Xml.newSerializer();
 
-			Cursor c = mDb.getAllStarred();
+			Cursor c = mDb.getAllStarredCursor();
 			if (c.moveToFirst()) {
 				serializer.setOutput(mOutputStream, BackupXmlWriter.XML_ENCODING);
 				serializer.startDocument(BackupXmlWriter.XML_ENCODING, Boolean.TRUE);
@@ -66,11 +65,11 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 				do {
 					// Save in XML
 					fillColumnsIndexCache(columnsIndexCache, c);
-					String simplified = c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_SIMPLIFIED));
-					String date = c.getString(columnsIndexCache.get(Tables.ENTRIES_KEY_STARRED_DATE));
+					String simplified = c.getString(columnsIndexCache.get(StarredDbHelper.STARRED_KEY_SIMPLIFIED));
+					String date = c.getString(columnsIndexCache.get(StarredDbHelper.STARRED_KEY_DATE));
 					serializer.startTag(null, BackupXmlWriter.XML_SUB_TAG);
-					serializer.attribute(null, Tables.ENTRIES_KEY_SIMPLIFIED, simplified);
-					serializer.attribute(null, Tables.ENTRIES_KEY_STARRED_DATE, date);
+					serializer.attribute(null, StarredDbHelper.STARRED_KEY_SIMPLIFIED, simplified);
+					serializer.attribute(null, StarredDbHelper.STARRED_KEY_DATE, date);
 					serializer.endTag(null, BackupXmlWriter.XML_SUB_TAG);
 
 					// Notify percentage to observers
@@ -93,15 +92,15 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 	}
 
 	public void insertHeader(Context app) {
-		mHeaders = String.format(XML_HEADER,
+		mHeaders = String.format(Locale.US, XML_HEADER,
 				app.getString(R.string.app_name),
 				app.getClass().getPackage().getName());
 	}
 
 	private void fillColumnsIndexCache(HashMap<String, Integer> cache, Cursor c) {
 		if (cache.isEmpty()) {
-			cache.put(Tables.ENTRIES_KEY_SIMPLIFIED, c.getColumnIndex(Tables.ENTRIES_KEY_SIMPLIFIED));
-			cache.put(Tables.ENTRIES_KEY_STARRED_DATE, c.getColumnIndex(Tables.ENTRIES_KEY_STARRED_DATE));
+			cache.put(StarredDbHelper.STARRED_KEY_SIMPLIFIED, c.getColumnIndex(StarredDbHelper.STARRED_KEY_SIMPLIFIED));
+			cache.put(StarredDbHelper.STARRED_KEY_DATE, c.getColumnIndex(StarredDbHelper.STARRED_KEY_DATE));
 		}
 	}
 }

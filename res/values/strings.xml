@@ -3,56 +3,10 @@
 	<!-- Application -->
 	<string name="app_name">Chinese French Dictionary</string>
 
-	<!-- Import data -->
-	<string name="import_service_label">Dictionary import / update</string>
-	<string name="import_welcome_title">Welcome</string>
-	<string name="import_welcome_msg">The dictionary needs to be downloaded first.\nPlease make sure your device is connected to the Internet.\n6.6 MB will be downloaded and about 25 MB will be needed during the installation process.\n\nDo you want to start the download now?</string>
-	<string name="import_welcome_msg_local">The dictionary from the external storage will be installed.\nAbout 25 MB will be needed during the installation process.\nAfter the installation, the %s file will be deleted automatically from your external storage.\n\nDo you want to start the installation now?</string>
-	<string name="import_processing_msg">Installing dictionary data (6.6M).\nPlease wait…</string>
-	<string name="import_start_service_btn">Install</string>
-	<string name="import_quit_activity_btn">Exit</string>
-	<string name="import_done">Done</string>
-	<string name="import_download_text">Downloading dictionary…</string>
-	<string name="import_install_text">Installing dictionary…</string>
-	<string name="import_dialog_title">Completed</string>
-	<string name="import_dialog_msg">Thank you for your patience.\nYou can now start using the application!</string>
-	<string name="import_dialog_btn">OK</string>
-	<string name="import_storage_dialog_title">Installing data</string>
-	<string name="import_storage_dialog_msg">Where do you want to install data?</string>
-	<string name="import_storage_dialog_sdcard">SD card (recommended)</string>
-	<string name="import_storage_dialog_device">Device internal memory</string>
-	<string name="import_err_dialog_title">Error</string>
-	<string name="import_err_too_old">The software version you are currently using is too old and cannot be used anymore.\nPlease update the program first and try again.</string>
-	<string name="import_err_too_old_update">Open Google Play Store to update</string>
-	<string name="import_err_cannot_download">Cannot download the dictionary.\nPlease make sure your device is connected to the Internet and try again.</string>
-	<string name="import_err_wrong_dictionary_file">The dictionary was not properly downloaded.\nPlease try again.</string>
-	<string name="import_err_wrong_dictionary_file_local">The dictionary file is not valid.</string>
-	<string name="import_err_retry">Retry</string>
-	<string name="import_err_cancel">Cancel</string>
-	<string name="import_err_exit">Exit</string>
-	<string name="import_cancel_btn">Cancel</string>
-	<string name="import_notification_import_title">Importing CN/FR dictionary data</string>
-	<string name="import_notification_import_msg">Click to see progress</string>
-	<string name="import_notification_success_title">CN/FR dictionary data successfully imported</string>
-	<string name="import_notification_success_msg">Click to start using the application</string>
-	<string name="import_notification_failed_title">Failed to import CN/FR dictionary data</string>
-	<string name="import_notification_failed_msg">Click to see the reason and try again</string>
-
-	<!-- Update data -->
-	<string name="update_welcome_title">Update dictionary</string>
-	<string name="update_welcome_msg">A dictionary update is available.\nPlease make sure your device is connected to the Internet.\n6.6 MB will be downloaded and about 25 MB will be needed during the update process.\n\nDo you want to start the update now?</string>
-	<string name="update_welcome_msg_local">A dictionary update is available.\nAbout 25 MB will be needed during the update process.\nAfter the update, the %s file will be deleted automatically from your external storage.\n\nDo you want to start the update now?</string>
-	<string name="update_processing_msg">Updating dictionary data (6.6M).\nPlease wait…</string>
-	<string name="update_start_service_btn">Update</string>
-	<string name="update_quit_activity_btn">Cancel</string>
-	<string name="update_dialog_msg">Dictionary has been successfully updated!\nThank you for your patience.</string>
-	<string name="update_notification_import_title">Updating CN/FR dictionary data</string>
-	<string name="update_notification_success_title">CN/FR dictionary data successfully updated</string>
-	<string name="update_notification_success_msg">Click to use the application</string>
-	<string name="update_notification_title">A dictionary update is available</string>
-	<string name="update_notification_msg">Click to start the update</string>
-	<string name="update_backup_text">Backing up personal data…</string>
-	<string name="update_restore_text">Restoring personal data…</string>
+	<!-- Installation -->
+	<string name="install_text">Installing dictionary…</string>
+	<string name="install_wait">Please wait for this operation to finish</string>
+	<string name="install_error">Error while installing dictionary. Please try again.</string>
 
 	<!-- Search entry -->
 	<string name="search_intro">Tap in the box above to start searching for a word.</string>
@@ -117,8 +71,6 @@
 	<string name="settings_cat_advanced">Advanced</string>
 	<string name="settings_db_installtts">Speech synthesis</string>
 	<string name="settings_db_installtts_sum">Install Chinese voices</string>
-	<string name="settings_db_updates">Dictionary updates</string>
-	<string name="settings_db_updates_sum">Be notified when an update is available</string>
 	<string name="settings_db_importexport">Backup / Restore data</string>
 	<string name="settings_db_importexport_sum">Import or export starred words in a xml file</string>
 
@@ -136,10 +88,4 @@
 	<string name="install_tts_title">Install Speech Synthesis data</string>
 	<string name="install_tts_desc">You need to install and open the \"Chinese Dictionary and TTS\" (free) application to enable Speech Synthesis (TTS) support.\n\nThe \"TTS\" application will automatically download the voice data (10MB) on your sdcard at the first launch.\n\nNote that once the voice data are downloaded, you can uninstall the \"TTS\" application anytime you want. Voice data will be kept and can still be used with this dictionary.</string>
 	<string name="install_tts_btn">Install from Google Play</string>
-
-	<!-- Local dictionary installation -->
-	<string name="install_local_title">Install local dictionary</string>
-	<string name="install_local_desc">A dictionary file was found on the external storage. Do you want to install this dictionary?\n\nTo remove this alert, delete the %s file on your external storage</string>
-	<string name="install_local_yes">Yes</string>
-	<string name="install_local_no">No</string>
 </resources>

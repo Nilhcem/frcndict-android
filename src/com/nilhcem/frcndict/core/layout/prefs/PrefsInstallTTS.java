@@ -1,6 +1,7 @@
 package com.nilhcem.frcndict.core.layout.prefs;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -34,10 +35,14 @@ public class PrefsInstallTTS extends Preference {
 				builder.setPositiveButton(R.string.install_tts_btn, new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Uri marketUri = Uri.parse(PrefsInstallTTS.INTENT_MARKET_URI);
-						Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
-						marketIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-						getContext().startActivity(marketIntent);
+						try {
+							Uri marketUri = Uri.parse(PrefsInstallTTS.INTENT_MARKET_URI);
+							Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+							marketIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+							getContext().startActivity(marketIntent);
+						} catch (ActivityNotFoundException e) {
+							// Do nothing
+						}
 						dialog.dismiss();
 					}
 				});

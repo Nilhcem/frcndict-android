@@ -3,6 +3,7 @@ package com.nilhcem.frcndict.core.layout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -71,7 +72,7 @@ public final class ClickableHanzi extends LinearLayout {
 						String[] splittedFont = curStr.split(START_FONT_TAG);
 						if (splittedFont.length > 1) {
 							splitted.add(splittedFont[0]);
-							curStr = String.format("%s%s", START_FONT_TAG, splittedFont[1]);
+							curStr = String.format(Locale.US, "%s%s", START_FONT_TAG, splittedFont[1]);
 						}
 					}
 				}
@@ -252,25 +253,25 @@ public final class ClickableHanzi extends LinearLayout {
 	};
 
 	private void addOpenCharOption(List<Integer> actions, List<CharSequence> options, Context c, String hanzi) {
-		options.add(String.format(c.getString(R.string.meaning_see_text), hanzi));
+		options.add(String.format(Locale.US, c.getString(R.string.meaning_see_text), hanzi));
 		actions.add(ACTION_OPEN_CHAR);
 	}
 
 	private void addCopyCharOption(List<Integer> actions, List<CharSequence> options, Context c, String hanzi, Integer action) {
-		options.add(String.format(c.getString(R.string.meaning_copy_text), hanzi));
+		options.add(String.format(Locale.US, c.getString(R.string.meaning_copy_text), hanzi));
 		actions.add(action);
 	}
 
 	private void addStrokeOrderOption(List<Integer> actions, List<CharSequence> options, Context c, String hanzi, boolean exist) {
 		if (exist) {
-			options.add(String.format(c.getString(R.string.meaning_see_stroke), hanzi));
+			options.add(String.format(Locale.US, c.getString(R.string.meaning_see_stroke), hanzi));
 			actions.add(ACTION_STROKE_ORDER);
 		}
 	}
 
 	private void addListenOption(List<Integer> actions, List<CharSequence> options, Context c, String hanzi) {
 		if (mAddListenFeature) {
-			options.add(String.format(c.getString(R.string.meaning_listen), hanzi));
+			options.add(String.format(Locale.US, c.getString(R.string.meaning_listen), hanzi));
 			actions.add(ACTION_LISTEN_HANZI);
 		}
 	}

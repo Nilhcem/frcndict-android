@@ -1,5 +1,6 @@
 package com.nilhcem.frcndict.search;
 
+import java.util.Locale;
 import java.util.Observable;
 
 import android.app.Dialog;
@@ -146,7 +147,7 @@ public final class SearchActivity extends AbstractListActivity {
 	@Override
 	public void update(Observable observable, Object data) {
 		if (observable instanceof EndlessScrollListener) {
-			mService.runSearchThread(this, (String) data, mInputText.getText().toString());
+			mService.runSearchThread(mDb, mStarredDb, this, (String) data, mInputText.getText().toString());
 		} else if (observable instanceof ClearableTextObservable) {
 			clearResults(true);
 			changeSearchButtonBackground();
@@ -228,7 +229,7 @@ public final class SearchActivity extends AbstractListActivity {
 	private void initIntroText() {
 		mIntroText = (TextView) findViewById(R.id.searchIntro);
 		mIntroText.setText(Html.fromHtml(
-			String.format("<font color=\"%s\"><b>%s</b></font><br />%s",
+			String.format(Locale.US, "<font color=\"%s\"><b>%s</b></font><br />%s",
 				getResources().getStringArray(R.array.introTitleColors)[mPrefs.getBoolean(SettingsActivity.KEY_DARK_THEME, false) ? 1 : 0],
 				getString(R.string.app_name), getString(R.string.search_intro))));
 	}
@@ -248,7 +249,7 @@ public final class SearchActivity extends AbstractListActivity {
 			clearResults(clearSearchType);
 			showHideIntroText(false);
 			mListAdapter.addLoading();
-			mService.runSearchThread(this, null, search);
+			mService.runSearchThread(mDb, mStarredDb, this, null, search);
 		}
 	}
 

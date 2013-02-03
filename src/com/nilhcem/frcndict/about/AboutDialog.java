@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 
 import com.nilhcem.frcndict.R;
-import com.nilhcem.frcndict.utils.Log;
+import com.nilhcem.frcndict.core.Log;
 
 public final class AboutDialog extends Dialog {
 	private static final String ABOUT_ASSET_DIR = "about";
@@ -56,7 +56,7 @@ public final class AboutDialog extends Dialog {
 			Locale locale = Locale.getDefault();
 			List<String> assets = Arrays.asList(mParentContext.getResources().getAssets().list(AboutDialog.ABOUT_ASSET_DIR));
 
-			localeUrl = String.format("%s%s%s%s", AboutDialog.ABOUT_ASSET_FILE,
+			localeUrl = String.format(Locale.US, "%s%s%s%s", AboutDialog.ABOUT_ASSET_FILE,
 					AboutDialog.ABOUT_ASSET_FILE_SEPARATOR, locale.getLanguage(),
 					AboutDialog.ABOUT_URL_EXTENSION);
 			if (assets.contains(localeUrl)) {
@@ -67,11 +67,11 @@ public final class AboutDialog extends Dialog {
 			}
 		} catch (IOException e) {
 			Log.e(AboutDialog.class.getSimpleName(), e, "Can't find about asset");
-			// found = false;
+			found = false;
 		}
 
 		if (!found) {
-			localeUrl = String.format("%s%s", AboutDialog.ABOUT_ASSET_FILE, AboutDialog.ABOUT_URL_EXTENSION);
+			localeUrl = String.format(Locale.US, "%s%s", AboutDialog.ABOUT_ASSET_FILE, AboutDialog.ABOUT_URL_EXTENSION);
 		}
 		return AboutDialog.ABOUT_URL + localeUrl;
 	}

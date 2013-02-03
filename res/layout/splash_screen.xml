@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/installTitle"
+        style="@style/SplashTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/install_text" />
+
+    <TextView
+        android:id="@+id/installSubtitle"
+        style="@style/SplashSubtitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/installTitle"
+        android:text="@string/install_wait" />
+
+    <LinearLayout
+        style="@style/SplashSublayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <ProgressBar
+            style="@style/ListItemLoadingIcon"
+            android:indeterminate="true" />
+
+        <TextView
+            style="@style/ListItemLoadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/search_loading" />
+    </LinearLayout>
+
+</RelativeLayout>

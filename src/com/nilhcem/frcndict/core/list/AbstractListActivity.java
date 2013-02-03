@@ -28,13 +28,11 @@ public abstract class AbstractListActivity extends AbstractDictActivity implemen
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (!isFinishing()) {
-			setContentView(getLayoutResId());
-			initResultList();
-			initService();
-			initBeforeRestore();
-			restore(savedInstanceState);
-		}
+		setContentView(getLayoutResId());
+		initResultList();
+		initService();
+		initBeforeRestore();
+		restore(savedInstanceState);
 	}
 
 	// initializes some layouts before calling the restore method, nothing by default

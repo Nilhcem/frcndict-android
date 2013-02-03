@@ -5,7 +5,7 @@ import java.util.Observable;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
-import com.nilhcem.frcndict.utils.Log;
+import com.nilhcem.frcndict.core.Log;
 
 public final class EndlessScrollListener extends Observable implements OnScrollListener {
 	private int mCurrentPage; // Current loaded "page" of data

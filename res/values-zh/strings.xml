@@ -3,56 +3,10 @@
 	<!-- Application -->
 	<string name="app_name">法漢雙語詞典</string>
 
-	<!-- Import data -->
-	<string name="import_service_label">詞典導入/更新</string>
-	<string name="import_welcome_title">歡迎使用</string>
-	<string name="import_welcome_msg">首先请下载本词典.\n同時確保您的設備已聯網.\n它將佔用6.6MB的空間，此安裝過程需要25MB的空間.\n\n立即下載?</string>
-	<string name="import_welcome_msg_local">從外部存儲的詞典將被安裝.\n此安裝過程需要25MB的空間.\n安裝完成后,%s 文件將被自動從外部存儲中刪除.\n\n立即安裝?</string>
-	<string name="import_processing_msg">詞典數據安裝中(6.6M).\n請等待…</string>
-	<string name="import_start_service_btn">安裝</string>
-	<string name="import_quit_activity_btn">退出</string>
-	<string name="import_done">完成</string>
-	<string name="import_download_text">正在下載…</string>
-	<string name="import_install_text">正在安裝…</string>
-	<string name="import_dialog_title">安裝完成</string>
-	<string name="import_dialog_msg">感謝您的耐心等候.\n您現在可以使用本產品了!</string>
-	<string name="import_dialog_btn">確認</string>
-	<string name="import_storage_dialog_title">正在安裝數據</string>
-	<string name="import_storage_dialog_msg">請選擇安裝數據的位置?</string>
-	<string name="import_storage_dialog_sdcard">儲存卡 (推薦)</string>
-	<string name="import_storage_dialog_device">隨機內存</string>
-	<string name="import_err_dialog_title">出錯</string>
-	<string name="import_err_too_old">您目前使用的版本太舊已被淘汰.\n請更新程序並重試.</string>
-	<string name="import_err_too_old_update">打開 \"Google Play Store\" 更新</string>
-	<string name="import_err_cannot_download">無法下載詞典.\n請確保您的設備已聯網並重試.</string>
-	<string name="import_err_wrong_dictionary_file">詞典沒有被正確下載.\n請重試.</string>
-	<string name="import_err_wrong_dictionary_file_local">詞典文件無效.</string>
-	<string name="import_err_retry">重試</string>
-	<string name="import_err_cancel">取消</string>
-	<string name="import_err_exit">退出</string>
-	<string name="import_cancel_btn">取消</string>
-	<string name="import_notification_import_title">正在導入</string>
-	<string name="import_notification_import_msg">點擊此處查看進展</string>
-	<string name="import_notification_success_title">法漢雙語詞典導入成功</string>
-	<string name="import_notification_success_msg">點擊此處開始使用本產品</string>
-	<string name="import_notification_failed_title">法漢雙語詞典導入失敗</string>
-	<string name="import_notification_failed_msg">點擊此處查看原因並重試</string>
-
-	<!-- Update data -->
-	<string name="update_welcome_title">更新詞典</string>
-	<string name="update_welcome_msg">詞典更新可用.\n請確保您的設備已聯網.\n它將佔用6.6MB的空間，此安裝過程需要25MB的空間.\n\n立即下載?</string>
-	<string name="update_welcome_msg_local">詞典更新可用.\n此更新過程需要25MB的空間.\n更新完成后,%s 文件將被自動從外部存儲空間刪除.\n\n立即更新?</string>
-	<string name="update_processing_msg">正在更新數據(6.6M).\n請稍候…</string>
-	<string name="update_start_service_btn">更新</string>
-	<string name="update_quit_activity_btn">取消</string>
-	<string name="update_dialog_msg">詞典更新成功!\n感謝您的耐心等候.</string>
-	<string name="update_notification_import_title">正在更新詞典數據</string>
-	<string name="update_notification_success_title">法漢雙語詞典更新成功</string>
-	<string name="update_notification_success_msg">點擊此處使用</string>
-	<string name="update_notification_title">詞典更新可用</string>
-	<string name="update_notification_msg">點擊此處開始更新</string>
-	<string name="update_backup_text">正在備份個人數據…</string>
-	<string name="update_restore_text">正在恢復個人數據…</string>
+	<!-- Installation -->
+	<string name="install_text">安裝字典…</string>
+	<string name="install_wait">請稍等一下</string>
+	<string name="install_error">法漢雙語詞典導入失敗.點擊此處並重試</string>
 
 	<!-- Search entry -->
 	<string name="search_intro">輕點以上空格開始查找單詞.</string>
@@ -117,8 +71,6 @@
 	<string name="settings_cat_advanced">其它</string>
 	<string name="settings_db_installtts">中文語音合成</string>
 	<string name="settings_db_installtts_sum">安裝中文發音</string>
-	<string name="settings_db_updates">詞典更新</string>
-	<string name="settings_db_updates_sum">當更新可用時請提示</string>
 	<string name="settings_db_importexport">備份/還原 數據</string>
 	<string name="settings_db_importexport_sum">導入或導出已標記的單詞到xml文檔</string>
 
@@ -136,10 +88,4 @@
 	<string name="install_tts_title">安裝語音合成數據</string>
 	<string name="install_tts_desc">您需要安裝並打開此應用程序\"Chinese Dictionary and TTS\" (免費) 以啟用語音合成載體.\n\n此應用程序將在被第一次使用時自動將它的發音數據(10MB)下載到您的存儲卡上.\n\n注意發音數據一經下載，您可以隨時卸載\"TTS\"程序而不影響此數據在辭典中的使用.</string>
 	<string name="install_tts_btn">從Google Play安裝</string>
-
-	<!-- Local dictionary installation -->
-	<string name="install_local_title">安裝本地詞典</string>
-	<string name="install_local_desc">外部存儲中發現一個詞典文件.您要安裝此詞典嗎?\n\n如需移除此提示,請刪除外部存儲中的%s 文件</string>
-	<string name="install_local_yes">是</string>
-	<string name="install_local_no">否</string>
 </resources>

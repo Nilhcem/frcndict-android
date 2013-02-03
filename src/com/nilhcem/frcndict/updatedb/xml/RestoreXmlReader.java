@@ -17,25 +17,22 @@ import org.xml.sax.SAXException;
 import android.database.sqlite.SQLiteException;
 
 import com.nilhcem.frcndict.core.AbstractCancellableObservable;
-import com.nilhcem.frcndict.database.DatabaseHelper;
-import com.nilhcem.frcndict.database.Tables;
-import com.nilhcem.frcndict.utils.Log;
+import com.nilhcem.frcndict.core.Log;
+import com.nilhcem.frcndict.database.StarredDbHelper;
 
 public final class RestoreXmlReader extends AbstractCancellableObservable {
 	private final File mXmlFile;
-	private final DatabaseHelper mDb;
+	private final StarredDbHelper mDb;
 
-	public RestoreXmlReader(File xmlFile) {
+	public RestoreXmlReader(StarredDbHelper dbHelper, File xmlFile) {
 		super();
-		mDb = DatabaseHelper.getInstance();
+		mDb = dbHelper;
 		mXmlFile = xmlFile;
 	}
 
 	@Override
 	public void start() throws IOException {
-		mDb.open();
 		try {
-			mDb.beginTransaction();
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
 			try {
@@ -49,8 +46,8 @@ public final class RestoreXmlReader extends AbstractCancellableObservable {
 					Node item = items.item(i);
 					NamedNodeMap attributes = item.getAttributes();
 
-					Node simplifiedNode = attributes.getNamedItem(Tables.ENTRIES_KEY_SIMPLIFIED);
-					Node starredNode = attributes.getNamedItem(Tables.ENTRIES_KEY_STARRED_DATE);
+					Node simplifiedNode = attributes.getNamedItem(StarredDbHelper.STARRED_KEY_SIMPLIFIED);
+					Node starredNode = attributes.getNamedItem(StarredDbHelper.STARRED_KEY_DATE);
 
 					if (simplifiedNode != null && starredNode != null) {
 						String simplified = simplifiedNode.getNodeValue();
@@ -66,15 +63,12 @@ public final class RestoreXmlReader extends AbstractCancellableObservable {
 						updateProgress(((i + 1) * 100) / totalEntries);
 					}
 				}
-				mDb.setTransactionSuccessfull();
 			} catch (ParserConfigurationException ex) {
 				Log.e(RestoreXmlReader.class.getSimpleName(), ex, "Failed to get DocumentBuilder factory");
 				// Do nothing
 			} catch (SAXException ex) {
 				Log.e(RestoreXmlReader.class.getSimpleName(), ex, "Error parsing xml file");
 				// Do nothing
-			} finally {
-				mDb.endTransaction();
 			}
 			updateProgress(100); // Notify that it is finished (even if 0 elements to restore)
 		} catch (SQLiteException ex) {

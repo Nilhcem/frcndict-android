@@ -4,13 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.text.TextUtils;
 
+import com.nilhcem.frcndict.core.Log;
 import com.nilhcem.frcndict.utils.FileHandler;
-import com.nilhcem.frcndict.utils.Log;
 
 public final class HanziListener implements OnCompletionListener {
 	private static final String TAG = "HanziListener";
@@ -85,6 +86,6 @@ public final class HanziListener implements OnCompletionListener {
 	}
 
 	private File getFileFromName(String name) {
-		return new File(mVoicesDir, String.format("%s%s", name, EXTENSION));
+		return new File(mVoicesDir, String.format(Locale.US, "%s%s", name, EXTENSION));
 	}
 }

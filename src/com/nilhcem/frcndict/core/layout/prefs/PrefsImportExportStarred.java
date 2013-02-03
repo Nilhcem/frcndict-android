@@ -2,6 +2,8 @@ package com.nilhcem.frcndict.core.layout.prefs;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -14,23 +16,27 @@ import android.util.AttributeSet;
 import android.widget.Toast;
 
 import com.nilhcem.frcndict.R;
+import com.nilhcem.frcndict.core.Log;
+import com.nilhcem.frcndict.database.StarredDbHelper;
 import com.nilhcem.frcndict.updatedb.xml.BackupXmlWriter;
 import com.nilhcem.frcndict.updatedb.xml.RestoreXmlReader;
 import com.nilhcem.frcndict.utils.FileHandler;
-import com.nilhcem.frcndict.utils.Log;
 
 public final class PrefsImportExportStarred extends Preference {
+	private WeakReference<Context> mContext;
+
 	public PrefsImportExportStarred(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		initView();
+		initView(context);
 	}
 
 	public PrefsImportExportStarred(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		initView();
+		initView(context);
 	}
 
-	private void initView() {
+	private void initView(Context context) {
+		mContext = new WeakReference<Context>(context);
 		setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
@@ -87,12 +93,26 @@ public final class PrefsImportExportStarred extends Preference {
 			if (!isCancelled()) {
 				// Write into file
 				File xmlFile = FileHandler.getBackupRestoreFile();
+
+				StarredDbHelper helper = null;
+				Context context = null;
+				if (mContext != null) {
+					context = mContext.get();
+				}
+
 				try {
-					BackupXmlWriter xmlWriter = new BackupXmlWriter(xmlFile);
+					if (context != null) {
+						helper = new StarredDbHelper(mContext.get());
+					}
+					BackupXmlWriter xmlWriter = new BackupXmlWriter(helper, xmlFile);
 					xmlWriter.insertHeader(getContext().getApplicationContext());
 					xmlWriter.start();
 				} catch (IOException ex) {
 					Log.e(BackupAsync.class.getSimpleName(), ex, "Failed backing up starred words");
+				} finally {
+					if (helper != null) {
+						helper.close();
+					}
 				}
 				path = xmlFile.getAbsolutePath();
 			}
@@ -104,7 +124,7 @@ public final class PrefsImportExportStarred extends Preference {
 			super.onPostExecute(result);
 			if (!isCancelled() && !TextUtils.isEmpty(result)) {
 				Context c = getContext();
-				String str = String.format(c.getString(R.string.backup_restore_saved), result);
+				String str = String.format(Locale.US, c.getString(R.string.backup_restore_saved), result);
 				Toast.makeText(c, str, Toast.LENGTH_LONG).show();
 			}
 			dismissDialog();
@@ -141,7 +161,8 @@ public final class PrefsImportExportStarred extends Preference {
 				// Check if file exists
 				mXmlFile = FileHandler.getBackupRestoreFile();
 				if (!mXmlFile.exists()) {
-					error = String.format(c.getString(R.string.backup_restore_not_found),
+					error = String.format(Locale.US,
+							c.getString(R.string.backup_restore_not_found),
 							FileHandler.SD_BACKUP_RESTORE_FILE);
 				}
 			} else {
@@ -163,14 +184,25 @@ public final class PrefsImportExportStarred extends Preference {
 			Boolean result = null;
 
 			if (!isCancelled()) {
+				StarredDbHelper helper = null;
+				Context context = null;
+				if (mContext != null) {
+					context = mContext.get();
+				}
+
 				// Restore starred words from the XML file
 				try {
-					RestoreXmlReader xmlReader = new RestoreXmlReader(mXmlFile);
+					helper = new StarredDbHelper(context);
+					RestoreXmlReader xmlReader = new RestoreXmlReader(helper, mXmlFile);
 					xmlReader.start();
 					result = Boolean.TRUE;
 				} catch (IOException ex) {
 					Log.e(RestoreAsync.class.getSimpleName(), ex, "Failed restoring starred words");
 					result = Boolean.FALSE;
+				} finally {
+					if (helper != null) {
+						helper.close();
+					}
 				}
 			}
 			return result;

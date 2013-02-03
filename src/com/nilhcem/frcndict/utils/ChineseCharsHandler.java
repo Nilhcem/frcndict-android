@@ -2,10 +2,12 @@ package com.nilhcem.frcndict.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.nilhcem.frcndict.core.Log;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 
 public final class ChineseCharsHandler {
@@ -156,7 +158,7 @@ public final class ChineseCharsHandler {
 	// Transforms a pin1yin1 with tone numbers to Zhuyin (Bopomofo)
 	// http://zh.wikipedia.org/wiki/%E4%B8%AD%E6%96%87%E6%8B%BC%E9%9F%B3%E5%B0%8D%E7%85%A7%E8%A1%A8
 	private String pinyinNbToZhuyin(String src) {
-		return replaceStrWithArraysValues(src.toLowerCase(), ChineseCharsHandler.PINYIN_PIN2ZHU_SRC, ChineseCharsHandler.PINYIN_PIN2ZHU_DST);
+		return replaceStrWithArraysValues(src.toLowerCase(Locale.US), ChineseCharsHandler.PINYIN_PIN2ZHU_SRC, ChineseCharsHandler.PINYIN_PIN2ZHU_DST);
 	}
 
 	public boolean charIsChinese(char ch) {
@@ -210,9 +212,9 @@ public final class ChineseCharsHandler {
 			if (prefColorHanzi) {
 				left = addColorToHanzi(left, pinyin);
 				right = addColorToHanzi(right, pinyin);
-				return String.format(ChineseCharsHandler.FORMAT_HANZI_ST_HTML, left, right);
+				return String.format(Locale.US, ChineseCharsHandler.FORMAT_HANZI_ST_HTML, left, right);
 			}
-			return String.format(ChineseCharsHandler.FORMAT_HANZI_ST, left, right);
+			return String.format(Locale.US, ChineseCharsHandler.FORMAT_HANZI_ST, left, right);
 		}
 	}
 

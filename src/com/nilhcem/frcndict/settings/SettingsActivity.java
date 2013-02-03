@@ -7,17 +7,16 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 
-import com.google.android.gcm.GCMRegistrar;
 import com.nilhcem.frcndict.ApplicationController;
 import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.AbstractDictActivity;
-import com.nilhcem.frcndict.core.Config;
 import com.nilhcem.frcndict.utils.FileHandler;
 
 public final class SettingsActivity extends PreferenceActivity {
 	// Shared preferences
 	public static final String PREFS_NAME = "SharedPrefs";
-	public static final String KEY_DB_PATH = "dbPath";
+	public static final String KEY_DB_PATH_OLD = "dbPath";
+	public static final String KEY_INSTALLED = "installed";
 
 	public static final String KEY_CHINESE_CHARS = "chineseChars";
 	public static final String VAL_CHINESE_CHARS_SIMP = "1";
@@ -33,7 +32,6 @@ public final class SettingsActivity extends PreferenceActivity {
 
 	public static final String KEY_COLOR_HANZI = "hanziColoring";
 	public static final String KEY_DARK_THEME = "darkTheme";
-	public static final String KEY_DATABASE_UPDATES = "checkDbUpdates";
 
 	public static final String KEY_TEXT_SIZE = "textSize";
 	public static final String VAL_TEXT_SIZE_SMALL = "1";
@@ -56,15 +54,8 @@ public final class SettingsActivity extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.preferences);
 		prefs.registerOnSharedPreferenceChangeListener(((ApplicationController) getApplication())
 				.getOnPreferencesChangedListener());
-		removePushUpdatesIfNotCompatible();
 		removeImportExportIfNoSdCard();
 		removeInstallTtsIfNoFreeSpaceOnExternalStoreOrAlreadyInstalled();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		AbstractDictActivity.checkForDatabaseImportOrUpdate(this);
 	}
 
 	// returns the array index depending on the user's prefs font sizes (small: 0, medium: 1, big: 2)
@@ -80,25 +71,6 @@ public final class SettingsActivity extends PreferenceActivity {
 			index = 2;
 		}
 		return index;
-	}
-
-	private void removePushUpdatesIfNotCompatible() {
-		boolean isCompatible = Config.isGcmEnabled();
-		if (isCompatible) {
-			try {
-				GCMRegistrar.checkDevice(this);
-			} catch (UnsupportedOperationException e) {
-				isCompatible = false;
-			}
-		}
-
-		if (!isCompatible) {
-			PreferenceCategory advanced = (PreferenceCategory) findPreference(SettingsActivity.KEY_ADVANCED);
-			Preference pushUpdates = findPreference(SettingsActivity.KEY_DATABASE_UPDATES);
-			if (advanced != null && pushUpdates != null) {
-				advanced.removePreference(pushUpdates);
-			}
-		}
 	}
 
 	private void removeImportExportIfNoSdCard() {

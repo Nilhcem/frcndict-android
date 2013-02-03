@@ -6,17 +6,12 @@
 	<dimen name="clearable_cross_marginRight">5.0dp</dimen>
 	<dimen name="clearable_cross_marginTop">8.0dp</dimen>
 
-	<!-- Import data -->
-	<dimen name="import_welcome_text_size">20.0sp</dimen>
-	<dimen name="import_welcome_text_marginTop">12.0dp</dimen>
-	<dimen name="import_text_marginLeftRight">10.0dp</dimen>
-	<dimen name="import_separator_size">16.0dp</dimen>
-	<dimen name="import_bottom_layout_marginLeftRight">5.0dp</dimen>
-	<dimen name="import_progress_radius">5.0dp</dimen>
-	<dimen name="import_text_frame_radius">8.0dp</dimen>
-	<dimen name="import_text_frame_border">1.5dp</dimen>
-	<dimen name="import_text_frame_paddingLeftRight">5.0dp</dimen>
-	<dimen name="import_text_frame_paddingTopBottom">10.0dp</dimen>
+	<!-- Splash screen -->
+	<dimen name="splash_title_paddingTop">12.0dp</dimen>
+	<dimen name="splash_title_textSize">18.0sp</dimen>
+	<dimen name="splash_subtitle_paddingTop">10.0dp</dimen>
+	<dimen name="splash_subtitle_textSize">12.0sp</dimen>
+	<dimen name="splash_sublayout_paddingBottom">10.0dp</dimen>
 
 	<!-- Search -->
 	<dimen name="search_intro_paddingLeftRight">24.0dp</dimen>

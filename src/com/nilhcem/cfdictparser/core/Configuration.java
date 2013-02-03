@@ -20,9 +20,9 @@ public final class Configuration {
 	 *
 	 * @return the unique instance.
 	 */
-    public static Configuration getInstance() {
-        return INSTANCE;
-    }
+	public static Configuration getInstance() {
+		return INSTANCE;
+	}
 
 	/**
 	 * Opens the "{@code configuration.properties}" file and maps data.

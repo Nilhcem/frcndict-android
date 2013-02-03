@@ -42,7 +42,7 @@ public final class FileParser {
 	/**
 	 * Parses the text file and fills the database.
 	 */
-	public void parseFile() {
+	public void generateDbFromTextFile() {
 		try {
 			String line;
 			DbHandler db = new DbHandler();

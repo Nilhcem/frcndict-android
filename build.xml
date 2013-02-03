@@ -12,6 +12,7 @@
 		<delete dir="${dist.dir}" />
 		<delete dir="bin" />
 		<delete dir="output" />
+		<delete dir="assets" />
 	</target>
 
 	<target name="build" description="Build project">

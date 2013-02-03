@@ -4,3 +4,4 @@ build/*
 gen/*
 dist/*
 output/*
+assets/*

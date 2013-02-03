@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.text.Normalizer;
 
 import com.nilhcem.cfdictparser.core.Configuration;
-import com.nilhcem.cfdictparser.core.VersionGenerator;
 
 /**
  * Provides methods to communicate with an SQLite database.
@@ -76,14 +75,7 @@ public final class DbHandler {
 				+ Tables.ENTRIES_KEY_PINYIN2 + " text, "
 				+ Tables.ENTRIES_KEY_TRANSLATION + " text not null,"
 				+ Tables.ENTRIES_KEY_TRANS_NO_ACCENT + " text not null,"
-				+ Tables.ENTRIES_KEY_TRANS_AVG_LENGTH + " integer,"
-				+ Tables.ENTRIES_KEY_STARRED_DATE + " text);");
-
-		// METADATA_TABLE_NAME
-		stat.executeUpdate("DROP TABLE IF EXISTS " + Tables.METADATA_TABLE_NAME + ";");
-		stat.executeUpdate("CREATE TABLE " + Tables.METADATA_TABLE_NAME + " ("
-				+ Tables.METADATA_KEY_VERSION + " long not null);");
-		stat.executeUpdate("INSERT INTO " + Tables.METADATA_TABLE_NAME + " VALUES ('" + VersionGenerator.getVersion() + "');");
+				+ Tables.ENTRIES_KEY_TRANS_AVG_LENGTH + " integer);");
 	}
 
 	/**

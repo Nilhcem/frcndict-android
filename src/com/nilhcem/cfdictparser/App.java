@@ -15,6 +15,7 @@ import com.nilhcem.cfdictparser.args.DisplayUsageException;
  * @since 1.0
  */
 public final class App {
+
 	/**
 	 * Launches application.
 	 *
@@ -28,9 +29,9 @@ public final class App {
 			ArgsParser params = new ArgsParser();
 			params.checkArgs(args);
 
-			// Parse file
+			// Parse file - generating an Android compatible database
 			FileParser parser = new FileParser(params.getInputFile());
-			parser.parseFile();
+			parser.generateDbFromTextFile();
 
 			// Create output data
 			OutputMaker output = new OutputMaker();

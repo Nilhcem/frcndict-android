@@ -24,8 +24,9 @@ Modify the project configuration
 Dictionary data
 ----------------
 
-This project uses a modified version of the [CFDICT](http://www.chine-informations.com/chinois/open/CFDICT/) dictionary.
-To generate dictionary data, please see the **dbparser** git branch.
+- This project uses a modified version of the [CFDICT](http://www.chine-informations.com/chinois/open/CFDICT/) dictionary.
+- To generate dictionary data, please see the **dbparser** git branch.
+- You will also have to modify the `DATABASE_VERSION` number in the `DictDbHelper` class.
 
 
 Steps to do before releasing the application

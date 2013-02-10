@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.nilhcem.frcndict.settings.SettingsActivity;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -40,19 +42,23 @@ public final class StarredDbHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 	}
 
-	public List<String> getAllStarred() {
+	public List<String> getAllStarred(Integer curPage) {
 		List<String> starred = new ArrayList<String>();
 
-		SQLiteDatabase db = getReadableDatabase();
-		Cursor c = db.query(StarredDbHelper.STARRED_TABLE_NAME,
-				new String[] { StarredDbHelper.STARRED_KEY_SIMPLIFIED }, null,
-				null, null, null,
-				String.format(Locale.US, "%s DESC", StarredDbHelper.STARRED_KEY_DATE));
+		StringBuilder query = new StringBuilder("SELECT `")
+				.append(StarredDbHelper.STARRED_KEY_SIMPLIFIED)
+				.append("` FROM `").append(StarredDbHelper.STARRED_TABLE_NAME)
+				.append("` ORDER BY `")
+				.append(StarredDbHelper.STARRED_KEY_DATE)
+				.append("` DESC LIMIT ")
+				.append(SettingsActivity.NB_ENTRIES_PER_LIST * curPage)
+				.append(", ").append(SettingsActivity.NB_ENTRIES_PER_LIST + 1);
 
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor c = db.rawQuery(query.toString(), null);
 		if (c != null) {
 			while (c.moveToNext()) {
-				starred.add(c.getString(c
-						.getColumnIndex(StarredDbHelper.STARRED_KEY_SIMPLIFIED)));
+				starred.add(c.getString(0));
 			}
 			c.close();
 		}

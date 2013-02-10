@@ -18,7 +18,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 public final class DictDbHelper extends SQLiteAssetHelper {
 	private static final String DATABASE_NAME = "cfdict";
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 
 	private static final String QUERY_IS_PINYIN;
 	private static final String QUERY_GET_ID_BY_HANZI;
@@ -112,8 +112,7 @@ public final class DictDbHelper extends SQLiteAssetHelper {
 
 		// Starred query
 		sb = new StringBuilder(selectAllFromWhere)
-			.append(" `").append(Tables.ENTRIES_KEY_SIMPLIFIED).append("` IN (%s) LIMIT ?,")
-			.append(nbToDisplay);
+			.append(" `").append(Tables.ENTRIES_KEY_SIMPLIFIED).append("` IN (%s)");
 		QUERY_STARRED = sb.toString();
 
 		// Find by id
@@ -207,9 +206,12 @@ public final class DictDbHelper extends SQLiteAssetHelper {
 	}
 
 	public Cursor searchStarred(StarredDbHelper starredDb, Integer curPage) {
-		List<String> starred = starredDb.getAllStarred();
-		int size = starred.size();
+		List<String> starred = starredDb.getAllStarred(curPage);
+		if (starred == null || starred.isEmpty()) {
+			return null;
+		}
 
+		int size = starred.size();
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < size; i++) {
 			if (i != 0) {
@@ -218,10 +220,9 @@ public final class DictDbHelper extends SQLiteAssetHelper {
 			sb.append("?");
 		}
 
-		starred.add(Integer.toString(SettingsActivity.NB_ENTRIES_PER_LIST * curPage));
 		SQLiteDatabase db = getReadableDatabase();
 		return db.rawQuery(String.format(Locale.US, DictDbHelper.QUERY_STARRED, sb.toString()),
-				starred.toArray(new String[size + 1]));
+				starred.toArray(new String[size]));
 	}
 
 	// Checks if search is a pinyin or a french search

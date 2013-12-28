@@ -28,14 +28,10 @@
 			android:key="darkTheme" />
 	</PreferenceCategory>
 
-	<!-- Advanced (Speech synthesis - Import/export starred words) -->
+	<!-- Advanced (Import/export starred words) -->
 	<PreferenceCategory
 	    android:key="advanced"
 	    android:title="@string/settings_cat_advanced">
-		<com.nilhcem.frcndict.core.layout.prefs.PrefsInstallTTS
-		    android:key="installTTS"
-		    android:title="@string/settings_db_installtts"
-			android:summary="@string/settings_db_installtts_sum" />
 		<com.nilhcem.frcndict.core.layout.prefs.PrefsImportExportStarred
 		    android:key="importExport"
 		    android:title="@string/settings_db_importexport"

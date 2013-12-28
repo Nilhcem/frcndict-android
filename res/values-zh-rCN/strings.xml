@@ -69,8 +69,6 @@
 	<string name="settings_dark_theme">夜间模式</string>
 	<string name="settings_dark_theme_sum">改变为暗色主题</string>
 	<string name="settings_cat_advanced">其它</string>
-	<string name="settings_db_installtts">中文语音合成</string>
-	<string name="settings_db_installtts_sum">安装中文发音</string>
 	<string name="settings_db_importexport">备份/还原 数据</string>
 	<string name="settings_db_importexport_sum">导入或导出已标记的单词到xml文档</string>
 
@@ -83,9 +81,4 @@
 	<string name="backup_restore_not_found">在安全数码卡内未找到文档 %s</string>
 	<string name="backup_restore_restore_ok">成功备份已标记的单词</string>
 	<string name="backup_restore_restore_ko">在备份标记的单词时出错</string>
-
-	<!-- Install TTS data -->
-	<string name="install_tts_title">安装语音合成数据</string>
-	<string name="install_tts_desc">您需要安装并打开此应用程序\"Chinese Dictionary and TTS\" (免费) 以启用语音合成载体.\n\n此应用程序将在被第一次使用时自动将它的发音数据(10MB)下载到您的存储卡上.\n\n注意发音数据一经下载，您可以随时卸载\"TTS\"程序而不影响此数据在辞典中的使用.</string>
-	<string name="install_tts_btn">从Google Play安装</string>
 </resources>

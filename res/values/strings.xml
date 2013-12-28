@@ -69,8 +69,6 @@
 	<string name="settings_dark_theme">Night Mode</string>
 	<string name="settings_dark_theme_sum">Change the display to a dark theme</string>
 	<string name="settings_cat_advanced">Advanced</string>
-	<string name="settings_db_installtts">Speech synthesis</string>
-	<string name="settings_db_installtts_sum">Install Chinese voices</string>
 	<string name="settings_db_importexport">Backup / Restore data</string>
 	<string name="settings_db_importexport_sum">Import or export starred words in a xml file</string>
 
@@ -83,9 +81,4 @@
 	<string name="backup_restore_not_found">File cfdict.xml was not found in sdcard</string>
 	<string name="backup_restore_restore_ok">Starred words successfully restored</string>
 	<string name="backup_restore_restore_ko">Error while restoring starred words</string>
-
-	<!-- Install TTS data -->
-	<string name="install_tts_title">Install Speech Synthesis data</string>
-	<string name="install_tts_desc">You need to install and open the \"Chinese Dictionary and TTS\" (free) application to enable Speech Synthesis (TTS) support.\n\nThe \"TTS\" application will automatically download the voice data (10MB) on your sdcard at the first launch.\n\nNote that once the voice data are downloaded, you can uninstall the \"TTS\" application anytime you want. Voice data will be kept and can still be used with this dictionary.</string>
-	<string name="install_tts_btn">Install from Google Play</string>
 </resources>

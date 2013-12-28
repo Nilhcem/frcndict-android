@@ -1,16 +1,25 @@
-# built application files
+# Temporary files
+*~
+\#*
+tmp/
+
+# IntelliJ files
+.idea
+*.iml
+
+# Android built application files
 *.apk
 *.ap_
 
-# files for the dex VM
+# Files for the dex VM
 *.dex
 
 # Java class files
 *.class
 
-# generated files
-bin/*
-gen/*
+# Generated files
+bin/
+gen/
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -18,6 +27,12 @@ local.properties
 # emacs temp / backup files
 *~
 \#*#
+
+# OSX files
+.DS_Store
+
+# Windows files
+Thumbs.db
 
 # ant generated config file
 Config.java

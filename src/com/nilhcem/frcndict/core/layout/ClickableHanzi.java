@@ -33,6 +33,7 @@ import com.nilhcem.frcndict.utils.FileHandler;
 
 @SuppressWarnings("deprecation")
 public final class ClickableHanzi extends LinearLayout {
+
 	private static final String START_FONT_TAG = "<font";
 	private static final String END_FONT_TAG = "</font>";
 
@@ -46,9 +47,9 @@ public final class ClickableHanzi extends LinearLayout {
 	private String mSimplified;
 	private String mPinyin;
 	private String mTraditional;
-	private boolean mAddListenFeature;
+	private final boolean mAddListenFeature;
 	private SharedPreferences mPrefs;
-	private List<TextView> mTextViews = new ArrayList<TextView>();
+	private final List<TextView> mTextViews = new ArrayList<TextView>();
 
 	public ClickableHanzi(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -176,7 +177,7 @@ public final class ClickableHanzi extends LinearLayout {
 	 * 	<li>Copy Traditional [only if traditional selected in settings and Trad != Simp]</li>
 	 * </ul>
 	 */
-	private View.OnClickListener onClickListener = new View.OnClickListener() {
+	private final View.OnClickListener onClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			Context c = getContext();
@@ -216,7 +217,7 @@ public final class ClickableHanzi extends LinearLayout {
 				}
 			}
 
-			final CharSequence items[] = (CharSequence[]) options.toArray(new CharSequence[options.size()]);
+			final CharSequence items[] = options.toArray(new CharSequence[options.size()]);
 			AlertDialog.Builder builder = new AlertDialog.Builder(c);
 			builder.setTitle(R.string.meaning_copy_title);
 			builder.setItems(items, new DialogInterface.OnClickListener() {

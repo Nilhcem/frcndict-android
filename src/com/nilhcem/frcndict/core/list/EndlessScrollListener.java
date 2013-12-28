@@ -8,6 +8,7 @@ import android.widget.AbsListView.OnScrollListener;
 import com.nilhcem.frcndict.core.Log;
 
 public final class EndlessScrollListener extends Observable implements OnScrollListener {
+
 	private int mCurrentPage; // Current loaded "page" of data
 	private int mPreviousTotal; // Total nb of items in the dataset.
 	private boolean mLoading; // True if we are still waiting for the last set of data to load.

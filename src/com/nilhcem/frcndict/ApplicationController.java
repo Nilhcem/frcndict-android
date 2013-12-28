@@ -9,6 +9,7 @@ import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 // Must stay in the root package. See FileHandler.getAppRootDir()
 public final class ApplicationController extends Application {
+
 	// Services
 	private final SearchService mSearchDictService = new SearchService(this);
 	private final StarredService mStarredService = new StarredService();

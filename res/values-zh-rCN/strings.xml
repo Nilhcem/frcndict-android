@@ -18,7 +18,6 @@
 
 	<!-- Word meaning -->
 	<plurals name="meaning_title">
-		<item quantity="one">词义:</item>
 		<item quantity="other">词义:</item>
 	</plurals>
 	<string name="meaning_title_bullet">•</string>

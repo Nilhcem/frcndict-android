@@ -15,6 +15,7 @@ import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.core.Log;
 
 public final class AboutDialog extends Dialog {
+
 	private static final String ABOUT_ASSET_DIR = "about";
 	private static final String ABOUT_ASSET_FILE = "about";
 	private static final String ABOUT_ASSET_FILE_SEPARATOR = "-";

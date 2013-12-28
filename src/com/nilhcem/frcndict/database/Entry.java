@@ -1,6 +1,7 @@
 package com.nilhcem.frcndict.database;
 
 public final class Entry {
+
 	private int mId;
 	private String mSimplified;
 	private String mTraditional;

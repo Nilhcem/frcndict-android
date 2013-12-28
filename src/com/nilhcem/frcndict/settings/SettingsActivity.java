@@ -13,6 +13,7 @@ import com.nilhcem.frcndict.core.AbstractDictActivity;
 import com.nilhcem.frcndict.utils.FileHandler;
 
 public final class SettingsActivity extends PreferenceActivity {
+
 	// Shared preferences
 	public static final String PREFS_NAME = "SharedPrefs";
 	public static final String KEY_DB_PATH_OLD = "dbPath";
@@ -34,9 +35,9 @@ public final class SettingsActivity extends PreferenceActivity {
 	public static final String KEY_DARK_THEME = "darkTheme";
 
 	public static final String KEY_TEXT_SIZE = "textSize";
-	public static final String VAL_TEXT_SIZE_SMALL = "1";
-	public static final String VAL_TEXT_SIZE_MEDIUM = "2";
-	public static final String VAL_TEXT_SIZE_BIG = "3";
+	private static final String VAL_TEXT_SIZE_SMALL = "1";
+	private static final String VAL_TEXT_SIZE_MEDIUM = "2";
+	private static final String VAL_TEXT_SIZE_BIG = "3";
 
 	// Other preferences
 	public static final int NB_ENTRIES_PER_LIST = 20;

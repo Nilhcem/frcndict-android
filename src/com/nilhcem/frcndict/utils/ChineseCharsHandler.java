@@ -11,6 +11,7 @@ import com.nilhcem.frcndict.core.Log;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 
 public final class ChineseCharsHandler {
+
 	private static final String TAG = "ChineseCharsHandler";
 	private static final ChineseCharsHandler INSTANCE = new ChineseCharsHandler();
 	private static final String SAME_HANZI_REPLACEMENT = "-";
@@ -60,7 +61,7 @@ public final class ChineseCharsHandler {
 		"a", "e", "i", "o", "u", "v", "an", "ang",
 		"en", "eng", "in", "ing", "ong", "un", "er"
 	};
-	public static final String[] PINYIN_PIN2ZHU_SRC = new String[] {
+	private static final String[] PINYIN_PIN2ZHU_SRC = new String[] {
 		"chuang", "shuang", "zhuang", "chang", "cheng", "chong", "chuai", "chuan", "diang",
 		"guang", "huang", "jiang", "jiong", "kuang", "liang", "niang", "qiang", "qiong",
 		"shang", "sheng", "shuai", "shuan", "xiang", "xiong", "zhang", "zheng", "zhong",
@@ -94,7 +95,7 @@ public final class ChineseCharsHandler {
 		"sa", "se", "si", "su", "ta", "te", "ti", "tu", "wa", "wo", "wu", "xi", "xu", "ya", "ye", "yi", "yu",
 		"za", "ze", "zi", "zu", "a", "e", "o", "1", "2", "3", "4", "5"
 	};
-	public static final String[] PINYIN_PIN2ZHU_DST = new String[] {
+	private static final String[] PINYIN_PIN2ZHU_DST = new String[] {
 		"ㄔㄨㄤ", "ㄕㄨㄤ", "ㄓㄨㄤ", "ㄔㄤ", "ㄔㄥ", "ㄔㄨㄥ", "ㄔㄨㄞ", "ㄔㄨㄢ", "ㄉㄧㄤ",
 		"ㄍㄨㄤ", "ㄏㄨㄤ", "ㄐㄧㄤ", "ㄐㄩㄥ", "ㄎㄨㄤ", "ㄌㄧㄤ", "ㄋㄧㄤ", "ㄑㄧㄤ", "ㄑㄩㄥ",
 		"ㄕㄤ", "ㄕㄥ", "ㄕㄨㄞ", "ㄕㄨㄢ", "ㄒㄧㄤ", "ㄒㄩㄥ", "ㄓㄤ", "ㄓㄥ", "ㄓㄨㄥ",
@@ -326,6 +327,6 @@ public final class ChineseCharsHandler {
 				split.add(sb.toString());
 			}
 		}
-		return (String[]) split.toArray(new String[split.size()]);
+		return split.toArray(new String[split.size()]);
 	}
 }

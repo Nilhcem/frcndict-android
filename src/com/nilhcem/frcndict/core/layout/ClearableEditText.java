@@ -17,16 +17,17 @@ import android.widget.RelativeLayout;
 import com.nilhcem.frcndict.R;
 
 /**
- * @see http://arunbadole1209.wordpress.com/2011/12/16/how-to-create-edittext-with-crossx-button-at-end-of-it/
+ * @see "http://arunbadole1209.wordpress.com/2011/12/16/how-to-create-edittext-with-crossx-button-at-end-of-it/"
  */
 public final class ClearableEditText extends RelativeLayout {
+
 	private final EditText mEditText;
 	private final Button mBtnClear;
 	private final ClearableTextObservable mObservable;
 
 	public ClearableEditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(R.layout.core_clearable_edit_text, this, true);
 
 		mEditText = (EditText) findViewById(R.id.clearable_edit);

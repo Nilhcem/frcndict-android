@@ -14,13 +14,14 @@ import com.nilhcem.frcndict.core.Log;
 import com.nilhcem.frcndict.utils.FileHandler;
 
 public final class HanziListener implements OnCompletionListener {
+
 	private static final String TAG = "HanziListener";
 	private static final String EXTENSION = ".mp3";
 
 	private int mCurIdx;
-	private File mVoicesDir;
+	private final File mVoicesDir;
 	private List<File> mFiles;
-	private MediaPlayer mMediaPlayer;
+	private final MediaPlayer mMediaPlayer;
 
 	public HanziListener() {
 		mMediaPlayer = new MediaPlayer();

@@ -16,6 +16,7 @@ import com.nilhcem.frcndict.settings.SettingsActivity;
  * Note: if some changes are made to this class, please modify proguard.cfg
  */
 /* package-private */ final class JavascriptInterface {
+
 	private static final String THEME_DEFAULT = "./res/theme-default.css";
 	private static final String THEME_DARK = "./res/theme-dark.css";
 

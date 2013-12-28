@@ -14,6 +14,7 @@ import com.nilhcem.frcndict.core.list.AbstractSearchService;
 import com.nilhcem.frcndict.core.list.EndlessScrollListener;
 
 public final class StarredActivity extends AbstractListActivity {
+
 	@Override
 	protected int getLayoutResId() {
 		return R.layout.starred_words;

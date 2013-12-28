@@ -11,7 +11,8 @@ import android.webkit.WebView;
 import android.widget.LinearLayout;
 
 public final class StrokesOrderDisplayer {
-	private static final int WEBVIEW_SIZE = 256; // dp
+
+	private static final int WEBVIEW_DP_SIZE = 256;
 	private static final String WEBVIEW_MIME = "text/html";
 	private static final String WEBVIEW_ENCODING = "UTF-8";
 	private static final String STROKES_DIR_PATH;
@@ -39,7 +40,7 @@ public final class StrokesOrderDisplayer {
 	}
 
 	private WebView createWebView(Context context, File strokeOrderFile) {
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(WEBVIEW_SIZE, WEBVIEW_SIZE);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(WEBVIEW_DP_SIZE, WEBVIEW_DP_SIZE);
 		params.gravity = Gravity.CENTER;
 
 		WebView webView = new WebView(context);

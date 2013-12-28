@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.nilhcem.frcndict.core.AbstractProgressObservable;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -16,11 +17,11 @@ import org.xml.sax.SAXException;
 
 import android.database.sqlite.SQLiteException;
 
-import com.nilhcem.frcndict.core.AbstractCancellableObservable;
 import com.nilhcem.frcndict.core.Log;
 import com.nilhcem.frcndict.database.StarredDbHelper;
 
-public final class RestoreXmlReader extends AbstractCancellableObservable {
+public final class RestoreXmlReader extends AbstractProgressObservable {
+
 	private final File mXmlFile;
 	private final StarredDbHelper mDb;
 

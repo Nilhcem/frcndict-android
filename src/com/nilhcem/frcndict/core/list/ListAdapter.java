@@ -20,6 +20,7 @@ import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class ListAdapter extends ArrayAdapter<Entry> {
+
 	private boolean mSearchIsOver; // true if no more result to avoid checking database
 	private float[] mListItemSizes;
 	private final Entry mLoading;

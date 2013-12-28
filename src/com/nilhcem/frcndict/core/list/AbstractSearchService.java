@@ -8,6 +8,7 @@ import com.nilhcem.frcndict.search.SearchActivity;
 import com.nilhcem.frcndict.search.SearchAsync;
 
 public abstract class AbstractSearchService {
+
 	public static final int SEARCH_UNDEFINED = 0;
 	public static final int SEARCH_FRENCH = 1;
 	public static final int SEARCH_PINYIN = 2;
@@ -17,10 +18,10 @@ public abstract class AbstractSearchService {
 	protected int mSearchType;
 
 	// Search Thread
-	protected SearchAsync mLastTask = null;
+	private SearchAsync mLastTask = null;
 
 	// Reference
-	protected WeakReference<ListAdapter> mRefSearchAdapter;
+	private WeakReference<ListAdapter> mRefSearchAdapter;
 
 	public abstract void detectAndSetSearchType(String search);
 

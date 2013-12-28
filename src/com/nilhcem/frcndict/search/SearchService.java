@@ -8,10 +8,12 @@ import com.nilhcem.frcndict.database.DictDbHelper;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class SearchService extends AbstractSearchService {
+
 	public static final int BACK_TO_EXIT_TIMER = 4000;
 	private static final String TAG = "SearchService";
+
 	private long mLastBackPressTime = 0l;
-	private Context mContext;
+	private final Context mContext;
 
 	public SearchService(Context context) {
 		super();

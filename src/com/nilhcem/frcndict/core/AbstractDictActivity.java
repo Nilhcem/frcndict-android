@@ -11,6 +11,7 @@ import com.nilhcem.frcndict.database.StarredDbHelper;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 
 public abstract class AbstractDictActivity extends Activity {
+
 	protected DictDbHelper mDb;
 	protected StarredDbHelper mStarredDb;
 	protected SharedPreferences mPrefs;

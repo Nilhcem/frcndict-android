@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import com.nilhcem.frcndict.core.Log;
 
 public final class OnPreferencesChangedListener implements SharedPreferences.OnSharedPreferenceChangeListener {
+
 	private boolean mThemeHasChanged;
 	private boolean mResultListShouldBeUpdated;
 

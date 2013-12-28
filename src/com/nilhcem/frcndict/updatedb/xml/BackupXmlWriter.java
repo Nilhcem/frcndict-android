@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 
+import com.nilhcem.frcndict.core.AbstractProgressObservable;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
@@ -14,13 +15,13 @@ import android.database.Cursor;
 import android.util.Xml;
 
 import com.nilhcem.frcndict.R;
-import com.nilhcem.frcndict.core.AbstractCancellableObservable;
 import com.nilhcem.frcndict.core.Log;
 import com.nilhcem.frcndict.database.StarredDbHelper;
 
-public final class BackupXmlWriter extends AbstractCancellableObservable {
+public final class BackupXmlWriter extends AbstractProgressObservable {
+
 	public static final String XML_SUB_TAG = "entry";
-	public static final String XML_ENCODING = "UTF-8";
+	private static final String XML_ENCODING = "UTF-8";
 	private static final String XML_MAIN_TAG = "starred";
 	private static final String XML_HEADER = "Backup file containing starred words for %s (https://play.google.com/store/apps/details?id=%s)";
 
@@ -44,7 +45,7 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 	public void start() throws IOException {
 		long totalEntries = mDb.getNbStarred();
 
-		if (totalEntries > 0 && !mCancelled) {
+		if (totalEntries > 0) {
 			XmlSerializer serializer = Xml.newSerializer();
 
 			Cursor c = mDb.getAllStarredCursor();
@@ -76,7 +77,7 @@ public final class BackupXmlWriter extends AbstractCancellableObservable {
 					if (countObservers() > 0) {
 						updateProgress((int) ((++curEntry * 100) / totalEntries));
 					}
-				} while (c.moveToNext() && !mCancelled);
+				} while (c.moveToNext());
 
 				c.close();
 		        serializer.endTag(null, BackupXmlWriter.XML_MAIN_TAG);

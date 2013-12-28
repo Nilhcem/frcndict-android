@@ -15,6 +15,7 @@ import com.nilhcem.frcndict.core.AbstractDictActivity;
 import com.nilhcem.frcndict.meaning.WordMeaningActivity;
 
 public abstract class AbstractListActivity extends AbstractDictActivity implements Observer {
+
 	protected AbstractSearchService mService;
 	protected ListView mResultList;
 	protected ListAdapter mListAdapter;

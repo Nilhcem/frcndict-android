@@ -22,7 +22,8 @@ import com.nilhcem.frcndict.updatedb.xml.BackupXmlWriter;
 import com.nilhcem.frcndict.updatedb.xml.RestoreXmlReader;
 import com.nilhcem.frcndict.utils.FileHandler;
 
-public final class PrefsImportExportStarred extends Preference {
+final class PrefsImportExportStarred extends Preference {
+
 	private WeakReference<Context> mContext;
 
 	public PrefsImportExportStarred(Context context, AttributeSet attrs) {
@@ -65,7 +66,7 @@ public final class PrefsImportExportStarred extends Preference {
 	}
 
 	private final class BackupAsync extends AsyncTask<Void, Void, String> {
-		private ProgressDialog mDialog;
+		private final ProgressDialog mDialog;
 
 		public BackupAsync() {
 			mDialog = new ProgressDialog(getContext());
@@ -137,14 +138,14 @@ public final class PrefsImportExportStarred extends Preference {
 		}
 
 		private void dismissDialog() {
-			if (mDialog != null && mDialog.isShowing()) {
+			if (mDialog.isShowing()) {
 				mDialog.dismiss();
 			}
 		}
 	}
 
 	private final class RestoreAsync extends AsyncTask<Void, Void, Boolean> {
-		private ProgressDialog mDialog;
+		private final ProgressDialog mDialog;
 		private File mXmlFile;
 
 		public RestoreAsync() {
@@ -230,7 +231,7 @@ public final class PrefsImportExportStarred extends Preference {
 		}
 
 		private void dismissDialog() {
-			if (mDialog != null && mDialog.isShowing()) {
+			if (mDialog.isShowing()) {
 				mDialog.dismiss();
 			}
 		}

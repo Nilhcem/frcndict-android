@@ -19,6 +19,7 @@ import com.nilhcem.frcndict.database.Tables;
 import com.nilhcem.frcndict.settings.SettingsActivity;
 
 public final class SearchAsync extends AsyncTask<String, String, List<Entry>> {
+
 	private final ListAdapter mRefAdapter;
 	private final DictDbHelper mDatabase;
 	private final StarredDbHelper mStarredDb;

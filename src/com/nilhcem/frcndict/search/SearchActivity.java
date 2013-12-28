@@ -36,6 +36,7 @@ import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.starred.StarredActivity;
 
 public final class SearchActivity extends AbstractListActivity {
+
 	private TextView mIntroText;
 	private TextView mInputText;
 	private Button mSearchButton;
@@ -199,7 +200,7 @@ public final class SearchActivity extends AbstractListActivity {
 		ClearableEditText clearableText = (ClearableEditText) findViewById(R.id.searchInput);
 		clearableText.addObserver(this);
 
-		mInputText = (TextView) clearableText.getEditText();
+		mInputText = clearableText.getEditText();
 		mInputText.setHint(R.string.search_hint_text);
 		mInputText.setNextFocusDownId(mInputText.getId());
 		mInputText.setImeOptions(EditorInfo.IME_ACTION_SEARCH); // set search icon as the keyboard return key
@@ -274,7 +275,7 @@ public final class SearchActivity extends AbstractListActivity {
 	}
 
 	public void changeSearchButtonBackground() {
-		int res = 0;
+		int res;
 		int searchType = mService.getSearchType();
 
 		if (searchType == AbstractSearchService.SEARCH_UNDEFINED) {

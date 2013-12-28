@@ -17,6 +17,7 @@ import com.nilhcem.frcndict.utils.FileHandler;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 public final class DictDbHelper extends SQLiteAssetHelper {
+
 	private static final String DATABASE_NAME = "cfdict";
 	private static final int DATABASE_VERSION = 4;
 
@@ -241,7 +242,6 @@ public final class DictDbHelper extends SQLiteAssetHelper {
 
 	private String convertToQueryReadyPinyin(String pinyin) {
 		boolean prevCharWasSpace = false;
-		boolean prevCharWasTone = false;
 
 		StringBuilder newPinyin = new StringBuilder();
 
@@ -252,9 +252,7 @@ public final class DictDbHelper extends SQLiteAssetHelper {
 
 			if (ch == ' ') {
 				prevCharWasSpace = true;
-				if (!prevCharWasTone) {
-					newPinyin.append("%");  // No % for a character before a space (ex "%n%i3 %", not "%n%i3% %")
-				}
+				newPinyin.append("%");  // No % for a character before a space (ex "%n%i3 %", not "%n%i3% %")
 			} else {
 				if (ch != ':' && (ch < '1' || ch > '5')) { // No % for a character before a tone (ex "%h%a%o3%", not "%h%a%o%3%")
 					newPinyin.append("%");

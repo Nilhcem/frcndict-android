@@ -24,6 +24,7 @@ import com.nilhcem.frcndict.settings.SettingsActivity;
 import com.nilhcem.frcndict.utils.ChineseCharsHandler;
 
 public final class WordMeaningActivity extends AbstractDictActivity {
+
 	public static final String ID_INTENT = "id";
 	public static final String HANZI_INTENT = "hanzi";
 

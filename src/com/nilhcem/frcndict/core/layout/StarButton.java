@@ -17,6 +17,7 @@ import com.nilhcem.frcndict.R;
 import com.nilhcem.frcndict.database.StarredDbHelper;
 
 public final class StarButton extends RelativeLayout {
+
 	private Context mParent;
 	private String mSimplified;
 	private StarredDbHelper mDb;
@@ -28,7 +29,7 @@ public final class StarButton extends RelativeLayout {
 
 	public StarButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.core_star_button, this, true);
 
 		mStarredBtn = (ImageButton) findViewById(R.id.starButton);

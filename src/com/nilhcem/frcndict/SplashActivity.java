@@ -29,12 +29,13 @@ import com.nilhcem.frcndict.settings.SettingsActivity;
  * Search activity. Migrate data if needed.
  */
 public final class SplashActivity extends Activity {
+
 	private static final String TAG = "SplashActivity";
 
 	private DictDbHelper mDictDb;
 	private StarredDbHelper mStarredDb;
 	private InitDatabaseTask mInitTask;
-	SharedPreferences mPrefs;
+	private SharedPreferences mPrefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +118,7 @@ public final class SplashActivity extends Activity {
 					SettingsActivity.KEY_DB_PATH_OLD, null);
 
 			if (pathLocation != null) {
-				File dbPath = null;
-				dbPath = new File(pathLocation);
+				File dbPath = new File(pathLocation);
 				if (!dbPath.isFile()) {
 					dbPath = null;
 				}

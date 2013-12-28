@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.os.StatFs;
 
 public final class FileHandler {
+
 	public static final String SD_BACKUP_RESTORE_FILE = "cfdict.xml";
 	private static final String SD_PATH = "/Android/data/";
 	private static final String INTERNAL_PATH = "/data/";
@@ -33,7 +34,7 @@ public final class FileHandler {
 		return null;
 	}
 
-	public static File getAppRootDir(Context appContext, boolean sdcard) {
+	private static File getAppRootDir(Context appContext, boolean sdcard) {
 		File rootDir = null;
 
 		if (sdcard) {
@@ -50,7 +51,7 @@ public final class FileHandler {
 				+ FileHandler.INTERNAL_PATH + appContext.getClass().getPackage().getName());
 		}
 
-		if (rootDir != null && !rootDir.exists()) {
+		if (!rootDir.exists()) {
 			rootDir.mkdirs();
 		}
 		return rootDir;
@@ -62,9 +63,8 @@ public final class FileHandler {
 	}
 
 	public static File getBackupRestoreFile() {
-		File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+		return new File(Environment.getExternalStorageDirectory().getAbsolutePath()
 				+ "/" + FileHandler.SD_BACKUP_RESTORE_FILE);
-		return file;
 	}
 
 	public static File getVoicesDir() {

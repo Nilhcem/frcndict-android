@@ -3,8 +3,8 @@ package com.nilhcem.frcndict.core;
 import java.util.IllegalFormatException;
 import java.util.Locale;
 
-
 public final class Log {
+
 	private static final boolean LOG_ERROR = Config.LOGLEVEL > 0;
 	private static final boolean LOG_WARN = Config.LOGLEVEL > 1;
 	private static final boolean LOG_INFO = Config.LOGLEVEL > 2;

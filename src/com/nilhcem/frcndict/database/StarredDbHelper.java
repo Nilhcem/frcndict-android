@@ -16,6 +16,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
 public final class StarredDbHelper extends SQLiteOpenHelper {
+
 	public static final String STARRED_TABLE_NAME = "starred";
 	public static final String STARRED_KEY_SIMPLIFIED = "simplified";
 	public static final String STARRED_KEY_DATE = "date";

@@ -32,8 +32,9 @@ Dictionary data
 Steps to do before releasing the application
 ---------------------------------------------
 
+- Update `versionCode` and `versionName` in the `AndroidManifest.xml` file
 - Update dictionary data
-- Open `ant.properties` and set `logging.level=0` + the `database.version`
+- Open `ant.properties`, set `logging.level=0` and the `database.version`
 - Launch `ant clean config release`
 - Sign application and run `zipalign` (See Android Developers Documentation)
 

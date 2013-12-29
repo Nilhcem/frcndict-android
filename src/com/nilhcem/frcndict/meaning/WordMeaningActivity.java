@@ -133,7 +133,7 @@ public final class WordMeaningActivity extends AbstractDictActivity {
 
 	private String getFormattedMeaning(String meaning) {
 		StringBuilder sb = new StringBuilder();
-		String[] meanings = meaning.split("/");
+		String[] meanings = meaning.split(Tables.TRANSLATION_SEPARATOR);
 
 		String space = " ";
 		String bullet = getString(R.string.meaning_title_bullet);

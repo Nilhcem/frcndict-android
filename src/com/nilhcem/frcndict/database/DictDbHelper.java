@@ -19,7 +19,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 public final class DictDbHelper extends SQLiteAssetHelper {
 
 	private static final String DATABASE_NAME = "cfdict";
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	private static final String QUERY_IS_PINYIN;
 	private static final String QUERY_GET_ID_BY_HANZI;

@@ -42,7 +42,7 @@ Steps to do before releasing the application
 Screenshots
 -----------
 
-<img src="http://nilhcem.github.com/screenshots/cfdict.png" width="640" height="480" />
+<img src="https://raw.githubusercontent.com/Nilhcem/frcndict-android/master/screenshot.png" width="640" height="480" />
 
 
 Contact me
